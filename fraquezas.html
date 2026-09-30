@@ -247,9 +247,31 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
 </footer>
 
 <script>
+function fatalConfigError(e){
+  var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
+  var mount = document.getElementById("items-mount");
+  if(mount){
+    mount.innerHTML = '<div style="background:#fbe9e9;border:1px solid #e0a0a0;border-radius:10px;padding:18px 20px;color:#7a1f1f;font-size:14px;line-height:1.5;">'
+      + '<b>&#9888; ' + msg + '</b><br><br>'
+      + 'Isso normalmente significa que o arquivo <code>supabase-config.js</code> n&atilde;o foi preenchido corretamente '
+      + '(URL ou chave ausente, incorreta, ou colada com quebra de linha no meio). Avise o administrador do site para revisar o Passo 5 do manual.'
+      + '</div>';
+  }
+  var bar = document.getElementById("save-bar-text");
+  if(bar) bar.textContent = "Não foi possível carregar a votação.";
+  var btn = document.getElementById("save-btn");
+  if(btn) btn.disabled = true;
+  console.error("Config/init error:", e);
+}
+
+try{
+
 var QUAD_KEY = "fraquezas";
 var ITEMS = [{"id": "fraquezas_c1", "type": "convergencia", "title": "Fragilidade de estrutura de capital e baixa disponibilidade de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Estrutura de capital (Risco restoque, Risco caixa, Falta garantias, Limite Crédito Teles)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estrutura de capital", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixa Disponibilidade de Caixa", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, apontam a mesma limitação financeira estrutural: capital insuficiente e baixa disponibilidade de caixa."}, {"id": "fraquezas_c2", "type": "convergencia", "title": "Base cadastral de clientes desatualizada, incompleta ou pouco qualitativa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Base Cadastral desatualizada (Dificultando acesso e cobrança)", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de Cadastros dos Clientes", "division": "Marketing", "origin": "Ambos"}, {"text": "Melhorar nossa base cadastral com mais dados qualitativos dos clientes", "division": "Operações", "origin": "Telecom"}], "reason": "Três propostas, dos dois arquivos, relatam o mesmo problema de dados: cadastro desatualizado, incompleto ou sem informações qualitativas."}, {"id": "fraquezas_c3", "type": "convergencia", "title": "Dependência do canal físico e da força de vendas, limitando a escala de novos produtos", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Dependência relevante da operação tradicional e da força de vendas presencial", "division": "Marketing", "origin": "Ambos"}, {"text": "Dependência do canal físico (equipe Telecom) para escalar produtos", "division": "Operações", "origin": "Ambos"}, {"text": "A força comercial atual não tem a possibilidade de escalar novos produtos (muitas incumbências para os vendedores)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas descrevem o mesmo gargalo comercial: dependência do canal físico e força de vendas sobrecarregada, sem capacidade de escalar novos produtos."}, {"id": "fraquezas_c4", "type": "convergencia", "title": "Gestão de pessoas: turnover elevado e baixa atratividade de benefícios", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Gestão Estratégica de Pessoas", "division": "Marketing", "origin": "Ambos"}, {"text": "Atratividade dos benefícios", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Alto turn-over da equipe de vendas / lentidão na reposição das vagas", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, descrevem facetas do mesmo problema de gestão de pessoas: gestão estratégica insuficiente, baixa atratividade de benefícios e alto turnover na equipe de vendas."}, {"id": "fraquezas_c5", "type": "convergencia", "title": "Integração sistêmica incompleta entre negócios e o ERP", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Ausência de integração sistêmica de alguns negócios - energia, coban e adquirência", "division": "Financeira", "origin": "Ambos"}, {"text": "Integração full do Cellcard/Rv Hub com o ERP (Ex. Contas a receber e Cobrança)", "division": "Financeira", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Financeira): ambas descrevem o mesmo gargalo de integração de sistemas com o ERP."}, {"id": "fraquezas_s1", "type": "isolada", "title": "Concentração do resultado nos produtos telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s2", "type": "isolada", "title": "Pouca interação com o cliente do Cliente", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s3", "type": "isolada", "title": "Ausência de auditoria presencial periódica dos estoques nas regionais", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s4", "type": "isolada", "title": "Fragmentação dos sistemas e pouca diversificação dos canais de atendimento", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s5", "type": "isolada", "title": "Arranjo de pagamento fechado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s6", "type": "isolada", "title": "Retenção no pós-venda e prospecção de clientes de baixa rentabilidade, sem análise de risco adequada", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s7", "type": "isolada", "title": "Baixa renovação de equipamentos", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s8", "type": "isolada", "title": "Ausência de camada digital de relacionamento sobre a força de vendas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s9", "type": "isolada", "title": "Processos operacionais recorrentes ainda manuais", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s10", "type": "isolada", "title": "Baixa oferta de portfólio aos PDVs", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s11", "type": "isolada", "title": "Sinergia entre as áreas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s12", "type": "isolada", "title": "Notoriedade de marca e presença digital insuficientes para sustentar a expansão de portfólio", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s13", "type": "isolada", "title": "Capacidade de investimento devido a margem reduzida", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s14", "type": "isolada", "title": "Limitação do nosso TI para desenvolvimento de ferramentas de inteligência de vendas", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}];
 
+if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
+  throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
+}
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
 
 function getClientId(){
@@ -413,6 +435,8 @@ renderItems();
 paintMyVotes();
 loadConfig();
 setInterval(loadConfig, 20000);
+
+}catch(e){ fatalConfigError(e); }
 </script>
 </body>
 </html>

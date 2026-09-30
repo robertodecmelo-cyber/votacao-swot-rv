@@ -247,9 +247,31 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
 </footer>
 
 <script>
+function fatalConfigError(e){
+  var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
+  var mount = document.getElementById("items-mount");
+  if(mount){
+    mount.innerHTML = '<div style="background:#fbe9e9;border:1px solid #e0a0a0;border-radius:10px;padding:18px 20px;color:#7a1f1f;font-size:14px;line-height:1.5;">'
+      + '<b>&#9888; ' + msg + '</b><br><br>'
+      + 'Isso normalmente significa que o arquivo <code>supabase-config.js</code> n&atilde;o foi preenchido corretamente '
+      + '(URL ou chave ausente, incorreta, ou colada com quebra de linha no meio). Avise o administrador do site para revisar o Passo 5 do manual.'
+      + '</div>';
+  }
+  var bar = document.getElementById("save-bar-text");
+  if(bar) bar.textContent = "Não foi possível carregar a votação.";
+  var btn = document.getElementById("save-btn");
+  if(btn) btn.disabled = true;
+  console.error("Config/init error:", e);
+}
+
+try{
+
 var QUAD_KEY = "oportunidades";
 var ITEMS = [{"id": "oportunidades_c1", "type": "convergencia", "title": "Créditos tributários e benefícios fiscais (CBS, PIS/COFINS e incentivos estaduais)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 5, "originals": [{"text": "Créditos Tributário em andamento para realização financeira (Perse R$ 431 MM / Tese do Século R$ 706 MM)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estudos e teses adicionais para recuperação e monetização de créditos diversos de PIS/COFINS, devido sua extinção a partir de jan27", "division": "Financeira", "origin": "Ambos"}, {"text": "Não cumulatividade plena da CBS em quase todas as despesas/custos, aumentando os créditos e reduzindo a carga tributária efetiva", "division": "Financeira", "origin": "Ambos"}, {"text": "Apuração Assistida (\"online\") da CBS entre contribuinte x Fisco, gerando um menor risco de autuações futuras", "division": "Financeira", "origin": "Ambos"}, {"text": "Venda através de E-commerce para capturar benefícios fiscais (Ex: Estado SC para B2C)", "division": "Financeira", "origin": "Ambos"}], "reason": "Cinco propostas da mesma diretoria (Financeira) tratam de facetas do mesmo tema: a captura de ganhos fiscais e tributários na transição para a CBS."}, {"id": "oportunidades_c2", "type": "convergencia", "title": "IA e automação como alavanca de produtividade, eficiência e escala", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Automação e IA para reduzir esforço manual e melhorar eficiência operacional", "division": "Financeira", "origin": "Ambos"}, {"text": "IA e automação como alavanca de produtividade e escala", "division": "Marketing", "origin": "Ambos"}], "reason": "Duas propostas, das diretorias Financeira e Marketing, enxergam a mesma tendência: IA e automação para ganhar produtividade, eficiência e escala."}, {"id": "oportunidades_c3", "type": "convergencia", "title": "Consolidação e expansão do mercado Telecom (M&A, novos negócios, MVNO e novas áreas de distribuição)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 6, "originals": [{"text": "Novos negócios no mercado de Telecom", "division": "Marketing", "origin": "Telecom"}, {"text": "Consolidação do mercado Telecom (fusões e aquisições)", "division": "Operações", "origin": "Telecom"}, {"text": "Novos Negócios no mercado Telecom", "division": "Operações", "origin": "Telecom"}, {"text": "MVNO RV", "division": "Operações", "origin": "Telecom"}, {"text": "Aquisições e fusões", "division": "Marketing", "origin": "Ambos"}, {"text": "Consolidação do mercado Telecom (novas áreas de distribuição)", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de oportunidades: seis propostas, dos dois arquivos, descrevem o mesmo movimento estratégico de crescer no Telecom via M&A, MVNO e novas áreas de distribuição."}, {"id": "oportunidades_c4", "type": "convergencia", "title": "Expansão de serviços financeiros, crédito e fintechs", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Demanda por crédito vinculado ao histórico transacional do PDV", "division": "Marketing", "origin": "Telecom"}, {"text": "Expansão de serviços financeiros e meios de pagamento (BaaS)", "division": "Marketing", "origin": "Ambos"}, {"text": "Integração de grandes Fintechs", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas convergem para a mesma janela de mercado: posicionar a RV como plataforma de crédito, meios de pagamento e fintechs."}, {"id": "oportunidades_c5", "type": "convergencia", "title": "Demanda de operadoras e empresas por distribuição no canal físico", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Estruturar modelo de distribuição pré-paga para a Brisanet", "division": "Operações", "origin": "Telecom"}, {"text": "Busca das empresas por distribuição canal físico", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas capturam a mesma demanda: empresas buscando o canal físico da RV para distribuir seus produtos."}, {"id": "oportunidades_s1", "type": "isolada", "title": "Parcerias com software house", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s2", "type": "isolada", "title": "Atuação no Cliente do Cliente (B2B e B2C)", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s3", "type": "isolada", "title": "Reduzir custo logístico na venda e entrega do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s4", "type": "isolada", "title": "Benefício da compra a vista do Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s5", "type": "isolada", "title": "Crescimento via canais digitais e mudança no comportamento de compra", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s6", "type": "isolada", "title": "Encontrar \"O Produto\" + \"Nicho\" para ser escalado na Máquina de Originação (B2B & B2C)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s7", "type": "isolada", "title": "Crescente demanda por produtos de automação de vendas e marketing (B2B)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s8", "type": "isolada", "title": "Expansão do Kiddle", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}];
 
+if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
+  throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
+}
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
 
 function getClientId(){
@@ -413,6 +435,8 @@ renderItems();
 paintMyVotes();
 loadConfig();
 setInterval(loadConfig, 20000);
+
+}catch(e){ fatalConfigError(e); }
 </script>
 </body>
 </html>

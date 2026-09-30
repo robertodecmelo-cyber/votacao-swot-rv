@@ -264,9 +264,31 @@ VOTE_TEMPLATE = HEAD + r"""
 </footer>
 
 <script>
+function fatalConfigError(e){
+  var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
+  var mount = document.getElementById("items-mount");
+  if(mount){
+    mount.innerHTML = '<div style="background:#fbe9e9;border:1px solid #e0a0a0;border-radius:10px;padding:18px 20px;color:#7a1f1f;font-size:14px;line-height:1.5;">'
+      + '<b>&#9888; ' + msg + '</b><br><br>'
+      + 'Isso normalmente significa que o arquivo <code>supabase-config.js</code> n&atilde;o foi preenchido corretamente '
+      + '(URL ou chave ausente, incorreta, ou colada com quebra de linha no meio). Avise o administrador do site para revisar o Passo 5 do manual.'
+      + '</div>';
+  }
+  var bar = document.getElementById("save-bar-text");
+  if(bar) bar.textContent = "Não foi possível carregar a votação.";
+  var btn = document.getElementById("save-btn");
+  if(btn) btn.disabled = true;
+  console.error("Config/init error:", e);
+}
+
+try{
+
 var QUAD_KEY = "__QUAD_KEY__";
 var ITEMS = __ITEMS_JSON__;
 
+if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
+  throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
+}
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
 
 function getClientId(){
@@ -430,6 +452,8 @@ renderItems();
 paintMyVotes();
 loadConfig();
 setInterval(loadConfig, 20000);
+
+}catch(e){ fatalConfigError(e); }
 </script>
 </body>
 </html>
@@ -494,7 +518,24 @@ ADMIN_TEMPLATE = HEAD.replace("__PAGE_TITLE__", "Painel Administrativo &mdash; V
 </footer>
 
 <script>
+function fatalConfigError(e){
+  var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
+  var gate = document.getElementById("login-gate");
+  if(gate){
+    gate.innerHTML = '<div style="background:#fbe9e9;border:1px solid #e0a0a0;border-radius:10px;padding:18px 20px;color:#7a1f1f;font-size:14px;line-height:1.5;text-align:left;">'
+      + '<b>&#9888; ' + msg + '</b><br><br>'
+      + 'Verifique o arquivo <code>supabase-config.js</code> (Passo 5 do manual): a URL e a chave anon precisam estar preenchidas, cada uma em uma &uacute;nica linha, sem quebras.'
+      + '</div>';
+  }
+  console.error("Config/init error:", e);
+}
+
+try{
+
 var ALL_ITEMS = __ALL_ITEMS_JSON__;   // { forcas: [...], fraquezas: [...], ... }
+if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
+  throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
+}
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
 var currentQuad = "forcas";
 var votingOpenByQuad = {};
@@ -644,6 +685,8 @@ function renderDash(){
   var sess = await sb.auth.getSession();
   if(sess.data && sess.data.session){ onLoggedIn(); }
 })();
+
+}catch(e){ fatalConfigError(e); }
 </script>
 </body>
 </html>

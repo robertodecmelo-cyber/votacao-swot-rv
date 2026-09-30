@@ -247,9 +247,31 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
 </footer>
 
 <script>
+function fatalConfigError(e){
+  var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
+  var mount = document.getElementById("items-mount");
+  if(mount){
+    mount.innerHTML = '<div style="background:#fbe9e9;border:1px solid #e0a0a0;border-radius:10px;padding:18px 20px;color:#7a1f1f;font-size:14px;line-height:1.5;">'
+      + '<b>&#9888; ' + msg + '</b><br><br>'
+      + 'Isso normalmente significa que o arquivo <code>supabase-config.js</code> n&atilde;o foi preenchido corretamente '
+      + '(URL ou chave ausente, incorreta, ou colada com quebra de linha no meio). Avise o administrador do site para revisar o Passo 5 do manual.'
+      + '</div>';
+  }
+  var bar = document.getElementById("save-bar-text");
+  if(bar) bar.textContent = "Não foi possível carregar a votação.";
+  var btn = document.getElementById("save-btn");
+  if(btn) btn.disabled = true;
+  console.error("Config/init error:", e);
+}
+
+try{
+
 var QUAD_KEY = "forcas";
 var ITEMS = [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}];
 
+if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
+  throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
+}
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
 
 function getClientId(){
@@ -413,6 +435,8 @@ renderItems();
 paintMyVotes();
 loadConfig();
 setInterval(loadConfig, 20000);
+
+}catch(e){ fatalConfigError(e); }
 </script>
 </body>
 </html>
