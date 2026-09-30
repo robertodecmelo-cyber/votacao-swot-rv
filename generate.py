@@ -362,7 +362,7 @@ function updateProgress(){
   var voted = Object.keys(myVotes).length;
   document.getElementById("progress-fill").style.width = Math.round(voted/ITEMS.length*100) + "%";
   document.getElementById("progress-text").textContent = voted + " de " + ITEMS.length + " respondidos";
-  document.getElementById("vote-status-text").textContent = votingOpen ? "" : "Vota&ccedil;&atilde;o encerrada pelo administrador";
+  document.getElementById("vote-status-text").textContent = votingOpen ? "" : "Votação encerrada pelo administrador";
 }
 function paintMyVotes(){
   ITEMS.forEach(function(it){
@@ -382,33 +382,42 @@ function paintMyVotes(){
   updateProgress();
   updateSaveBar();
 }
+function allAnswered(){ return Object.keys(myVotes).length === ITEMS.length; }
 function updateSaveBar(){
   var text = document.getElementById("save-bar-text");
   var btn = document.getElementById("save-btn");
   if(!text || !btn) return;
   var dirty = countDirty();
   var answered = Object.keys(myVotes).length;
+  var missing = ITEMS.length - answered;
   if(saving){
-    text.textContent = "Salvando suas respostas&hellip;";
-    btn.textContent = "Salvando&hellip;"; btn.disabled = true; btn.className = "save-btn state-saving";
+    text.textContent = "Salvando suas respostas…";
+    btn.textContent = "Salvando…"; btn.disabled = true; btn.className = "save-btn state-saving";
     return;
   }
   if(!votingOpen){
-    text.textContent = "Vota&ccedil;&atilde;o encerrada pelo administrador &mdash; n&atilde;o &eacute; mais poss&iacute;vel salvar.";
+    text.textContent = "Votação encerrada pelo administrador — não é mais possível salvar.";
     btn.disabled = true; btn.className = "save-btn"; btn.textContent = "Salvar respostas";
     return;
   }
-  if(answered === 0){ text.textContent = "Nenhuma resposta selecionada ainda."; }
-  else if(dirty === 0){ text.textContent = answered + " de " + ITEMS.length + " respondidos &mdash; tudo salvo."; }
-  else { text.textContent = answered + " de " + ITEMS.length + " respondidos &mdash; " + dirty + " altera&ccedil;&atilde;o(&otilde;es) ainda n&atilde;o salva(s)."; }
-  btn.disabled = dirty === 0;
+  if(answered === 0){
+    text.textContent = "Nenhuma resposta selecionada ainda. Responda todos os " + ITEMS.length + " itens para poder salvar.";
+  } else if(missing > 0){
+    text.textContent = answered + " de " + ITEMS.length + " respondidos — faltam " + missing + " item" + (missing === 1 ? "" : "s") + " para poder salvar.";
+  } else if(dirty === 0){
+    text.textContent = answered + " de " + ITEMS.length + " respondidos — tudo salvo.";
+  } else {
+    text.textContent = answered + " de " + ITEMS.length + " respondidos — " + dirty + " alteração(ões) ainda não salva(s).";
+  }
+  var canSave = allAnswered() && dirty > 0;
+  btn.disabled = !canSave;
   btn.className = "save-btn" + (dirty === 0 && answered > 0 ? " state-saved" : "");
-  btn.textContent = dirty > 0 ? ("Salvar respostas (" + dirty + ")") : "Salvar respostas";
+  btn.textContent = missing > 0 ? ("Responda todos para salvar (" + missing + " restante" + (missing === 1 ? "" : "s") + ")") : (dirty > 0 ? ("Salvar respostas (" + dirty + ")") : "Salvar respostas");
 }
 function showFlash(msg, isError){
   var flash = document.getElementById("save-flash");
   if(!flash) return;
-  flash.textContent = (isError ? "&#9888; " : "&#10003; ") + msg;
+  flash.textContent = (isError ? "⚠ " : "✓ ") + msg;
   flash.className = "save-flash show" + (isError ? " error" : "");
   clearTimeout(flash._t);
   flash._t = setTimeout(function(){ flash.className = "save-flash"; }, 5000);
@@ -420,6 +429,11 @@ function castVote(itemId, score){
 }
 async function saveAllVotes(){
   if(!votingOpen || saving) return;
+  if(!allAnswered()){
+    var missing = ITEMS.length - Object.keys(myVotes).length;
+    showFlash("Responda todos os " + ITEMS.length + " itens antes de salvar (faltam " + missing + ").", true);
+    return;
+  }
   if(countDirty() === 0) return;
   saving = true; updateSaveBar();
   try{
@@ -428,11 +442,11 @@ async function saveAllVotes(){
     if(res.error) throw res.error;
     savedVotes = Object.assign({}, myVotes);
     saving = false; paintMyVotes();
-    showFlash("Respostas salvas com sucesso &mdash; registradas anonimamente.", false);
+    showFlash("Respostas salvas com sucesso — registradas anonimamente.", false);
   }catch(e){
     console.warn("save failed", e);
     saving = false; paintMyVotes();
-    showFlash("N&atilde;o foi poss&iacute;vel salvar agora. Verifique sua conex&atilde;o e clique em \"Salvar respostas\" novamente.", true);
+    showFlash("Não foi possível salvar agora. Verifique sua conexão e clique em \"Salvar respostas\" novamente.", true);
   }
 }
 document.getElementById("save-btn").addEventListener("click", saveAllVotes);
@@ -558,7 +572,7 @@ document.getElementById("login-btn").addEventListener("click", async function(){
     if(res.error) throw res.error;
     onLoggedIn();
   }catch(e){
-    err.textContent = "E-mail ou senha incorretos, ou esta conta n&atilde;o &eacute; administradora.";
+    err.textContent = "E-mail ou senha incorretos, ou esta conta não é administradora.";
   }
 });
 document.getElementById("logout-btn").addEventListener("click", async function(){
@@ -603,7 +617,7 @@ document.getElementById("toggle-voting").addEventListener("click", async functio
 function paintToggle(){
   var open = !!votingOpenByQuad[currentQuad];
   var tb = document.getElementById("toggle-voting");
-  tb.textContent = open ? "Vota&ccedil;&atilde;o aberta" : "Vota&ccedil;&atilde;o encerrada";
+  tb.textContent = open ? "Votação aberta" : "Votação encerrada";
   tb.classList.toggle("open", open);
   tb.classList.toggle("closed", !open);
 }
@@ -652,7 +666,7 @@ function renderDash(){
   Object.keys(agg).forEach(function(id){ totalVotes += agg[id].total; sumAll += agg[id].sum; });
   document.getElementById("admin-voters").textContent = voters;
   document.getElementById("admin-total-votes").textContent = totalVotes;
-  document.getElementById("admin-avg").textContent = totalVotes ? (sumAll/totalVotes).toFixed(2) : "&mdash;";
+  document.getElementById("admin-avg").textContent = totalVotes ? (sumAll/totalVotes).toFixed(2) : "—";
 
   if(adminOrder === "rank-desc" || adminOrder === "rank-asc"){
     items.sort(function(a,b){

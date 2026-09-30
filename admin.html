@@ -293,7 +293,7 @@ document.getElementById("login-btn").addEventListener("click", async function(){
     if(res.error) throw res.error;
     onLoggedIn();
   }catch(e){
-    err.textContent = "E-mail ou senha incorretos, ou esta conta n&atilde;o &eacute; administradora.";
+    err.textContent = "E-mail ou senha incorretos, ou esta conta não é administradora.";
   }
 });
 document.getElementById("logout-btn").addEventListener("click", async function(){
@@ -338,7 +338,7 @@ document.getElementById("toggle-voting").addEventListener("click", async functio
 function paintToggle(){
   var open = !!votingOpenByQuad[currentQuad];
   var tb = document.getElementById("toggle-voting");
-  tb.textContent = open ? "Vota&ccedil;&atilde;o aberta" : "Vota&ccedil;&atilde;o encerrada";
+  tb.textContent = open ? "Votação aberta" : "Votação encerrada";
   tb.classList.toggle("open", open);
   tb.classList.toggle("closed", !open);
 }
@@ -387,7 +387,7 @@ function renderDash(){
   Object.keys(agg).forEach(function(id){ totalVotes += agg[id].total; sumAll += agg[id].sum; });
   document.getElementById("admin-voters").textContent = voters;
   document.getElementById("admin-total-votes").textContent = totalVotes;
-  document.getElementById("admin-avg").textContent = totalVotes ? (sumAll/totalVotes).toFixed(2) : "&mdash;";
+  document.getElementById("admin-avg").textContent = totalVotes ? (sumAll/totalVotes).toFixed(2) : "—";
 
   if(adminOrder === "rank-desc" || adminOrder === "rank-asc"){
     items.sort(function(a,b){
