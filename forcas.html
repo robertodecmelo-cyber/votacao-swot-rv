@@ -52,13 +52,18 @@ header.hero::after{
 }
 .hero-inner{max-width:900px; margin:0 auto; padding:0 20px; display:flex; align-items:flex-start; gap:18px; position:relative; z-index:2;}
 .hero-text{flex:1;}
+/* Fixo na tela, sempre visível mesmo com o scroll da página (pedido do usuário) */
 .back-to-menu{
-  display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;
-  color:#fff; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4);
-  border-radius:999px; padding:7px 14px 7px 12px; font-size:13px; font-weight:600;
-  text-decoration:none; transition:.15s;
+  position:fixed; top:14px; left:14px; z-index:999;
+  display:inline-flex; align-items:center; gap:6px;
+  color:#fff; background:var(--navy-dk); border:1px solid rgba(255,255,255,.25);
+  border-radius:999px; padding:8px 15px 8px 13px; font-size:13px; font-weight:600;
+  text-decoration:none; transition:.15s; box-shadow:0 2px 10px -2px rgba(0,0,0,.4);
 }
-.back-to-menu:hover{background:rgba(255,255,255,.26);}
+.back-to-menu:hover{background:var(--navy);}
+/* Espaço reservado no topo do hero para o botão fixo não cobrir o conteúdo */
+.hero-text{padding-top:40px;}
+@media (max-width:600px){ .back-to-menu{ padding:7px 12px 7px 11px; font-size:12.5px; } }
 .hero-eyebrow{font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:#ffe27a; margin-bottom:10px; margin-top:2px; font-weight:700;}
 .hero-title{font-size:29px; line-height:1.2;}
 .hero-sub{font-size:15.5px; color:#f2f6fc; margin-top:10px; max-width:560px; line-height:1.5;}
@@ -107,7 +112,15 @@ main{max-width:900px; margin:0 auto; padding:26px 20px 90px;}
 .tag-legend .leg-row{display:flex; align-items:center; gap:8px; margin:3px 0;}
 .tag-legend .chip{flex:none;}
 
-.progress-wrap{ position:sticky; top:0; z-index:30; background:var(--paper); padding:10px 0 14px; }
+.progress-wrap{ position:sticky; top:0; z-index:30; background:var(--paper); padding:10px 0 14px 185px; }
+@media (max-width:600px){ .progress-wrap{ padding-left:150px; } }
+
+.origin-filter{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin:0 0 16px; }
+.origin-filter-label{ font-size:13px; color:var(--ink-soft); font-weight:600; margin-right:2px; }
+.origin-filter button{ border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; transition:.12s; }
+.origin-filter button:hover{ border-color:var(--accent); }
+.origin-filter button.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+.origin-filter button .cnt{ opacity:.75; font-weight:500; margin-left:3px; }
 .progress-track{ height:8px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; }
 .progress-fill{height:100%; background:var(--accent); width:0%; transition:width .25s;}
 .progress-label{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-soft); margin-top:6px;}
@@ -217,6 +230,57 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .edit-item .edit-status{font-size:12px; color:var(--green); font-weight:600;}
 .edit-item .edit-status.err{color:var(--red);}
 
+.topn-ctrl{ display:flex; align-items:center; gap:8px; margin-left:auto; font-size:12.5px; color:var(--ink-soft); }
+.topn-ctrl input{ width:52px; border:1px solid var(--line); border-radius:8px; padding:5px 8px; font-family:"Ubuntu Mono",monospace; font-size:13px; text-align:center; color:var(--ink); background:var(--surface); }
+.top5-wrap .top5-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.top5-wrap .top5-head h3{margin:0;}
+.restore-order-btn{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:600; cursor:pointer; }
+.rank-arrows{display:flex; flex-direction:column; gap:2px;}
+.rank-arrows button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:5px; width:20px; height:16px; font-size:10px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.rank-arrows button:disabled{opacity:.3; cursor:default;}
+.rank-arrows button:not(:disabled):hover{background:var(--accent); color:#fff; border-color:var(--accent);}
+.top5-table td.top5-rankcell{display:flex; align-items:center; gap:6px;}
+
+.add-item-box{ background:var(--surface-2); border:1px dashed var(--line); border-radius:var(--radius); padding:14px 16px; margin-bottom:16px; }
+.add-item-box h4{font-size:13.5px; margin:0 0 8px;}
+.add-item-box textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:"Ubuntu",sans-serif; font-size:13.5px; resize:vertical; color:var(--ink); background:var(--surface); }
+.add-item-box .add-row{display:flex; gap:8px; align-items:center; margin-top:9px; flex-wrap:wrap;}
+.add-item-box select{ border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:13px; color:var(--ink); background:var(--surface); }
+.add-item-btn{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--green); }
+.remove-item-btn{ border:1px solid #e0a0a0; background:#fbe9e9; color:#9c2222; border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.added-badge{color:var(--green); font-weight:700;}
+.removed-panel{ background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin-top:18px; }
+.removed-panel h4{font-size:13px; margin:0 0 10px; color:var(--ink-soft);}
+.removed-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+.removed-row:last-child{border-bottom:none;}
+.removed-row .rt{flex:1; color:var(--ink-soft);}
+.restore-item-btn{ border:1px solid var(--line); background:var(--surface); color:var(--navy-lt); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:600; cursor:pointer; flex:none; }
+.reset-confirm{background:var(--red) !important;}
+
+.menu-grid{ display:grid; gap:14px; margin-top:6px; }
+.menu-card{
+  display:flex; align-items:center; gap:16px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--mc-accent);
+  border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); transition:.15s;
+}
+.menu-card:hover{ transform:translateX(3px); box-shadow:0 4px 16px -4px rgba(13,45,91,.22), var(--shadow); }
+.menu-card-icon{
+  width:46px; height:46px; border-radius:12px; background:var(--mc-soft); color:var(--mc-accent);
+  display:flex; align-items:center; justify-content:center; font-size:21px; flex:none;
+}
+.menu-card-body{flex:1; min-width:0;}
+.menu-card-title{font-size:18.5px; font-weight:700; color:var(--ink); margin-bottom:3px;}
+.menu-card-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.4;}
+.menu-card-arrow{font-size:18px; color:var(--ink-soft); flex:none; transition:.15s;}
+.menu-card:hover .menu-card-arrow{color:var(--mc-accent); transform:translateX(2px);}
+.admin-link-pill{
+  display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+  color:var(--ink-soft); font-size:13px; font-weight:600; padding:10px 18px;
+  border:1px solid var(--line); border-radius:999px; background:var(--surface); transition:.15s;
+}
+.admin-link-pill:hover{ color:var(--navy); border-color:var(--navy-lt); background:var(--surface-2); }
+.index-footnote{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:14px; line-height:1.5; }
+
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
 .gate input{ width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line); margin-top:10px; font-size:14px; font-family:"Ubuntu",sans-serif; }
@@ -273,6 +337,13 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
       <div class="progress-label"><span id="progress-text">0 de 12 respondidos</span><span id="vote-status-text"></span></div>
     </div>
 
+    <div class="origin-filter" id="origin-filter">
+      <span class="origin-filter-label">Mostrar:</span>
+      <button class="active" data-filter="all">Todas</button>
+      <button data-filter="Telecom">Telecom</button>
+      <button data-filter="Ambos">Ambos</button>
+    </div>
+
     <div id="items-mount"></div>
 
     <div class="save-bar">
@@ -311,7 +382,8 @@ function fatalConfigError(e){
 try{
 
 var QUAD_KEY = "forcas";
-var ITEMS = [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}];
+var BASE_ITEMS = [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}];
+var ITEMS = JSON.parse(JSON.stringify(BASE_ITEMS));
 
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
@@ -331,6 +403,7 @@ var myId = getClientId();
 var myVotes = {};
 var savedVotes = {};
 var votingOpen = true, saving = false;
+var currentFilter = "all";
 
 function origLabel(o){ return o === "Telecom" ? "Telecom" : "Ambos"; }
 function origClass(o){ return o === "Telecom" ? "t" : "a"; }
@@ -340,11 +413,32 @@ function escapeHtml(s){
   });
 }
 
+function itemMatchesFilter(it){
+  if(currentFilter === "all") return true;
+  return (it.origins || []).indexOf(currentFilter) !== -1;
+}
+function updateFilterCounts(){
+  var wrap = document.getElementById("origin-filter");
+  if(!wrap) return;
+  var telecom = ITEMS.filter(function(it){ return (it.origins||[]).indexOf("Telecom") !== -1; }).length;
+  var ambos = ITEMS.filter(function(it){ return (it.origins||[]).indexOf("Ambos") !== -1; }).length;
+  wrap.querySelectorAll("button").forEach(function(b){
+    var f = b.getAttribute("data-filter");
+    var n = f === "all" ? ITEMS.length : (f === "Telecom" ? telecom : ambos);
+    var label = f === "all" ? "Todas" : f;
+    b.innerHTML = label + ' <span class="cnt">(' + n + ')</span>';
+  });
+}
 function renderItems(){
   var mount = document.getElementById("items-mount");
   var html = "";
-  ITEMS.forEach(function(it, i){ html += renderItem(it, i+1); });
-  mount.innerHTML = html;
+  // Numeração (#N) segue a posição no conjunto completo de itens, mesmo com
+  // o filtro ativo, para o número de cada proposta não mudar dependendo do filtro.
+  ITEMS.forEach(function(it, i){
+    if(itemMatchesFilter(it)) html += renderItem(it, i+1);
+  });
+  mount.innerHTML = html || '<div class="empty-note">Nenhuma proposta nesta categoria.</div>';
+  updateFilterCounts();
 }
 function renderItem(it, idx){
   var typeChip = it.type === "convergencia"
@@ -464,8 +558,10 @@ async function saveAllVotes(){
   if(countDirty() === 0) return;
   saving = true; updateSaveBar();
   try{
-    var payload = { quadrant: QUAD_KEY, client_id: myId, scores: Object.assign({}, myVotes), updated_at: new Date().toISOString() };
-    var res = await sb.from("votes").upsert(payload, { onConflict: "quadrant,client_id" });
+    // Grava o voto chamando a função save_vote (ver schema.sql) em vez de um
+    // upsert direto na tabela: assim a gravação (mesmo na 2ª vez, quando já
+    // existe um voto salvo) não depende de permissão de leitura da tabela.
+    var res = await sb.rpc("save_vote", { p_quadrant: QUAD_KEY, p_client_id: myId, p_scores: Object.assign({}, myVotes) });
     if(res.error) throw res.error;
     savedVotes = Object.assign({}, myVotes);
     saving = false; paintMyVotes();
@@ -481,6 +577,15 @@ document.getElementById("save-btn").addEventListener("click", saveAllVotes);
 window.addEventListener("beforeunload", function(e){
   if(countDirty() > 0){ e.preventDefault(); e.returnValue = ""; }
 });
+document.getElementById("origin-filter").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  document.querySelectorAll("#origin-filter button").forEach(function(x){ x.classList.remove("active"); });
+  b.classList.add("active");
+  currentFilter = b.getAttribute("data-filter");
+  renderItems();
+  paintMyVotes();
+});
 
 async function loadConfig(){
   try{
@@ -490,28 +595,59 @@ async function loadConfig(){
   paintMyVotes();
 }
 
-async function loadItemEdits(){
+async function loadItemChanges(){
+  // Junta 3 fontes por cima do conjunto original de itens (BASE_ITEMS):
+  // item_edits (textos corrigidos), item_added (propostas criadas pelo admin
+  // durante a reunião) e item_removed (propostas ocultadas pelo admin).
+  // Sempre recalcula a partir de BASE_ITEMS (nunca acumula em cima do ITEMS
+  // anterior), assim uma remoção desfeita ou uma edição revertida também
+  // aparece certo aqui, sem precisar recarregar a página.
   try{
-    var res = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
-    if(!res.error && res.data){
-      var map = {};
-      res.data.forEach(function(r){ map[r.item_id] = r.title; });
-      var changed = false;
-      ITEMS.forEach(function(it){
-        var ov = map[it.id];
-        if(ov !== undefined && ov !== it.title){ it.title = ov; changed = true; }
+    var editsRes = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
+    var addedRes = await sb.from("item_added").select("item_id,title,origin,division").eq("quadrant", QUAD_KEY);
+    var removedRes = await sb.from("item_removed").select("item_id").eq("quadrant", QUAD_KEY);
+    var editMap = {};
+    if(!editsRes.error) (editsRes.data || []).forEach(function(r){ editMap[r.item_id] = r.title; });
+    var removedSet = {};
+    if(!removedRes.error) (removedRes.data || []).forEach(function(r){ removedSet[r.item_id] = true; });
+    var addedList = (!addedRes.error && addedRes.data) ? addedRes.data : [];
+
+    var next = BASE_ITEMS.filter(function(it){ return !removedSet[it.id]; }).map(function(it){
+      var clone = JSON.parse(JSON.stringify(it));
+      if(editMap[clone.id] !== undefined) clone.title = editMap[clone.id];
+      return clone;
+    });
+    addedList.forEach(function(r){
+      if(removedSet[r.item_id]) return;
+      next.push({
+        id: r.item_id, type: "isolada",
+        title: (editMap[r.item_id] !== undefined) ? editMap[r.item_id] : r.title,
+        divisions: r.division ? [r.division] : [],
+        origins: r.origin ? [r.origin] : ["Ambos"],
+        n: 1, originals: null, reason: null
       });
-      if(changed){ renderItems(); paintMyVotes(); }
+    });
+
+    var prevIds = ITEMS.map(function(i){ return i.id; }).join("|");
+    var nextIds = next.map(function(i){ return i.id; }).join("|");
+    var titlesChanged = next.some(function(it){
+      var prev = ITEMS.filter(function(p){ return p.id === it.id; })[0];
+      return !prev || prev.title !== it.title;
+    });
+    if(prevIds !== nextIds || titlesChanged){
+      ITEMS = next;
+      renderItems();
+      paintMyVotes();
     }
-  }catch(e){ console.warn("item edits load failed", e); }
+  }catch(e){ console.warn("item changes load failed", e); }
 }
 
 renderItems();
 paintMyVotes();
 loadConfig();
-loadItemEdits();
+loadItemChanges();
 setInterval(loadConfig, 20000);
-setInterval(loadItemEdits, 20000);
+setInterval(loadItemChanges, 20000);
 
 }catch(e){ fatalConfigError(e); }
 </script>

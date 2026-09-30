@@ -49,13 +49,18 @@ header.hero::after{
 }
 .hero-inner{max-width:900px; margin:0 auto; padding:0 20px; display:flex; align-items:flex-start; gap:18px; position:relative; z-index:2;}
 .hero-text{flex:1;}
+/* Fixo na tela, sempre visível mesmo com o scroll da página (pedido do usuário) */
 .back-to-menu{
-  display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;
-  color:#fff; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.4);
-  border-radius:999px; padding:7px 14px 7px 12px; font-size:13px; font-weight:600;
-  text-decoration:none; transition:.15s;
+  position:fixed; top:14px; left:14px; z-index:999;
+  display:inline-flex; align-items:center; gap:6px;
+  color:#fff; background:var(--navy-dk); border:1px solid rgba(255,255,255,.25);
+  border-radius:999px; padding:8px 15px 8px 13px; font-size:13px; font-weight:600;
+  text-decoration:none; transition:.15s; box-shadow:0 2px 10px -2px rgba(0,0,0,.4);
 }
-.back-to-menu:hover{background:rgba(255,255,255,.26);}
+.back-to-menu:hover{background:var(--navy);}
+/* Espaço reservado no topo do hero para o botão fixo não cobrir o conteúdo */
+.hero-text{padding-top:40px;}
+@media (max-width:600px){ .back-to-menu{ padding:7px 12px 7px 11px; font-size:12.5px; } }
 .hero-eyebrow{font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:#ffe27a; margin-bottom:10px; margin-top:2px; font-weight:700;}
 .hero-title{font-size:29px; line-height:1.2;}
 .hero-sub{font-size:15.5px; color:#f2f6fc; margin-top:10px; max-width:560px; line-height:1.5;}
@@ -104,7 +109,15 @@ main{max-width:900px; margin:0 auto; padding:26px 20px 90px;}
 .tag-legend .leg-row{display:flex; align-items:center; gap:8px; margin:3px 0;}
 .tag-legend .chip{flex:none;}
 
-.progress-wrap{ position:sticky; top:0; z-index:30; background:var(--paper); padding:10px 0 14px; }
+.progress-wrap{ position:sticky; top:0; z-index:30; background:var(--paper); padding:10px 0 14px 185px; }
+@media (max-width:600px){ .progress-wrap{ padding-left:150px; } }
+
+.origin-filter{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin:0 0 16px; }
+.origin-filter-label{ font-size:13px; color:var(--ink-soft); font-weight:600; margin-right:2px; }
+.origin-filter button{ border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; transition:.12s; }
+.origin-filter button:hover{ border-color:var(--accent); }
+.origin-filter button.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+.origin-filter button .cnt{ opacity:.75; font-weight:500; margin-left:3px; }
 .progress-track{ height:8px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); overflow:hidden; }
 .progress-fill{height:100%; background:var(--accent); width:0%; transition:width .25s;}
 .progress-label{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-soft); margin-top:6px;}
@@ -214,6 +227,57 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .edit-item .edit-status{font-size:12px; color:var(--green); font-weight:600;}
 .edit-item .edit-status.err{color:var(--red);}
 
+.topn-ctrl{ display:flex; align-items:center; gap:8px; margin-left:auto; font-size:12.5px; color:var(--ink-soft); }
+.topn-ctrl input{ width:52px; border:1px solid var(--line); border-radius:8px; padding:5px 8px; font-family:"Ubuntu Mono",monospace; font-size:13px; text-align:center; color:var(--ink); background:var(--surface); }
+.top5-wrap .top5-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.top5-wrap .top5-head h3{margin:0;}
+.restore-order-btn{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:600; cursor:pointer; }
+.rank-arrows{display:flex; flex-direction:column; gap:2px;}
+.rank-arrows button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:5px; width:20px; height:16px; font-size:10px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.rank-arrows button:disabled{opacity:.3; cursor:default;}
+.rank-arrows button:not(:disabled):hover{background:var(--accent); color:#fff; border-color:var(--accent);}
+.top5-table td.top5-rankcell{display:flex; align-items:center; gap:6px;}
+
+.add-item-box{ background:var(--surface-2); border:1px dashed var(--line); border-radius:var(--radius); padding:14px 16px; margin-bottom:16px; }
+.add-item-box h4{font-size:13.5px; margin:0 0 8px;}
+.add-item-box textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:"Ubuntu",sans-serif; font-size:13.5px; resize:vertical; color:var(--ink); background:var(--surface); }
+.add-item-box .add-row{display:flex; gap:8px; align-items:center; margin-top:9px; flex-wrap:wrap;}
+.add-item-box select{ border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:13px; color:var(--ink); background:var(--surface); }
+.add-item-btn{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--green); }
+.remove-item-btn{ border:1px solid #e0a0a0; background:#fbe9e9; color:#9c2222; border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.added-badge{color:var(--green); font-weight:700;}
+.removed-panel{ background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin-top:18px; }
+.removed-panel h4{font-size:13px; margin:0 0 10px; color:var(--ink-soft);}
+.removed-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+.removed-row:last-child{border-bottom:none;}
+.removed-row .rt{flex:1; color:var(--ink-soft);}
+.restore-item-btn{ border:1px solid var(--line); background:var(--surface); color:var(--navy-lt); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:600; cursor:pointer; flex:none; }
+.reset-confirm{background:var(--red) !important;}
+
+.menu-grid{ display:grid; gap:14px; margin-top:6px; }
+.menu-card{
+  display:flex; align-items:center; gap:16px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--mc-accent);
+  border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); transition:.15s;
+}
+.menu-card:hover{ transform:translateX(3px); box-shadow:0 4px 16px -4px rgba(13,45,91,.22), var(--shadow); }
+.menu-card-icon{
+  width:46px; height:46px; border-radius:12px; background:var(--mc-soft); color:var(--mc-accent);
+  display:flex; align-items:center; justify-content:center; font-size:21px; flex:none;
+}
+.menu-card-body{flex:1; min-width:0;}
+.menu-card-title{font-size:18.5px; font-weight:700; color:var(--ink); margin-bottom:3px;}
+.menu-card-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.4;}
+.menu-card-arrow{font-size:18px; color:var(--ink-soft); flex:none; transition:.15s;}
+.menu-card:hover .menu-card-arrow{color:var(--mc-accent); transform:translateX(2px);}
+.admin-link-pill{
+  display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+  color:var(--ink-soft); font-size:13px; font-weight:600; padding:10px 18px;
+  border:1px solid var(--line); border-radius:999px; background:var(--surface); transition:.15s;
+}
+.admin-link-pill:hover{ color:var(--navy); border-color:var(--navy-lt); background:var(--surface-2); }
+.index-footnote{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:14px; line-height:1.5; }
+
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
 .gate input{ width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line); margin-top:10px; font-size:14px; font-family:"Ubuntu",sans-serif; }
@@ -290,6 +354,13 @@ VOTE_TEMPLATE = HEAD + r"""
       <div class="progress-label"><span id="progress-text">0 de __ITEM_COUNT__ respondidos</span><span id="vote-status-text"></span></div>
     </div>
 
+    <div class="origin-filter" id="origin-filter">
+      <span class="origin-filter-label">Mostrar:</span>
+      <button class="active" data-filter="all">Todas</button>
+      <button data-filter="Telecom">Telecom</button>
+      <button data-filter="Ambos">Ambos</button>
+    </div>
+
     <div id="items-mount"></div>
 
     <div class="save-bar">
@@ -328,7 +399,8 @@ function fatalConfigError(e){
 try{
 
 var QUAD_KEY = "__QUAD_KEY__";
-var ITEMS = __ITEMS_JSON__;
+var BASE_ITEMS = __ITEMS_JSON__;
+var ITEMS = JSON.parse(JSON.stringify(BASE_ITEMS));
 
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
@@ -348,6 +420,7 @@ var myId = getClientId();
 var myVotes = {};
 var savedVotes = {};
 var votingOpen = true, saving = false;
+var currentFilter = "all";
 
 function origLabel(o){ return o === "Telecom" ? "Telecom" : "Ambos"; }
 function origClass(o){ return o === "Telecom" ? "t" : "a"; }
@@ -357,11 +430,32 @@ function escapeHtml(s){
   });
 }
 
+function itemMatchesFilter(it){
+  if(currentFilter === "all") return true;
+  return (it.origins || []).indexOf(currentFilter) !== -1;
+}
+function updateFilterCounts(){
+  var wrap = document.getElementById("origin-filter");
+  if(!wrap) return;
+  var telecom = ITEMS.filter(function(it){ return (it.origins||[]).indexOf("Telecom") !== -1; }).length;
+  var ambos = ITEMS.filter(function(it){ return (it.origins||[]).indexOf("Ambos") !== -1; }).length;
+  wrap.querySelectorAll("button").forEach(function(b){
+    var f = b.getAttribute("data-filter");
+    var n = f === "all" ? ITEMS.length : (f === "Telecom" ? telecom : ambos);
+    var label = f === "all" ? "Todas" : f;
+    b.innerHTML = label + ' <span class="cnt">(' + n + ')</span>';
+  });
+}
 function renderItems(){
   var mount = document.getElementById("items-mount");
   var html = "";
-  ITEMS.forEach(function(it, i){ html += renderItem(it, i+1); });
-  mount.innerHTML = html;
+  // Numeração (#N) segue a posição no conjunto completo de itens, mesmo com
+  // o filtro ativo, para o número de cada proposta não mudar dependendo do filtro.
+  ITEMS.forEach(function(it, i){
+    if(itemMatchesFilter(it)) html += renderItem(it, i+1);
+  });
+  mount.innerHTML = html || '<div class="empty-note">Nenhuma proposta nesta categoria.</div>';
+  updateFilterCounts();
 }
 function renderItem(it, idx){
   var typeChip = it.type === "convergencia"
@@ -481,8 +575,10 @@ async function saveAllVotes(){
   if(countDirty() === 0) return;
   saving = true; updateSaveBar();
   try{
-    var payload = { quadrant: QUAD_KEY, client_id: myId, scores: Object.assign({}, myVotes), updated_at: new Date().toISOString() };
-    var res = await sb.from("votes").upsert(payload, { onConflict: "quadrant,client_id" });
+    // Grava o voto chamando a função save_vote (ver schema.sql) em vez de um
+    // upsert direto na tabela: assim a gravação (mesmo na 2ª vez, quando já
+    // existe um voto salvo) não depende de permissão de leitura da tabela.
+    var res = await sb.rpc("save_vote", { p_quadrant: QUAD_KEY, p_client_id: myId, p_scores: Object.assign({}, myVotes) });
     if(res.error) throw res.error;
     savedVotes = Object.assign({}, myVotes);
     saving = false; paintMyVotes();
@@ -498,6 +594,15 @@ document.getElementById("save-btn").addEventListener("click", saveAllVotes);
 window.addEventListener("beforeunload", function(e){
   if(countDirty() > 0){ e.preventDefault(); e.returnValue = ""; }
 });
+document.getElementById("origin-filter").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  document.querySelectorAll("#origin-filter button").forEach(function(x){ x.classList.remove("active"); });
+  b.classList.add("active");
+  currentFilter = b.getAttribute("data-filter");
+  renderItems();
+  paintMyVotes();
+});
 
 async function loadConfig(){
   try{
@@ -507,28 +612,59 @@ async function loadConfig(){
   paintMyVotes();
 }
 
-async function loadItemEdits(){
+async function loadItemChanges(){
+  // Junta 3 fontes por cima do conjunto original de itens (BASE_ITEMS):
+  // item_edits (textos corrigidos), item_added (propostas criadas pelo admin
+  // durante a reunião) e item_removed (propostas ocultadas pelo admin).
+  // Sempre recalcula a partir de BASE_ITEMS (nunca acumula em cima do ITEMS
+  // anterior), assim uma remoção desfeita ou uma edição revertida também
+  // aparece certo aqui, sem precisar recarregar a página.
   try{
-    var res = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
-    if(!res.error && res.data){
-      var map = {};
-      res.data.forEach(function(r){ map[r.item_id] = r.title; });
-      var changed = false;
-      ITEMS.forEach(function(it){
-        var ov = map[it.id];
-        if(ov !== undefined && ov !== it.title){ it.title = ov; changed = true; }
+    var editsRes = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
+    var addedRes = await sb.from("item_added").select("item_id,title,origin,division").eq("quadrant", QUAD_KEY);
+    var removedRes = await sb.from("item_removed").select("item_id").eq("quadrant", QUAD_KEY);
+    var editMap = {};
+    if(!editsRes.error) (editsRes.data || []).forEach(function(r){ editMap[r.item_id] = r.title; });
+    var removedSet = {};
+    if(!removedRes.error) (removedRes.data || []).forEach(function(r){ removedSet[r.item_id] = true; });
+    var addedList = (!addedRes.error && addedRes.data) ? addedRes.data : [];
+
+    var next = BASE_ITEMS.filter(function(it){ return !removedSet[it.id]; }).map(function(it){
+      var clone = JSON.parse(JSON.stringify(it));
+      if(editMap[clone.id] !== undefined) clone.title = editMap[clone.id];
+      return clone;
+    });
+    addedList.forEach(function(r){
+      if(removedSet[r.item_id]) return;
+      next.push({
+        id: r.item_id, type: "isolada",
+        title: (editMap[r.item_id] !== undefined) ? editMap[r.item_id] : r.title,
+        divisions: r.division ? [r.division] : [],
+        origins: r.origin ? [r.origin] : ["Ambos"],
+        n: 1, originals: null, reason: null
       });
-      if(changed){ renderItems(); paintMyVotes(); }
+    });
+
+    var prevIds = ITEMS.map(function(i){ return i.id; }).join("|");
+    var nextIds = next.map(function(i){ return i.id; }).join("|");
+    var titlesChanged = next.some(function(it){
+      var prev = ITEMS.filter(function(p){ return p.id === it.id; })[0];
+      return !prev || prev.title !== it.title;
+    });
+    if(prevIds !== nextIds || titlesChanged){
+      ITEMS = next;
+      renderItems();
+      paintMyVotes();
     }
-  }catch(e){ console.warn("item edits load failed", e); }
+  }catch(e){ console.warn("item changes load failed", e); }
 }
 
 renderItems();
 paintMyVotes();
 loadConfig();
-loadItemEdits();
+loadItemChanges();
 setInterval(loadConfig, 20000);
-setInterval(loadItemEdits, 20000);
+setInterval(loadItemChanges, 20000);
 
 }catch(e){ fatalConfigError(e); }
 </script>
@@ -577,6 +713,7 @@ ADMIN_TEMPLATE = HEAD.replace("__PAGE_TITLE__", "Painel Administrativo &mdash; V
       <div class="stat"><b id="admin-total-votes">0</b><span>votos registrados</span></div>
       <div class="stat"><b id="admin-avg">&mdash;</b><span>m&eacute;dia geral</span></div>
       <button class="toggle-btn open" id="toggle-voting">Vota&ccedil;&atilde;o aberta</button>
+      <button class="toggle-btn" style="background:#b23b3b;" id="reset-votes-btn" title="Apaga todos os votos deste quadrante">Reiniciar vota&ccedil;&atilde;o</button>
       <button class="toggle-btn" style="background:var(--ink-soft);" id="logout-btn">Sair</button>
     </div>
     <div class="view-toggle" id="view-toggle">
@@ -615,8 +752,8 @@ function fatalConfigError(e){
 
 try{
 
-var ALL_ITEMS = __ALL_ITEMS_JSON__;   // { forcas: [...], fraquezas: [...], ... }
-var ORIGINAL_ALL_ITEMS = JSON.parse(JSON.stringify(ALL_ITEMS));
+var BASE_ALL_ITEMS = __ALL_ITEMS_JSON__;   // { forcas: [...], fraquezas: [...], ... } — nunca é alterado
+var ALL_ITEMS = JSON.parse(JSON.stringify(BASE_ALL_ITEMS)); // recalculado a cada refreshAll()
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
 }
@@ -625,8 +762,13 @@ var currentQuad = "forcas";
 var votingOpenByQuad = {};
 var rowsByQuad = {};
 var itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+var itemAddedByQuad = { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] };
+var itemRemovedByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+var rankOverridesByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
 var adminOrder = "original";
 var adminView = "results";
+var topN = 5;
+var resetArmed = false, resetArmTimer = null;
 var QUAD_LABELS = { forcas:"Forças", fraquezas:"Fraquezas", oportunidades:"Oportunidades", ameacas:"Ameaças" };
 var QUAD_COLORS = { forcas:"var(--green)", fraquezas:"var(--gold)", oportunidades:"var(--navy-lt)", ameacas:"var(--red)" };
 
@@ -652,6 +794,32 @@ document.getElementById("login-btn").addEventListener("click", async function(){
 document.getElementById("logout-btn").addEventListener("click", async function(){
   await sb.auth.signOut();
   location.reload();
+});
+document.getElementById("reset-votes-btn").addEventListener("click", async function(){
+  var btn = this;
+  if(!resetArmed){
+    resetArmed = true;
+    btn.textContent = "Confirmar: apagar todos os votos de " + QUAD_LABELS[currentQuad] + "?";
+    btn.classList.add("reset-confirm");
+    clearTimeout(resetArmTimer);
+    resetArmTimer = setTimeout(function(){ resetArmed = false; btn.textContent = "Reiniciar votação"; btn.classList.remove("reset-confirm"); }, 5000);
+    return;
+  }
+  clearTimeout(resetArmTimer);
+  resetArmed = false;
+  btn.classList.remove("reset-confirm");
+  btn.disabled = true;
+  btn.textContent = "Reiniciando…";
+  try{
+    var res = await sb.from("votes").delete().eq("quadrant", currentQuad);
+    if(res.error) throw res.error;
+    await refreshAll();
+  }catch(e){
+    console.warn("reset votes failed", e);
+    alert("Não foi possível reiniciar a votação (" + (e && e.message ? e.message : "erro desconhecido") + ").");
+  }
+  btn.textContent = "Reiniciar votação";
+  btn.disabled = false;
 });
 
 async function onLoggedIn(){
@@ -692,6 +860,84 @@ document.getElementById("view-toggle").addEventListener("click", function(e){
 document.getElementById("admin-mount").addEventListener("click", async function(e){
   var saveBtn = e.target.closest(".edit-save");
   var resetBtn = e.target.closest(".edit-reset");
+  var removeBtn = e.target.closest(".remove-item-btn");
+  var restoreItemBtn = e.target.closest(".restore-item-btn");
+  var addBtn = e.target.closest(".add-item-btn");
+  var restoreOrderBtn = e.target.closest(".restore-order-btn");
+  var rankUpBtn = e.target.closest(".rank-up");
+  var rankDownBtn = e.target.closest(".rank-down");
+
+  if(addBtn){
+    var box = addBtn.closest(".add-item-box");
+    var ta = box.querySelector(".new-item-title");
+    var sel = box.querySelector(".new-item-origin");
+    var status0 = box.querySelector(".edit-status");
+    var title0 = ta.value.trim();
+    if(!title0){ status0.textContent = "Escreva o texto da proposta."; status0.className = "edit-status err"; return; }
+    status0.textContent = "Adicionando…"; status0.className = "edit-status";
+    try{
+      var newId = "add_" + currentQuad + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+      var resA = await sb.from("item_added").insert({ quadrant: currentQuad, item_id: newId, title: title0, origin: sel.value, division: null });
+      if(resA.error) throw resA.error;
+      ta.value = "";
+      await refreshAll();
+    }catch(errA){
+      status0.textContent = "Erro ao adicionar (" + (errA && errA.message ? errA.message : "desconhecido") + ").";
+      status0.className = "edit-status err";
+    }
+    return;
+  }
+
+  if(restoreOrderBtn){
+    try{
+      await sb.from("rank_overrides").delete().eq("quadrant", currentQuad);
+      rankOverridesByQuad[currentQuad] = {};
+      renderDash();
+    }catch(errR){ console.warn("restore order failed", errR); }
+    return;
+  }
+
+  if(rankUpBtn || rankDownBtn){
+    var quadForRank = rankUpBtn ? rankUpBtn.getAttribute("data-quad") : rankDownBtn.getAttribute("data-quad");
+    var idForRank = rankUpBtn ? rankUpBtn.getAttribute("data-id") : rankDownBtn.getAttribute("data-id");
+    var dir = rankUpBtn ? -1 : 1;
+    await moveRank(quadForRank, idForRank, dir);
+    return;
+  }
+
+  if(removeBtn){
+    var rcard = e.target.closest(".edit-item");
+    var rid = rcard.getAttribute("data-id");
+    var rstatus = rcard.querySelector(".edit-status");
+    var isAdded = rid.indexOf("add_") === 0;
+    if(rstatus){ rstatus.textContent = "Removendo…"; rstatus.className = "edit-status"; }
+    try{
+      if(isAdded){
+        var resD = await sb.from("item_added").delete().eq("quadrant", currentQuad).eq("item_id", rid);
+        if(resD.error) throw resD.error;
+      } else {
+        var resD2 = await sb.from("item_removed").upsert(
+          { quadrant: currentQuad, item_id: rid },
+          { onConflict: "quadrant,item_id" }
+        );
+        if(resD2.error) throw resD2.error;
+      }
+      await refreshAll();
+    }catch(errD){
+      if(rstatus){ rstatus.textContent = "Erro ao remover (" + (errD && errD.message ? errD.message : "desconhecido") + ")."; rstatus.className = "edit-status err"; }
+    }
+    return;
+  }
+
+  if(restoreItemBtn){
+    var rrid = restoreItemBtn.getAttribute("data-id");
+    try{
+      await sb.from("item_removed").delete().eq("quadrant", currentQuad).eq("item_id", rrid);
+      await refreshAll();
+    }catch(errRR){ console.warn("restore item failed", errRR); }
+    return;
+  }
+
   if(!saveBtn && !resetBtn) return;
   var card = e.target.closest(".edit-item");
   if(!card) return;
@@ -725,6 +971,39 @@ document.getElementById("admin-mount").addEventListener("click", async function(
     }
   }
 });
+
+// Campo de "top N" (afeta a tabela de ranking tanto em Resultados quanto em Resumo)
+document.getElementById("admin-mount").addEventListener("change", function(e){
+  var input = e.target.closest(".topn-input");
+  if(!input) return;
+  var v = parseInt(input.value, 10);
+  if(!v || v < 1) v = 5;
+  if(v > 50) v = 50;
+  topN = v;
+  renderDash();
+});
+
+async function moveRank(quad, id, dir){
+  // Move o item "id" uma posição para cima (dir=-1) ou para baixo (dir=1)
+  // dentro da lista atualmente exibida (já com empates resolvidos), e
+  // grava a nova ordem inteira na tabela rank_overrides.
+  var list = getDisplayTop(quad, topN).slice();
+  var idx = list.findIndex(function(x){ return x.it.id === id; });
+  var swapIdx = idx + dir;
+  if(idx === -1 || swapIdx < 0 || swapIdx >= list.length) return;
+  var tmp = list[idx]; list[idx] = list[swapIdx]; list[swapIdx] = tmp;
+
+  var overrides = {};
+  list.forEach(function(x, i){ overrides[x.it.id] = i; });
+  rankOverridesByQuad[quad] = overrides;
+  renderDash();
+
+  try{
+    var rows = list.map(function(x, i){ return { quadrant: quad, item_id: x.it.id, position: i, updated_at: new Date().toISOString() }; });
+    var res = await sb.from("rank_overrides").upsert(rows, { onConflict: "quadrant,item_id" });
+    if(res.error) throw res.error;
+  }catch(e){ console.warn("save rank order failed", e); }
+}
 document.getElementById("toggle-voting").addEventListener("click", async function(){
   var newState = !votingOpenByQuad[currentQuad];
   try{
@@ -756,14 +1035,48 @@ async function refreshAll(){
     if(!editsRes.error){
       itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
       (editsRes.data || []).forEach(function(r){ if(itemEditsByQuad[r.quadrant]) itemEditsByQuad[r.quadrant][r.item_id] = r.title; });
-      Object.keys(ALL_ITEMS).forEach(function(q){
-        ALL_ITEMS[q].forEach(function(it){
-          var ov = itemEditsByQuad[q][it.id];
-          var orig = ORIGINAL_ALL_ITEMS[q].filter(function(o){ return o.id === it.id; })[0];
-          it.title = (ov !== undefined) ? ov : (orig ? orig.title : it.title);
+    }
+    var addedRes = await sb.from("item_added").select("quadrant,item_id,title,origin,division");
+    if(!addedRes.error){
+      itemAddedByQuad = { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] };
+      (addedRes.data || []).forEach(function(r){ if(itemAddedByQuad[r.quadrant]) itemAddedByQuad[r.quadrant].push(r); });
+    }
+    var removedRes = await sb.from("item_removed").select("quadrant,item_id");
+    if(!removedRes.error){
+      itemRemovedByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+      (removedRes.data || []).forEach(function(r){ if(itemRemovedByQuad[r.quadrant]) itemRemovedByQuad[r.quadrant][r.item_id] = true; });
+    }
+    var rankRes = await sb.from("rank_overrides").select("quadrant,item_id,position");
+    if(!rankRes.error){
+      rankOverridesByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+      (rankRes.data || []).forEach(function(r){ if(rankOverridesByQuad[r.quadrant]) rankOverridesByQuad[r.quadrant][r.item_id] = r.position; });
+    }
+
+    // Recalcula ALL_ITEMS do zero a partir de BASE_ALL_ITEMS (nunca alterado),
+    // aplicando remoções, depois textos editados, depois itens adicionados.
+    var next = {};
+    Object.keys(BASE_ALL_ITEMS).forEach(function(q){
+      var removedSet = itemRemovedByQuad[q] || {};
+      var list = BASE_ALL_ITEMS[q].filter(function(it){ return !removedSet[it.id]; }).map(function(it){
+        var clone = JSON.parse(JSON.stringify(it));
+        var ov = itemEditsByQuad[q][clone.id];
+        if(ov !== undefined) clone.title = ov;
+        return clone;
+      });
+      (itemAddedByQuad[q] || []).forEach(function(r){
+        if(removedSet[r.item_id]) return;
+        var ov2 = itemEditsByQuad[q][r.item_id];
+        list.push({
+          id: r.item_id, type: "isolada",
+          title: (ov2 !== undefined) ? ov2 : r.title,
+          divisions: r.division ? [r.division] : [],
+          origins: r.origin ? [r.origin] : ["Ambos"],
+          n: 1, originals: null, reason: null
         });
       });
-    }
+      next[q] = list;
+    });
+    ALL_ITEMS = next;
   }catch(e){ console.warn("refresh failed", e); }
   paintToggle();
   renderDash();
@@ -803,23 +1116,59 @@ function computeTopWithTies(quad, n){
   return scored.slice(0, cut);
 }
 
-function renderTop5Table(quad){
-  var top = computeTopWithTies(quad, 5);
-  if(!top.length) return '<div class="empty-note">Ainda sem votos suficientes neste quadrante.</div>';
+// Aplica a ordem manual (rank_overrides), quando o admin já reordenou esse
+// quadrante; senão devolve a ordem automática (por média, com empates).
+function getDisplayTop(quad, n){
+  var auto = computeTopWithTies(quad, n);
+  var overrides = rankOverridesByQuad[quad];
+  if(!overrides || !Object.keys(overrides).length) return auto;
+  var withPos = auto.map(function(x, i){
+    var p = overrides[x.it.id];
+    return { x: x, pos: (p !== undefined) ? p : (1000 + i) };
+  });
+  withPos.sort(function(a,b){ return a.pos - b.pos; });
+  return withPos.map(function(w){ return w.x; });
+}
+
+function topNHead(quad, title, allowReorder){
+  var hasOverride = rankOverridesByQuad[quad] && Object.keys(rankOverridesByQuad[quad]).length > 0;
+  return '<div class="top5-head">'
+    + '<h3>&#127942; '+title+'</h3>'
+    + '<div class="topn-ctrl">Mostrar top <input type="number" min="1" max="50" class="topn-input" value="'+topN+'"> itens</div>'
+    + (allowReorder && hasOverride ? '<button class="restore-order-btn">Restaurar ordem autom&aacute;tica</button>' : '')
+    + '</div>';
+}
+
+function renderTopNTable(quad, allowReorder, head){
+  var top = getDisplayTop(quad, topN);
+  var hasOverride = rankOverridesByQuad[quad] && Object.keys(rankOverridesByQuad[quad]).length > 0;
+  if(head === undefined) head = topNHead(quad, "Top "+topN+" mais priorizados &mdash; "+QUAD_LABELS[quad], allowReorder);
+  if(!top.length) return head + '<div class="empty-note">Ainda sem votos suficientes neste quadrante.</div>';
   var rowsHtml = "";
   var lastKey = null, lastRank = 0;
   top.forEach(function(x, i){
     var key = Math.round(x.avg * 1000);
     var rank;
-    if(key === lastKey){ rank = lastRank; } else { rank = i + 1; lastRank = rank; lastKey = key; }
-    var shareCount = top.filter(function(y){ return Math.round(y.avg * 1000) === key; }).length;
+    if(hasOverride){
+      rank = i + 1;
+    } else if(key === lastKey){
+      rank = lastRank;
+    } else { rank = i + 1; lastRank = rank; lastKey = key; }
+    var shareCount = hasOverride ? 1 : top.filter(function(y){ return Math.round(y.avg * 1000) === key; }).length;
     var tie = shareCount > 1 ? '<span class="top5-tie">EMPATE</span>' : '';
     var avgColor = x.avg >= 4 ? "var(--green)" : (x.avg >= 2.2 ? "var(--gold)" : "var(--red)");
-    rowsHtml += '<tr><td class="top5-rank">#'+rank+'</td><td>'+escapeHtml(x.it.title)+tie+'</td>'
+    var rankCell = '#'+rank;
+    if(allowReorder){
+      rankCell = '<div class="top5-rankcell"><span>#'+rank+'</span><div class="rank-arrows">'
+        + '<button class="rank-up" data-quad="'+quad+'" data-id="'+x.it.id+'" '+(i===0?'disabled':'')+'>&#9650;</button>'
+        + '<button class="rank-down" data-quad="'+quad+'" data-id="'+x.it.id+'" '+(i===top.length-1?'disabled':'')+'>&#9660;</button>'
+        + '</div></div>';
+    }
+    rowsHtml += '<tr><td class="top5-rank">'+rankCell+'</td><td>'+escapeHtml(x.it.title)+tie+'</td>'
       + '<td class="top5-avg" style="color:'+avgColor+'">'+x.avg.toFixed(2)+'</td>'
       + '<td style="color:var(--ink-soft); white-space:nowrap;">'+x.total+' voto'+(x.total===1?'':'s')+'</td></tr>';
   });
-  return '<table class="top5-table"><thead><tr><th>#</th><th>Item</th><th>M&eacute;dia</th><th>Votos</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
+  return head + '<table class="top5-table"><thead><tr><th>#</th><th>Item</th><th>M&eacute;dia</th><th>Votos</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
 }
 
 function renderDash(){
@@ -849,7 +1198,7 @@ function renderResultsView(){
     });
   }
 
-  var html = '<div class="top5-wrap"><h3>&#127942; Top 5 mais priorizados &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'+renderTop5Table(currentQuad)+'</div>';
+  var html = '<div class="top5-wrap">'+renderTopNTable(currentQuad, true)+'</div>';
   items.forEach(function(it){
     var a = agg[it.id];
     var avg = a.total ? (a.sum/a.total) : null;
@@ -873,10 +1222,13 @@ function renderSummaryView(){
   document.getElementById("admin-total-votes").textContent = "—";
   document.getElementById("admin-avg").textContent = "—";
   var order = ["forcas","fraquezas","oportunidades","ameacas"];
-  var html = "";
+  var html = '<div class="top5-wrap" style="margin-bottom:8px;"><div class="top5-head">'
+    + '<h3>&#127942; Resumo Top '+topN+' &mdash; todos os quadrantes</h3>'
+    + '<div class="topn-ctrl">Mostrar top <input type="number" min="1" max="50" class="topn-input" value="'+topN+'"> itens</div>'
+    + '</div></div>';
   order.forEach(function(q){
     html += '<div class="summary-quad"><h3><span class="dot" style="background:'+QUAD_COLORS[q]+'"></span>'+QUAD_LABELS[q]+'</h3>'
-      + renderTop5Table(q) + '</div>';
+      + renderTopNTable(q, false, "") + '</div>';
   });
   mount.innerHTML = html;
 }
@@ -887,19 +1239,49 @@ function renderEditView(){
   document.getElementById("admin-total-votes").textContent = "—";
   document.getElementById("admin-avg").textContent = "—";
   var items = (ALL_ITEMS[currentQuad] || []).slice();
-  var html = '<div class="top5-wrap"><h3>&#9999;&#65039; Editar textos &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'
-    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo.</p></div>';
+
+  var html = '<div class="add-item-box">'
+    + '<h4>&#10133; Adicionar nova proposta &mdash; '+QUAD_LABELS[currentQuad]+'</h4>'
+    + '<textarea class="new-item-title" rows="2" placeholder="Texto da nova proposta a ser votada..."></textarea>'
+    + '<div class="add-row">'
+    +   '<select class="new-item-origin"><option value="Ambos">Ambos</option><option value="Telecom">Telecom</option></select>'
+    +   '<button class="add-item-btn">Adicionar</button>'
+    +   '<span class="edit-status"></span>'
+    + '</div></div>';
+
+  html += '<div class="top5-wrap"><h3>&#9999;&#65039; Editar textos &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'
+    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar, ou remova uma proposta. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo.</p></div>';
   items.forEach(function(it, i){
     var isEdited = !!(itemEditsByQuad[currentQuad] && itemEditsByQuad[currentQuad][it.id] !== undefined);
+    var isAdded = it.id.indexOf("add_") === 0;
     html += '<div class="admin-item edit-item" data-id="'+it.id+'">'
-      + '<div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:6px;">#'+(i+1)+(isEdited ? ' &middot; <span style="color:var(--gold); font-weight:700;">texto editado</span>' : '')+'</div>'
+      + '<div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:6px;">#'+(i+1)
+      +   (isAdded ? ' &middot; <span class="added-badge">proposta adicionada</span>' : '')
+      +   (isEdited ? ' &middot; <span style="color:var(--gold); font-weight:700;">texto editado</span>' : '')
+      + '</div>'
       + '<textarea class="edit-title-input" rows="2">'+escapeHtml(it.title)+'</textarea>'
       + '<div class="edit-actions">'
       +   '<button class="edit-save">Salvar</button>'
       +   (isEdited ? '<button class="edit-reset">Restaurar original</button>' : '')
+      +   '<button class="remove-item-btn">Remover proposta</button>'
       +   '<span class="edit-status"></span>'
       + '</div></div>';
   });
+
+  var removedIds = Object.keys(itemRemovedByQuad[currentQuad] || {});
+  if(removedIds.length){
+    var rowsHtml = "";
+    removedIds.forEach(function(rid){
+      var orig = (BASE_ALL_ITEMS[currentQuad] || []).filter(function(o){ return o.id === rid; })[0];
+      if(!orig) return; // era um item adicionado que já foi excluído de vez — não aparece aqui
+      rowsHtml += '<div class="removed-row"><span class="rt">'+escapeHtml(orig.title)+'</span>'
+        + '<button class="restore-item-btn" data-id="'+rid+'">Restaurar</button></div>';
+    });
+    if(rowsHtml){
+      html += '<div class="removed-panel"><h4>Propostas ocultadas neste quadrante</h4>'+rowsHtml+'</div>';
+    }
+  }
+
   mount.innerHTML = html;
 }
 
@@ -1157,6 +1539,63 @@ def build_items(qkey):
         })
     return items
 
+# ============================================================================
+# INDEX / MENU PAGE TEMPLATE
+# ============================================================================
+INDEX_TEMPLATE = HEAD.replace("__PAGE_TITLE__", "Vota&ccedil;&atilde;o SWOT &mdash; RV Digital 2027").replace("__PAGE_DESC__", "Escolha o quadrante do SWOT que deseja avaliar. Vota&ccedil;&atilde;o an&ocirc;nima, sem necessidade de login.") + r"""
+<body>
+
+<header class="hero" style="padding-bottom:36px;">
+  <div class="hero-inner" style="align-items:center;">
+    <div class="hero-text" style="padding-top:0;">
+      <div class="hero-eyebrow">RV Digital &middot; Planejamento Estrat&eacute;gico 2027</div>
+      <h1 class="hero-title">Vota&ccedil;&atilde;o SWOT</h1>
+      <div class="hero-sub">Escolha o quadrante que deseja avaliar. A vota&ccedil;&atilde;o &eacute; an&ocirc;nima e n&atilde;o exige login &mdash; SWOT Telecom e Ambos.</div>
+    </div>
+    <div class="rv-logo hero-logo"><img src="data:image/png;base64,__LOGO_A_B64__" alt="RV Digital"></div>
+  </div>
+</header>
+
+<main style="max-width:640px;">
+  <div class="menu-grid">
+    <a class="menu-card" href="forcas.html" style="--mc-accent:#00b554; --mc-soft:#e2f8ea;">
+      <div class="menu-card-icon">&#128170;</div>
+      <div class="menu-card-body"><div class="menu-card-title">For&ccedil;as</div><div class="menu-card-desc">Vote nas propostas de For&ccedil;as do painel SWOT.</div></div>
+      <div class="menu-card-arrow">&rarr;</div>
+    </a>
+    <a class="menu-card" href="fraquezas.html" style="--mc-accent:#d14343; --mc-soft:#fbe6e6;">
+      <div class="menu-card-icon">&#9888;&#65039;</div>
+      <div class="menu-card-body"><div class="menu-card-title">Fraquezas</div><div class="menu-card-desc">Vote nas propostas de Fraquezas do painel SWOT.</div></div>
+      <div class="menu-card-arrow">&rarr;</div>
+    </a>
+    <a class="menu-card" href="oportunidades.html" style="--mc-accent:#14548c; --mc-soft:#e4edf6;">
+      <div class="menu-card-icon">&#128161;</div>
+      <div class="menu-card-body"><div class="menu-card-title">Oportunidades</div><div class="menu-card-desc">Vote nas propostas de Oportunidades do painel SWOT.</div></div>
+      <div class="menu-card-arrow">&rarr;</div>
+    </a>
+    <a class="menu-card" href="ameacas.html" style="--mc-accent:#f5a100; --mc-soft:#fdf0dc;">
+      <div class="menu-card-icon">&#9889;</div>
+      <div class="menu-card-body"><div class="menu-card-title">Amea&ccedil;as</div><div class="menu-card-desc">Vote nas propostas de Amea&ccedil;as do painel SWOT.</div></div>
+      <div class="menu-card-arrow">&rarr;</div>
+    </a>
+  </div>
+  <div style="text-align:center; margin-top:30px;">
+    <a href="admin.html" class="admin-link-pill">&#128274; Acesso administrativo (resultados)</a>
+  </div>
+  <div class="index-footnote">Sua vota&ccedil;&atilde;o &eacute; an&ocirc;nima: apenas os totais agregados ficam vis&iacute;veis, e somente para os administradores autorizados.</div>
+</main>
+
+<footer class="pagefoot">
+  <div class="pagefoot-inner">
+    <div class="rv-logo pagefoot-logo"><img src="data:image/png;base64,__LOGO_B_B64__" alt="RV Digital"></div>
+    <div class="pagefoot-text">Planejamento Estrat&eacute;gico RV Digital 2027 &middot; SWOT Telecom e Ambos</div>
+  </div>
+</footer>
+
+</body>
+</html>
+"""
+
 OUT_DIR = "/home/claude/votacao_supabase"
 
 for q in QUADRANTS:
@@ -1187,3 +1626,12 @@ admin_html = admin_html.replace("__LOGO_B_B64__", LOGO_B_B64)
 with open(OUT_DIR + "/admin.html", "w", encoding="utf-8") as f:
     f.write(admin_html)
 print("wrote", OUT_DIR + "/admin.html")
+
+# Index / menu page
+index_html = INDEX_TEMPLATE
+index_html = index_html.replace("__CSS__", BASE_CSS.replace("__ACCENT_SOFT__", "#e4edf6").replace("__ACCENT__", "#14548c"))
+index_html = index_html.replace("__LOGO_A_B64__", LOGO_A_B64)
+index_html = index_html.replace("__LOGO_B_B64__", LOGO_B_B64)
+with open(OUT_DIR + "/index.html", "w", encoding="utf-8") as f:
+    f.write(index_html)
+print("wrote", OUT_DIR + "/index.html")
