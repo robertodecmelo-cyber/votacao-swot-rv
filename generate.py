@@ -189,6 +189,31 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .rank-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:7px 12px; border-radius:999px; font-size:12.5px; font-weight:500; cursor:pointer; }
 .rank-toggle button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
 
+.view-toggle{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
+.view-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; }
+.view-toggle button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+.top5-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow); }
+.top5-wrap h3{font-size:15px; margin:0 0 12px;}
+.top5-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.top5-table th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); padding:6px 8px; border-bottom:1px solid var(--line); }
+.top5-table td{ padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+.top5-table tr:last-child td{border-bottom:none;}
+.top5-rank{ font-family:"Ubuntu Mono",monospace; font-weight:700; color:var(--ink-soft); width:26px; }
+.top5-avg{ font-family:"Ubuntu Mono",monospace; font-weight:700; white-space:nowrap; }
+.top5-tie{ font-size:10.5px; font-weight:700; color:var(--gold); margin-left:6px; }
+.summary-quad{ margin-bottom:22px; }
+.summary-quad h3{ font-size:16px; margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+.summary-quad h3 .dot{width:10px; height:10px; border-radius:50%; display:inline-block; flex:none;}
+.empty-note{ color:var(--ink-soft); font-size:13px; padding:10px 2px; }
+
+.edit-item textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:"Ubuntu",sans-serif; font-size:13.5px; resize:vertical; color:var(--ink); background:var(--surface); }
+.edit-item .edit-actions{display:flex; gap:8px; align-items:center; margin-top:9px; flex-wrap:wrap;}
+.edit-item .edit-save{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--accent); }
+.edit-item .edit-reset{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.edit-item .edit-status{font-size:12px; color:var(--green); font-weight:600;}
+.edit-item .edit-status.err{color:var(--red);}
+
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
 .gate input{ width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line); margin-top:10px; font-size:14px; font-family:"Ubuntu",sans-serif; }
@@ -482,10 +507,28 @@ async function loadConfig(){
   paintMyVotes();
 }
 
+async function loadItemEdits(){
+  try{
+    var res = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
+    if(!res.error && res.data){
+      var map = {};
+      res.data.forEach(function(r){ map[r.item_id] = r.title; });
+      var changed = false;
+      ITEMS.forEach(function(it){
+        var ov = map[it.id];
+        if(ov !== undefined && ov !== it.title){ it.title = ov; changed = true; }
+      });
+      if(changed){ renderItems(); paintMyVotes(); }
+    }
+  }catch(e){ console.warn("item edits load failed", e); }
+}
+
 renderItems();
 paintMyVotes();
 loadConfig();
+loadItemEdits();
 setInterval(loadConfig, 20000);
+setInterval(loadItemEdits, 20000);
 
 }catch(e){ fatalConfigError(e); }
 </script>
@@ -536,7 +579,12 @@ ADMIN_TEMPLATE = HEAD.replace("__PAGE_TITLE__", "Painel Administrativo &mdash; V
       <button class="toggle-btn open" id="toggle-voting">Vota&ccedil;&atilde;o aberta</button>
       <button class="toggle-btn" style="background:var(--ink-soft);" id="logout-btn">Sair</button>
     </div>
-    <div class="rank-toggle">
+    <div class="view-toggle" id="view-toggle">
+      <button class="active" data-view="results">Resultados</button>
+      <button data-view="summary">Resumo Top 5 (todos os quadrantes)</button>
+      <button data-view="edit">Editar textos</button>
+    </div>
+    <div class="rank-toggle" id="rank-toggle">
       <button class="active" data-order="original">Ordem do painel</button>
       <button data-order="rank-desc">Maior prioridade primeiro</button>
       <button data-order="rank-asc">Menor prioridade primeiro</button>
@@ -568,6 +616,7 @@ function fatalConfigError(e){
 try{
 
 var ALL_ITEMS = __ALL_ITEMS_JSON__;   // { forcas: [...], fraquezas: [...], ... }
+var ORIGINAL_ALL_ITEMS = JSON.parse(JSON.stringify(ALL_ITEMS));
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
 }
@@ -575,7 +624,11 @@ var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE
 var currentQuad = "forcas";
 var votingOpenByQuad = {};
 var rowsByQuad = {};
+var itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
 var adminOrder = "original";
+var adminView = "results";
+var QUAD_LABELS = { forcas:"Forças", fraquezas:"Fraquezas", oportunidades:"Oportunidades", ameacas:"Ameaças" };
+var QUAD_COLORS = { forcas:"var(--green)", fraquezas:"var(--gold)", oportunidades:"var(--navy-lt)", ameacas:"var(--red)" };
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, function(c){
@@ -627,6 +680,51 @@ document.querySelector(".rank-toggle").addEventListener("click", function(e){
   adminOrder = b.getAttribute("data-order");
   renderDash();
 });
+document.getElementById("view-toggle").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  document.querySelectorAll("#view-toggle button").forEach(function(x){ x.classList.remove("active"); });
+  b.classList.add("active");
+  adminView = b.getAttribute("data-view");
+  document.getElementById("rank-toggle").style.display = (adminView === "results") ? "flex" : "none";
+  renderDash();
+});
+document.getElementById("admin-mount").addEventListener("click", async function(e){
+  var saveBtn = e.target.closest(".edit-save");
+  var resetBtn = e.target.closest(".edit-reset");
+  if(!saveBtn && !resetBtn) return;
+  var card = e.target.closest(".edit-item");
+  if(!card) return;
+  var id = card.getAttribute("data-id");
+  var status = card.querySelector(".edit-status");
+  if(saveBtn){
+    var textarea = card.querySelector(".edit-title-input");
+    var newTitle = textarea.value.trim();
+    if(!newTitle){ status.textContent = "O texto não pode ficar vazio."; status.className = "edit-status err"; return; }
+    status.textContent = "Salvando…"; status.className = "edit-status";
+    try{
+      var res = await sb.from("item_edits").upsert(
+        { quadrant: currentQuad, item_id: id, title: newTitle, updated_at: new Date().toISOString() },
+        { onConflict: "quadrant,item_id" }
+      );
+      if(res.error) throw res.error;
+      await refreshAll();
+    }catch(err){
+      status.textContent = "Erro ao salvar (" + (err && err.message ? err.message : "desconhecido") + ").";
+      status.className = "edit-status err";
+    }
+  } else if(resetBtn){
+    status.textContent = "Restaurando…"; status.className = "edit-status";
+    try{
+      var res2 = await sb.from("item_edits").delete().eq("quadrant", currentQuad).eq("item_id", id);
+      if(res2.error) throw res2.error;
+      await refreshAll();
+    }catch(err2){
+      status.textContent = "Erro ao restaurar (" + (err2 && err2.message ? err2.message : "desconhecido") + ").";
+      status.className = "edit-status err";
+    }
+  }
+});
 document.getElementById("toggle-voting").addEventListener("click", async function(){
   var newState = !votingOpenByQuad[currentQuad];
   try{
@@ -654,6 +752,18 @@ async function refreshAll(){
     if(!cfgRes.error){
       (cfgRes.data || []).forEach(function(r){ votingOpenByQuad[r.quadrant] = r.is_open; });
     }
+    var editsRes = await sb.from("item_edits").select("quadrant,item_id,title");
+    if(!editsRes.error){
+      itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+      (editsRes.data || []).forEach(function(r){ if(itemEditsByQuad[r.quadrant]) itemEditsByQuad[r.quadrant][r.item_id] = r.title; });
+      Object.keys(ALL_ITEMS).forEach(function(q){
+        ALL_ITEMS[q].forEach(function(it){
+          var ov = itemEditsByQuad[q][it.id];
+          var orig = ORIGINAL_ALL_ITEMS[q].filter(function(o){ return o.id === it.id; })[0];
+          it.title = (ov !== undefined) ? ov : (orig ? orig.title : it.title);
+        });
+      });
+    }
   }catch(e){ console.warn("refresh failed", e); }
   paintToggle();
   renderDash();
@@ -677,8 +787,49 @@ function computeAgg(quad){
   return agg;
 }
 
+function computeTopWithTies(quad, n){
+  var items = ALL_ITEMS[quad] || [];
+  var agg = computeAgg(quad);
+  var scored = [];
+  items.forEach(function(it){
+    var a = agg[it.id];
+    if(a && a.total > 0){ scored.push({ it: it, avg: a.sum/a.total, total: a.total }); }
+  });
+  scored.sort(function(a,b){ return b.avg - a.avg; });
+  if(scored.length <= n) return scored;
+  var cutoffKey = Math.round(scored[n-1].avg * 1000);
+  var cut = n;
+  while(cut < scored.length && Math.round(scored[cut].avg * 1000) >= cutoffKey) cut++;
+  return scored.slice(0, cut);
+}
+
+function renderTop5Table(quad){
+  var top = computeTopWithTies(quad, 5);
+  if(!top.length) return '<div class="empty-note">Ainda sem votos suficientes neste quadrante.</div>';
+  var rowsHtml = "";
+  var lastKey = null, lastRank = 0;
+  top.forEach(function(x, i){
+    var key = Math.round(x.avg * 1000);
+    var rank;
+    if(key === lastKey){ rank = lastRank; } else { rank = i + 1; lastRank = rank; lastKey = key; }
+    var shareCount = top.filter(function(y){ return Math.round(y.avg * 1000) === key; }).length;
+    var tie = shareCount > 1 ? '<span class="top5-tie">EMPATE</span>' : '';
+    var avgColor = x.avg >= 4 ? "var(--green)" : (x.avg >= 2.2 ? "var(--gold)" : "var(--red)");
+    rowsHtml += '<tr><td class="top5-rank">#'+rank+'</td><td>'+escapeHtml(x.it.title)+tie+'</td>'
+      + '<td class="top5-avg" style="color:'+avgColor+'">'+x.avg.toFixed(2)+'</td>'
+      + '<td style="color:var(--ink-soft); white-space:nowrap;">'+x.total+' voto'+(x.total===1?'':'s')+'</td></tr>';
+  });
+  return '<table class="top5-table"><thead><tr><th>#</th><th>Item</th><th>M&eacute;dia</th><th>Votos</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
+}
+
 function renderDash(){
   paintToggle();
+  if(adminView === "summary"){ renderSummaryView(); return; }
+  if(adminView === "edit"){ renderEditView(); return; }
+  renderResultsView();
+}
+
+function renderResultsView(){
   var mount = document.getElementById("admin-mount");
   var items = (ALL_ITEMS[currentQuad] || []).slice();
   var agg = computeAgg(currentQuad);
@@ -698,7 +849,7 @@ function renderDash(){
     });
   }
 
-  var html = "";
+  var html = '<div class="top5-wrap"><h3>&#127942; Top 5 mais priorizados &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'+renderTop5Table(currentQuad)+'</div>';
   items.forEach(function(it){
     var a = agg[it.id];
     var avg = a.total ? (a.sum/a.total) : null;
@@ -712,6 +863,42 @@ function renderDash(){
       + '<div class="bars"><div class="bar-5" style="width:'+pct5+'%"></div><div class="bar-3" style="width:'+pct3+'%"></div><div class="bar-1" style="width:'+pct1+'%"></div></div>'
       + '<div class="bar-legend"><span><b>'+a.c5+'</b> concordam totalmente</span><span><b>'+a.c3+'</b> concordam parcialmente</span><span><b>'+a.c1+'</b> discordam</span><span><b>'+a.total+'</b> votos</span></div>'
       + '</div>';
+  });
+  mount.innerHTML = html;
+}
+
+function renderSummaryView(){
+  var mount = document.getElementById("admin-mount");
+  document.getElementById("admin-voters").textContent = "—";
+  document.getElementById("admin-total-votes").textContent = "—";
+  document.getElementById("admin-avg").textContent = "—";
+  var order = ["forcas","fraquezas","oportunidades","ameacas"];
+  var html = "";
+  order.forEach(function(q){
+    html += '<div class="summary-quad"><h3><span class="dot" style="background:'+QUAD_COLORS[q]+'"></span>'+QUAD_LABELS[q]+'</h3>'
+      + renderTop5Table(q) + '</div>';
+  });
+  mount.innerHTML = html;
+}
+
+function renderEditView(){
+  var mount = document.getElementById("admin-mount");
+  document.getElementById("admin-voters").textContent = "—";
+  document.getElementById("admin-total-votes").textContent = "—";
+  document.getElementById("admin-avg").textContent = "—";
+  var items = (ALL_ITEMS[currentQuad] || []).slice();
+  var html = '<div class="top5-wrap"><h3>&#9999;&#65039; Editar textos &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'
+    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo.</p></div>';
+  items.forEach(function(it, i){
+    var isEdited = !!(itemEditsByQuad[currentQuad] && itemEditsByQuad[currentQuad][it.id] !== undefined);
+    html += '<div class="admin-item edit-item" data-id="'+it.id+'">'
+      + '<div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:6px;">#'+(i+1)+(isEdited ? ' &middot; <span style="color:var(--gold); font-weight:700;">texto editado</span>' : '')+'</div>'
+      + '<textarea class="edit-title-input" rows="2">'+escapeHtml(it.title)+'</textarea>'
+      + '<div class="edit-actions">'
+      +   '<button class="edit-save">Salvar</button>'
+      +   (isEdited ? '<button class="edit-reset">Restaurar original</button>' : '')
+      +   '<span class="edit-status"></span>'
+      + '</div></div>';
   });
   mount.innerHTML = html;
 }

@@ -192,6 +192,31 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .rank-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:7px 12px; border-radius:999px; font-size:12.5px; font-weight:500; cursor:pointer; }
 .rank-toggle button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
 
+.view-toggle{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
+.view-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; }
+.view-toggle button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+.top5-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow); }
+.top5-wrap h3{font-size:15px; margin:0 0 12px;}
+.top5-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.top5-table th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); padding:6px 8px; border-bottom:1px solid var(--line); }
+.top5-table td{ padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+.top5-table tr:last-child td{border-bottom:none;}
+.top5-rank{ font-family:"Ubuntu Mono",monospace; font-weight:700; color:var(--ink-soft); width:26px; }
+.top5-avg{ font-family:"Ubuntu Mono",monospace; font-weight:700; white-space:nowrap; }
+.top5-tie{ font-size:10.5px; font-weight:700; color:var(--gold); margin-left:6px; }
+.summary-quad{ margin-bottom:22px; }
+.summary-quad h3{ font-size:16px; margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+.summary-quad h3 .dot{width:10px; height:10px; border-radius:50%; display:inline-block; flex:none;}
+.empty-note{ color:var(--ink-soft); font-size:13px; padding:10px 2px; }
+
+.edit-item textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:"Ubuntu",sans-serif; font-size:13.5px; resize:vertical; color:var(--ink); background:var(--surface); }
+.edit-item .edit-actions{display:flex; gap:8px; align-items:center; margin-top:9px; flex-wrap:wrap;}
+.edit-item .edit-save{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--accent); }
+.edit-item .edit-reset{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.edit-item .edit-status{font-size:12px; color:var(--green); font-weight:600;}
+.edit-item .edit-status.err{color:var(--red);}
+
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
 .gate input{ width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line); margin-top:10px; font-size:14px; font-family:"Ubuntu",sans-serif; }
@@ -465,10 +490,28 @@ async function loadConfig(){
   paintMyVotes();
 }
 
+async function loadItemEdits(){
+  try{
+    var res = await sb.from("item_edits").select("item_id,title").eq("quadrant", QUAD_KEY);
+    if(!res.error && res.data){
+      var map = {};
+      res.data.forEach(function(r){ map[r.item_id] = r.title; });
+      var changed = false;
+      ITEMS.forEach(function(it){
+        var ov = map[it.id];
+        if(ov !== undefined && ov !== it.title){ it.title = ov; changed = true; }
+      });
+      if(changed){ renderItems(); paintMyVotes(); }
+    }
+  }catch(e){ console.warn("item edits load failed", e); }
+}
+
 renderItems();
 paintMyVotes();
 loadConfig();
+loadItemEdits();
 setInterval(loadConfig, 20000);
+setInterval(loadItemEdits, 20000);
 
 }catch(e){ fatalConfigError(e); }
 </script>

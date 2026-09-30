@@ -192,6 +192,31 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .rank-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:7px 12px; border-radius:999px; font-size:12.5px; font-weight:500; cursor:pointer; }
 .rank-toggle button.active{background:var(--accent); color:#fff; border-color:var(--accent);}
 
+.view-toggle{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
+.view-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; }
+.view-toggle button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+.top5-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow); }
+.top5-wrap h3{font-size:15px; margin:0 0 12px;}
+.top5-table{width:100%; border-collapse:collapse; font-size:13.5px;}
+.top5-table th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); padding:6px 8px; border-bottom:1px solid var(--line); }
+.top5-table td{ padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+.top5-table tr:last-child td{border-bottom:none;}
+.top5-rank{ font-family:"Ubuntu Mono",monospace; font-weight:700; color:var(--ink-soft); width:26px; }
+.top5-avg{ font-family:"Ubuntu Mono",monospace; font-weight:700; white-space:nowrap; }
+.top5-tie{ font-size:10.5px; font-weight:700; color:var(--gold); margin-left:6px; }
+.summary-quad{ margin-bottom:22px; }
+.summary-quad h3{ font-size:16px; margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+.summary-quad h3 .dot{width:10px; height:10px; border-radius:50%; display:inline-block; flex:none;}
+.empty-note{ color:var(--ink-soft); font-size:13px; padding:10px 2px; }
+
+.edit-item textarea{ width:100%; border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:"Ubuntu",sans-serif; font-size:13.5px; resize:vertical; color:var(--ink); background:var(--surface); }
+.edit-item .edit-actions{display:flex; gap:8px; align-items:center; margin-top:9px; flex-wrap:wrap;}
+.edit-item .edit-save{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--accent); }
+.edit-item .edit-reset{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
+.edit-item .edit-status{font-size:12px; color:var(--green); font-weight:600;}
+.edit-item .edit-status.err{color:var(--red);}
+
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
 .gate input{ width:100%; padding:11px 14px; border-radius:10px; border:1px solid var(--line); margin-top:10px; font-size:14px; font-family:"Ubuntu",sans-serif; }
@@ -251,7 +276,12 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
       <button class="toggle-btn open" id="toggle-voting">Vota&ccedil;&atilde;o aberta</button>
       <button class="toggle-btn" style="background:var(--ink-soft);" id="logout-btn">Sair</button>
     </div>
-    <div class="rank-toggle">
+    <div class="view-toggle" id="view-toggle">
+      <button class="active" data-view="results">Resultados</button>
+      <button data-view="summary">Resumo Top 5 (todos os quadrantes)</button>
+      <button data-view="edit">Editar textos</button>
+    </div>
+    <div class="rank-toggle" id="rank-toggle">
       <button class="active" data-order="original">Ordem do painel</button>
       <button data-order="rank-desc">Maior prioridade primeiro</button>
       <button data-order="rank-asc">Menor prioridade primeiro</button>
@@ -283,6 +313,7 @@ function fatalConfigError(e){
 try{
 
 var ALL_ITEMS = {"forcas": [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "fraquezas": [{"id": "fraquezas_c1", "type": "convergencia", "title": "Fragilidade de estrutura de capital e baixa disponibilidade de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Estrutura de capital (Risco restoque, Risco caixa, Falta garantias, Limite Crédito Teles)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estrutura de capital", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixa Disponibilidade de Caixa", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, apontam a mesma limitação financeira estrutural: capital insuficiente e baixa disponibilidade de caixa."}, {"id": "fraquezas_c2", "type": "convergencia", "title": "Base cadastral de clientes desatualizada, incompleta ou pouco qualitativa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Base Cadastral desatualizada (Dificultando acesso e cobrança)", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de Cadastros dos Clientes", "division": "Marketing", "origin": "Ambos"}, {"text": "Melhorar nossa base cadastral com mais dados qualitativos dos clientes", "division": "Operações", "origin": "Telecom"}], "reason": "Três propostas, dos dois arquivos, relatam o mesmo problema de dados: cadastro desatualizado, incompleto ou sem informações qualitativas."}, {"id": "fraquezas_c3", "type": "convergencia", "title": "Dependência do canal físico e da força de vendas, limitando a escala de novos produtos", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Dependência relevante da operação tradicional e da força de vendas presencial", "division": "Marketing", "origin": "Ambos"}, {"text": "Dependência do canal físico (equipe Telecom) para escalar produtos", "division": "Operações", "origin": "Ambos"}, {"text": "A força comercial atual não tem a possibilidade de escalar novos produtos (muitas incumbências para os vendedores)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas descrevem o mesmo gargalo comercial: dependência do canal físico e força de vendas sobrecarregada, sem capacidade de escalar novos produtos."}, {"id": "fraquezas_c4", "type": "convergencia", "title": "Gestão de pessoas: turnover elevado e baixa atratividade de benefícios", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Gestão Estratégica de Pessoas", "division": "Marketing", "origin": "Ambos"}, {"text": "Atratividade dos benefícios", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Alto turn-over da equipe de vendas / lentidão na reposição das vagas", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, descrevem facetas do mesmo problema de gestão de pessoas: gestão estratégica insuficiente, baixa atratividade de benefícios e alto turnover na equipe de vendas."}, {"id": "fraquezas_c5", "type": "convergencia", "title": "Integração sistêmica incompleta entre negócios e o ERP", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Ausência de integração sistêmica de alguns negócios - energia, coban e adquirência", "division": "Financeira", "origin": "Ambos"}, {"text": "Integração full do Cellcard/Rv Hub com o ERP (Ex. Contas a receber e Cobrança)", "division": "Financeira", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Financeira): ambas descrevem o mesmo gargalo de integração de sistemas com o ERP."}, {"id": "fraquezas_s1", "type": "isolada", "title": "Concentração do resultado nos produtos telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s2", "type": "isolada", "title": "Pouca interação com o cliente do Cliente", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s3", "type": "isolada", "title": "Ausência de auditoria presencial periódica dos estoques nas regionais", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s4", "type": "isolada", "title": "Fragmentação dos sistemas e pouca diversificação dos canais de atendimento", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s5", "type": "isolada", "title": "Arranjo de pagamento fechado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s6", "type": "isolada", "title": "Retenção no pós-venda e prospecção de clientes de baixa rentabilidade, sem análise de risco adequada", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s7", "type": "isolada", "title": "Baixa renovação de equipamentos", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s8", "type": "isolada", "title": "Ausência de camada digital de relacionamento sobre a força de vendas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s9", "type": "isolada", "title": "Processos operacionais recorrentes ainda manuais", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s10", "type": "isolada", "title": "Baixa oferta de portfólio aos PDVs", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s11", "type": "isolada", "title": "Sinergia entre as áreas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s12", "type": "isolada", "title": "Notoriedade de marca e presença digital insuficientes para sustentar a expansão de portfólio", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s13", "type": "isolada", "title": "Capacidade de investimento devido a margem reduzida", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s14", "type": "isolada", "title": "Limitação do nosso TI para desenvolvimento de ferramentas de inteligência de vendas", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "oportunidades": [{"id": "oportunidades_c1", "type": "convergencia", "title": "Créditos tributários e benefícios fiscais (CBS, PIS/COFINS e incentivos estaduais)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 5, "originals": [{"text": "Créditos Tributário em andamento para realização financeira (Perse R$ 431 MM / Tese do Século R$ 706 MM)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estudos e teses adicionais para recuperação e monetização de créditos diversos de PIS/COFINS, devido sua extinção a partir de jan27", "division": "Financeira", "origin": "Ambos"}, {"text": "Não cumulatividade plena da CBS em quase todas as despesas/custos, aumentando os créditos e reduzindo a carga tributária efetiva", "division": "Financeira", "origin": "Ambos"}, {"text": "Apuração Assistida (\"online\") da CBS entre contribuinte x Fisco, gerando um menor risco de autuações futuras", "division": "Financeira", "origin": "Ambos"}, {"text": "Venda através de E-commerce para capturar benefícios fiscais (Ex: Estado SC para B2C)", "division": "Financeira", "origin": "Ambos"}], "reason": "Cinco propostas da mesma diretoria (Financeira) tratam de facetas do mesmo tema: a captura de ganhos fiscais e tributários na transição para a CBS."}, {"id": "oportunidades_c2", "type": "convergencia", "title": "IA e automação como alavanca de produtividade, eficiência e escala", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Automação e IA para reduzir esforço manual e melhorar eficiência operacional", "division": "Financeira", "origin": "Ambos"}, {"text": "IA e automação como alavanca de produtividade e escala", "division": "Marketing", "origin": "Ambos"}], "reason": "Duas propostas, das diretorias Financeira e Marketing, enxergam a mesma tendência: IA e automação para ganhar produtividade, eficiência e escala."}, {"id": "oportunidades_c3", "type": "convergencia", "title": "Consolidação e expansão do mercado Telecom (M&A, novos negócios, MVNO e novas áreas de distribuição)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 6, "originals": [{"text": "Novos negócios no mercado de Telecom", "division": "Marketing", "origin": "Telecom"}, {"text": "Consolidação do mercado Telecom (fusões e aquisições)", "division": "Operações", "origin": "Telecom"}, {"text": "Novos Negócios no mercado Telecom", "division": "Operações", "origin": "Telecom"}, {"text": "MVNO RV", "division": "Operações", "origin": "Telecom"}, {"text": "Aquisições e fusões", "division": "Marketing", "origin": "Ambos"}, {"text": "Consolidação do mercado Telecom (novas áreas de distribuição)", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de oportunidades: seis propostas, dos dois arquivos, descrevem o mesmo movimento estratégico de crescer no Telecom via M&A, MVNO e novas áreas de distribuição."}, {"id": "oportunidades_c4", "type": "convergencia", "title": "Expansão de serviços financeiros, crédito e fintechs", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Demanda por crédito vinculado ao histórico transacional do PDV", "division": "Marketing", "origin": "Telecom"}, {"text": "Expansão de serviços financeiros e meios de pagamento (BaaS)", "division": "Marketing", "origin": "Ambos"}, {"text": "Integração de grandes Fintechs", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas convergem para a mesma janela de mercado: posicionar a RV como plataforma de crédito, meios de pagamento e fintechs."}, {"id": "oportunidades_c5", "type": "convergencia", "title": "Demanda de operadoras e empresas por distribuição no canal físico", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Estruturar modelo de distribuição pré-paga para a Brisanet", "division": "Operações", "origin": "Telecom"}, {"text": "Busca das empresas por distribuição canal físico", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas capturam a mesma demanda: empresas buscando o canal físico da RV para distribuir seus produtos."}, {"id": "oportunidades_s1", "type": "isolada", "title": "Parcerias com software house", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s2", "type": "isolada", "title": "Atuação no Cliente do Cliente (B2B e B2C)", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s3", "type": "isolada", "title": "Reduzir custo logístico na venda e entrega do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s4", "type": "isolada", "title": "Benefício da compra a vista do Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s5", "type": "isolada", "title": "Crescimento via canais digitais e mudança no comportamento de compra", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s6", "type": "isolada", "title": "Encontrar \"O Produto\" + \"Nicho\" para ser escalado na Máquina de Originação (B2B & B2C)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s7", "type": "isolada", "title": "Crescente demanda por produtos de automação de vendas e marketing (B2B)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s8", "type": "isolada", "title": "Expansão do Kiddle", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "ameacas": [{"id": "ameacas_c1", "type": "convergencia", "title": "Crimes cibernéticos, invasões e ataques hackers", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Crimes Cibernéticos", "division": "Financeira", "origin": "Ambos"}, {"text": "Invasões e ataques hackers", "division": "Marketing", "origin": "Ambos"}, {"text": "Cenário de Cybersecurity no Brasil", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Aumento de ataques cibernéticos", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas, de quatro diretorias, apontam a mesma ameaça externa de crimes e ataques cibernéticos."}, {"id": "ameacas_c2", "type": "convergencia", "title": "Popularização do e-SIM no Brasil", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Popularização do E-sim", "division": "Operações", "origin": "Telecom"}, {"text": "Popularização do e-SIM no Brasil", "division": "Marketing", "origin": "Ambos"}, {"text": "E-sim", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas, dos dois arquivos, citam a mesma ameaça tecnológica: a adoção do e-SIM, reduzindo a necessidade do chip físico."}, {"id": "ameacas_c3", "type": "convergencia", "title": "Reforma Tributária/CBS: riscos regulatórios, fiscais e de fluxo de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 8, "originals": [{"text": "Insegurança jurídica e regulamentação ainda em aberto da CBS, principalmente para o mercado de distribuição de telefonia", "division": "Financeira", "origin": "Ambos"}, {"text": "Fisco exigir o faturamento específico da recarga por venda, extinguindo a NF-e Global, com risco do ERP não suportar as emissões diárias", "division": "Financeira", "origin": "Ambos"}, {"text": "Incertezas quanto ao início do Split Payment/RAD, com possíveis descasamentos no fluxo de caixa nas operações B2B, devido à retenção antecipada da CBS pelo cliente", "division": "Financeira", "origin": "Ambos"}, {"text": "Reflexo econômico/financeiro negativo da Reforma Tributária nos PDVs, podendo causar a descontinuidade operacional de alguns, com redução da capilaridade BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Fornecedores de produtos e serviços mantendo-se como optantes do SIMPLES, diminuindo o crédito da CBS pela BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Ausência de Documento legal para Fechamento fiscal (NF Teles dentro do Prazo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Riscos regulatórios e mudanças na legislação", "division": "Marketing", "origin": "Ambos"}, {"text": "Início da implementação da reforma tributária", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de ameaças: oito propostas, das diretorias Financeira, Marketing e Operações, descrevem facetas do mesmo risco regulatório, fiscal e de fluxo de caixa na transição para a CBS/Reforma Tributária."}, {"id": "ameacas_c4", "type": "convergencia", "title": "Condições comerciais e de serviço das operadoras/Teles", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 4, "originals": [{"text": "Mudança da política comercial Teles (prazos, margens e garantias)", "division": "Operações", "origin": "Telecom"}, {"text": "SLA dilatadado das Teles (Fragilidade Sistemas)", "division": "Financeira", "origin": "Ambos"}, {"text": "Mudanças nas políticas comerciais de parceiros/operadoras", "division": "Marketing", "origin": "Ambos"}, {"text": "Pressão dos parceiros (Telecom e etc) na redução contínua das margens", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Quatro propostas, dos dois arquivos, descrevem a mesma exposição às decisões comerciais e ao desempenho das operadoras/Teles, fora do controle da RV."}, {"id": "ameacas_c5", "type": "convergencia", "title": "Desintermediação: operadoras atendendo diretamente o varejo", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Atendimento direto nas redes de varejo pelas operadoras", "division": "Operações", "origin": "Telecom"}, {"text": "Desintermediação da cadeia de negócio pelas operadoras", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo risco estrutural: operadoras atendendo a rede de varejo diretamente."}, {"id": "ameacas_c6", "type": "convergencia", "title": "Cenário macroeconômico: juros altos, endividamento e aversão a risco", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Maior aversão ao risco por parte dos bancos e fundos em relação ao setor varejista.", "division": "Financeira", "origin": "Ambos"}, {"text": "Manutenção Selic em altos patamares (Incerteza do Mercado, Eleição, etc)", "division": "Financeira", "origin": "Ambos"}, {"text": "Endividamento atual das empresas e pessoas físicas x poder de compra (< consumo, principalmente no varejo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Cenário macroeconômico desafiador, com capacidade financeira limitada do pequeno varejo brasileiro", "division": "Marketing", "origin": "Ambos"}], "reason": "Quatro propostas, das diretorias Financeira e Marketing, descrevem o mesmo pano de fundo macroeconômico: juros altos, endividamento e aversão ao risco reduzindo o consumo do pequeno varejo."}, {"id": "ameacas_c7", "type": "convergencia", "title": "Migração do consumo para o digital e queda da recarga eletrônica no varejo físico", "divisions": ["Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Migração do consumo para os canais digitais", "division": "Operações", "origin": "Telecom"}, {"text": "Redução acelerada da demanda por recarga eletrônica no varejo físico (perda de base eletrônica)", "division": "Operações", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo efeito: a queda da recarga eletrônica como consequência da migração do consumo para o digital."}, {"id": "ameacas_c8", "type": "convergencia", "title": "Aumento da concorrência no canal pré-pago no Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Desregionalização do canal pré-pago (mercado aberto - todo mundo vende onde quiser)", "division": "Operações", "origin": "Telecom"}, {"text": "Entrada de novos players no telecom (Aqui tem+, Martins, I2GO)", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro do arquivo Telecom, mesma diretoria (Operações): duas propostas descrevem o mesmo aumento de concorrência no canal pré-pago."}, {"id": "ameacas_s1", "type": "isolada", "title": "Perda de oportunidade de novos negócios/contratos devido à fragilidade de caixa", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s2", "type": "isolada", "title": "Obrigatoriedade do reconhecimento facial na ativação do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s3", "type": "isolada", "title": "Mudanças no padrão de atendimento ao cliente", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s4", "type": "isolada", "title": "Adquirência: Falta de competitividade (Mar Vermelho, Produto Comoditizado)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s5", "type": "isolada", "title": "Cenário Geopolítico incerto (política e guerras)", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}]};   // { forcas: [...], fraquezas: [...], ... }
+var ORIGINAL_ALL_ITEMS = JSON.parse(JSON.stringify(ALL_ITEMS));
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
 }
@@ -290,7 +321,11 @@ var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE
 var currentQuad = "forcas";
 var votingOpenByQuad = {};
 var rowsByQuad = {};
+var itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
 var adminOrder = "original";
+var adminView = "results";
+var QUAD_LABELS = { forcas:"Forças", fraquezas:"Fraquezas", oportunidades:"Oportunidades", ameacas:"Ameaças" };
+var QUAD_COLORS = { forcas:"var(--green)", fraquezas:"var(--gold)", oportunidades:"var(--navy-lt)", ameacas:"var(--red)" };
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, function(c){
@@ -342,6 +377,51 @@ document.querySelector(".rank-toggle").addEventListener("click", function(e){
   adminOrder = b.getAttribute("data-order");
   renderDash();
 });
+document.getElementById("view-toggle").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  document.querySelectorAll("#view-toggle button").forEach(function(x){ x.classList.remove("active"); });
+  b.classList.add("active");
+  adminView = b.getAttribute("data-view");
+  document.getElementById("rank-toggle").style.display = (adminView === "results") ? "flex" : "none";
+  renderDash();
+});
+document.getElementById("admin-mount").addEventListener("click", async function(e){
+  var saveBtn = e.target.closest(".edit-save");
+  var resetBtn = e.target.closest(".edit-reset");
+  if(!saveBtn && !resetBtn) return;
+  var card = e.target.closest(".edit-item");
+  if(!card) return;
+  var id = card.getAttribute("data-id");
+  var status = card.querySelector(".edit-status");
+  if(saveBtn){
+    var textarea = card.querySelector(".edit-title-input");
+    var newTitle = textarea.value.trim();
+    if(!newTitle){ status.textContent = "O texto não pode ficar vazio."; status.className = "edit-status err"; return; }
+    status.textContent = "Salvando…"; status.className = "edit-status";
+    try{
+      var res = await sb.from("item_edits").upsert(
+        { quadrant: currentQuad, item_id: id, title: newTitle, updated_at: new Date().toISOString() },
+        { onConflict: "quadrant,item_id" }
+      );
+      if(res.error) throw res.error;
+      await refreshAll();
+    }catch(err){
+      status.textContent = "Erro ao salvar (" + (err && err.message ? err.message : "desconhecido") + ").";
+      status.className = "edit-status err";
+    }
+  } else if(resetBtn){
+    status.textContent = "Restaurando…"; status.className = "edit-status";
+    try{
+      var res2 = await sb.from("item_edits").delete().eq("quadrant", currentQuad).eq("item_id", id);
+      if(res2.error) throw res2.error;
+      await refreshAll();
+    }catch(err2){
+      status.textContent = "Erro ao restaurar (" + (err2 && err2.message ? err2.message : "desconhecido") + ").";
+      status.className = "edit-status err";
+    }
+  }
+});
 document.getElementById("toggle-voting").addEventListener("click", async function(){
   var newState = !votingOpenByQuad[currentQuad];
   try{
@@ -369,6 +449,18 @@ async function refreshAll(){
     if(!cfgRes.error){
       (cfgRes.data || []).forEach(function(r){ votingOpenByQuad[r.quadrant] = r.is_open; });
     }
+    var editsRes = await sb.from("item_edits").select("quadrant,item_id,title");
+    if(!editsRes.error){
+      itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+      (editsRes.data || []).forEach(function(r){ if(itemEditsByQuad[r.quadrant]) itemEditsByQuad[r.quadrant][r.item_id] = r.title; });
+      Object.keys(ALL_ITEMS).forEach(function(q){
+        ALL_ITEMS[q].forEach(function(it){
+          var ov = itemEditsByQuad[q][it.id];
+          var orig = ORIGINAL_ALL_ITEMS[q].filter(function(o){ return o.id === it.id; })[0];
+          it.title = (ov !== undefined) ? ov : (orig ? orig.title : it.title);
+        });
+      });
+    }
   }catch(e){ console.warn("refresh failed", e); }
   paintToggle();
   renderDash();
@@ -392,8 +484,49 @@ function computeAgg(quad){
   return agg;
 }
 
+function computeTopWithTies(quad, n){
+  var items = ALL_ITEMS[quad] || [];
+  var agg = computeAgg(quad);
+  var scored = [];
+  items.forEach(function(it){
+    var a = agg[it.id];
+    if(a && a.total > 0){ scored.push({ it: it, avg: a.sum/a.total, total: a.total }); }
+  });
+  scored.sort(function(a,b){ return b.avg - a.avg; });
+  if(scored.length <= n) return scored;
+  var cutoffKey = Math.round(scored[n-1].avg * 1000);
+  var cut = n;
+  while(cut < scored.length && Math.round(scored[cut].avg * 1000) >= cutoffKey) cut++;
+  return scored.slice(0, cut);
+}
+
+function renderTop5Table(quad){
+  var top = computeTopWithTies(quad, 5);
+  if(!top.length) return '<div class="empty-note">Ainda sem votos suficientes neste quadrante.</div>';
+  var rowsHtml = "";
+  var lastKey = null, lastRank = 0;
+  top.forEach(function(x, i){
+    var key = Math.round(x.avg * 1000);
+    var rank;
+    if(key === lastKey){ rank = lastRank; } else { rank = i + 1; lastRank = rank; lastKey = key; }
+    var shareCount = top.filter(function(y){ return Math.round(y.avg * 1000) === key; }).length;
+    var tie = shareCount > 1 ? '<span class="top5-tie">EMPATE</span>' : '';
+    var avgColor = x.avg >= 4 ? "var(--green)" : (x.avg >= 2.2 ? "var(--gold)" : "var(--red)");
+    rowsHtml += '<tr><td class="top5-rank">#'+rank+'</td><td>'+escapeHtml(x.it.title)+tie+'</td>'
+      + '<td class="top5-avg" style="color:'+avgColor+'">'+x.avg.toFixed(2)+'</td>'
+      + '<td style="color:var(--ink-soft); white-space:nowrap;">'+x.total+' voto'+(x.total===1?'':'s')+'</td></tr>';
+  });
+  return '<table class="top5-table"><thead><tr><th>#</th><th>Item</th><th>M&eacute;dia</th><th>Votos</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>';
+}
+
 function renderDash(){
   paintToggle();
+  if(adminView === "summary"){ renderSummaryView(); return; }
+  if(adminView === "edit"){ renderEditView(); return; }
+  renderResultsView();
+}
+
+function renderResultsView(){
   var mount = document.getElementById("admin-mount");
   var items = (ALL_ITEMS[currentQuad] || []).slice();
   var agg = computeAgg(currentQuad);
@@ -413,7 +546,7 @@ function renderDash(){
     });
   }
 
-  var html = "";
+  var html = '<div class="top5-wrap"><h3>&#127942; Top 5 mais priorizados &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'+renderTop5Table(currentQuad)+'</div>';
   items.forEach(function(it){
     var a = agg[it.id];
     var avg = a.total ? (a.sum/a.total) : null;
@@ -427,6 +560,42 @@ function renderDash(){
       + '<div class="bars"><div class="bar-5" style="width:'+pct5+'%"></div><div class="bar-3" style="width:'+pct3+'%"></div><div class="bar-1" style="width:'+pct1+'%"></div></div>'
       + '<div class="bar-legend"><span><b>'+a.c5+'</b> concordam totalmente</span><span><b>'+a.c3+'</b> concordam parcialmente</span><span><b>'+a.c1+'</b> discordam</span><span><b>'+a.total+'</b> votos</span></div>'
       + '</div>';
+  });
+  mount.innerHTML = html;
+}
+
+function renderSummaryView(){
+  var mount = document.getElementById("admin-mount");
+  document.getElementById("admin-voters").textContent = "—";
+  document.getElementById("admin-total-votes").textContent = "—";
+  document.getElementById("admin-avg").textContent = "—";
+  var order = ["forcas","fraquezas","oportunidades","ameacas"];
+  var html = "";
+  order.forEach(function(q){
+    html += '<div class="summary-quad"><h3><span class="dot" style="background:'+QUAD_COLORS[q]+'"></span>'+QUAD_LABELS[q]+'</h3>'
+      + renderTop5Table(q) + '</div>';
+  });
+  mount.innerHTML = html;
+}
+
+function renderEditView(){
+  var mount = document.getElementById("admin-mount");
+  document.getElementById("admin-voters").textContent = "—";
+  document.getElementById("admin-total-votes").textContent = "—";
+  document.getElementById("admin-avg").textContent = "—";
+  var items = (ALL_ITEMS[currentQuad] || []).slice();
+  var html = '<div class="top5-wrap"><h3>&#9999;&#65039; Editar textos &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'
+    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo.</p></div>';
+  items.forEach(function(it, i){
+    var isEdited = !!(itemEditsByQuad[currentQuad] && itemEditsByQuad[currentQuad][it.id] !== undefined);
+    html += '<div class="admin-item edit-item" data-id="'+it.id+'">'
+      + '<div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:6px;">#'+(i+1)+(isEdited ? ' &middot; <span style="color:var(--gold); font-weight:700;">texto editado</span>' : '')+'</div>'
+      + '<textarea class="edit-title-input" rows="2">'+escapeHtml(it.title)+'</textarea>'
+      + '<div class="edit-actions">'
+      +   '<button class="edit-save">Salvar</button>'
+      +   (isEdited ? '<button class="edit-reset">Restaurar original</button>' : '')
+      +   '<span class="edit-status"></span>'
+      + '</div></div>';
   });
   mount.innerHTML = html;
 }
