@@ -465,7 +465,8 @@ async function saveAllVotes(){
   }catch(e){
     console.warn("save failed", e);
     saving = false; paintMyVotes();
-    showFlash("Não foi possível salvar agora. Verifique sua conexão e clique em \"Salvar respostas\" novamente.", true);
+    var detail = (e && (e.message || e.msg || e.hint || e.details)) ? (e.message || e.msg || e.hint || e.details) : "erro desconhecido";
+    showFlash("Não foi possível salvar agora (" + detail + "). Verifique sua conexão e clique em \"Salvar respostas\" novamente.", true);
   }
 }
 document.getElementById("save-btn").addEventListener("click", saveAllVotes);
