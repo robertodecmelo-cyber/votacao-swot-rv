@@ -52,7 +52,6 @@ header.hero::after{
 }
 .hero-inner{max-width:900px; margin:0 auto; padding:0 20px; display:flex; align-items:flex-start; gap:18px; position:relative; z-index:2;}
 .hero-text{flex:1;}
-/* Fixo na tela, sempre visível mesmo com o scroll da página (pedido do usuário) */
 .back-to-menu{
   position:fixed; top:14px; left:14px; z-index:999;
   display:inline-flex; align-items:center; gap:6px;
@@ -61,7 +60,6 @@ header.hero::after{
   text-decoration:none; transition:.15s; box-shadow:0 2px 10px -2px rgba(0,0,0,.4);
 }
 .back-to-menu:hover{background:var(--navy);}
-/* Espaço reservado no topo do hero para o botão fixo não cobrir o conteúdo */
 .hero-text{padding-top:40px;}
 @media (max-width:600px){ .back-to-menu{ padding:7px 12px 7px 11px; font-size:12.5px; } }
 .hero-eyebrow{font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:#ffe27a; margin-bottom:10px; margin-top:2px; font-weight:700;}
@@ -69,7 +67,7 @@ header.hero::after{
 .hero-sub{font-size:15.5px; color:#f2f6fc; margin-top:10px; max-width:560px; line-height:1.5;}
 .hero-logo{width:60px; height:60px;}
 
-.top-tabs{display:flex; gap:6px; margin-top:18px;}
+.top-tabs{display:flex; gap:6px; margin-top:18px; flex-wrap:wrap;}
 .tab-btn{
   border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.08); color:#fff;
   padding:8px 14px; border-radius:999px; font-size:13.5px; font-weight:500; cursor:pointer;
@@ -77,6 +75,8 @@ header.hero::after{
 }
 .tab-btn.active{background:#fff; color:var(--navy); border-color:#fff; font-weight:700;}
 .tab-btn:not(.active):hover{border-color:#fff;}
+.stage-tabs{margin-top:14px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.22);}
+.stage-tabs .tab-btn{font-size:14px; padding:9px 16px;}
 
 main{max-width:900px; margin:0 auto; padding:26px 20px 90px;}
 .view{display:none;}
@@ -105,6 +105,10 @@ main{max-width:900px; margin:0 auto; padding:26px 20px 90px;}
   padding:10px 14px; background:var(--accent-soft); border-radius:10px; line-height:1.5;
 }
 .anon-note .ic{margin-right:6px;}
+.already-voted-note{
+  margin-top:14px; font-size:13.5px; color:#1b4a8a;
+  padding:10px 14px; background:#e4edf6; border:1px solid #bcd2e6; border-radius:10px; line-height:1.5;
+}
 .tag-legend{
   margin-top:14px; font-size:13.5px; color:var(--ink-soft); line-height:1.7;
   padding:10px 14px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
@@ -127,14 +131,18 @@ main{max-width:900px; margin:0 auto; padding:26px 20px 90px;}
 
 .item{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); }
 .item.voted{border-color:var(--accent);}
+.item.is-migrated{border-style:dashed;}
 .item-top{display:flex; gap:10px; align-items:flex-start;}
 .item-idx{ font-family:"Ubuntu Mono",monospace; font-size:12.5px; color:var(--ink-soft); flex:none; padding-top:2px; width:30px; }
 .item-title{font-size:16.5px; font-weight:500; flex:1;}
 .item-meta{display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 0 40px;}
 .chip{ font-size:12px; padding:3px 9px; border-radius:999px; border:1px solid var(--line); color:var(--ink-soft); background:var(--surface-2); font-weight:500; }
 .chip.type-c{color:var(--navy-lt); border-color:var(--navy-lt); background:var(--accent-soft);}
-.chip.origin-telecom{color:#8a5a00; border-color:#e3c07a; background:#fdf0dc;}
-.chip.origin-ambos{color:#5b3fa0; border-color:#c9bce8; background:#efeaf9;}
+.chip.origin-telecom, .chip.tag-telecom{color:#8a5a00; border-color:#e3c07a; background:#fdf0dc;}
+.chip.origin-ambos, .chip.tag-ambos{color:#5b3fa0; border-color:#c9bce8; background:#efeaf9;}
+.chip.origin-naotelecom, .chip.tag-naotelecom{color:#0d6b4a; border-color:#9fd9c4; background:#e2f7ee;}
+.chip.tag-telecomambos{color:#14548c; border-color:#bcd2e6; background:#e4edf6;}
+.chip.migrated-chip{color:#5b3fa0; border-color:#c9bce8; background:#efeaf9; font-weight:700;}
 details.orig{margin:8px 0 0 40px;}
 details.orig summary{font-size:12.5px; color:var(--navy-lt); cursor:pointer; list-style:none; font-weight:500;}
 details.orig summary::-webkit-details-marker{display:none;}
@@ -143,7 +151,10 @@ details.orig ol li{margin-bottom:4px;}
 details.orig .oi-origin{font-size:10.5px; font-weight:700; padding:1px 6px; border-radius:999px; margin-left:6px; white-space:nowrap;}
 details.orig .oi-origin.t{color:#8a5a00; background:#fdf0dc;}
 details.orig .oi-origin.a{color:#5b3fa0; background:#efeaf9;}
+details.orig .oi-origin.nt{color:#0d6b4a; background:#e2f7ee;}
 details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); font-style:italic;}
+
+.migrated-heading{ margin:26px 0 12px; font-size:14px; font-weight:700; color:var(--ink-soft); padding-top:14px; border-top:1px dashed var(--line); }
 
 .vote-row{display:flex; gap:8px; margin:12px 0 0 40px; flex-wrap:wrap;}
 .vote-btn{ flex:1; min-width:140px; border:1.5px solid var(--line); background:var(--surface); border-radius:10px; padding:9px 12px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:9px; transition:.12s; }
@@ -194,9 +205,12 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .toggle-btn.open{background:var(--green);}
 .toggle-btn.closed{background:var(--red);}
 .admin-item{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; margin-bottom:10px; box-shadow:var(--shadow); }
-.admin-item-top{display:flex; gap:10px; align-items:baseline;}
+.admin-item.is-migrated{border-style:dashed;}
+.admin-item-top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;}
 .admin-item-top .item-title{font-size:14.5px;}
 .avg-badge{ font-family:"Ubuntu Mono",monospace; font-weight:700; font-size:13px; padding:3px 10px; border-radius:999px; color:#fff; flex:none; }
+.prioritize-ctrl{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-soft); font-weight:600; flex:none; }
+.prioritize-ctrl input{ width:16px; height:16px; cursor:pointer; }
 .bars{display:flex; height:10px; border-radius:999px; overflow:hidden; margin:10px 0 6px 0; background:var(--surface-2);}
 .bar-5{background:var(--green);} .bar-3{background:var(--gold);} .bar-1{background:var(--red);}
 .bar-legend{display:flex; gap:14px; font-size:11.5px; color:var(--ink-soft); flex-wrap:wrap;}
@@ -208,6 +222,9 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .view-toggle{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
 .view-toggle button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; }
 .view-toggle button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+.prio-summary{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:12px 16px; margin-bottom:16px; box-shadow:var(--shadow); font-size:13.5px; color:var(--ink-soft); }
+.prio-summary b{color:var(--ink);}
 
 .top5-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow); }
 .top5-wrap h3{font-size:15px; margin:0 0 12px;}
@@ -235,6 +252,15 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .top5-wrap .top5-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
 .top5-wrap .top5-head h3{margin:0;}
 .restore-order-btn{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:999px; padding:6px 13px; font-size:12px; font-weight:600; cursor:pointer; }
+.export-bar{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:11px 14px; margin-bottom:16px; }
+.export-bar .export-label{ font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-right:2px; }
+.export-bar select.export-format{ border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:8px; padding:7px 10px; font-size:12.5px; font-family:inherit; }
+.export-bar button.export-btn{ border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:700; cursor:pointer; }
+.export-bar button.export-btn:hover{ border-color:var(--navy-lt); color:var(--navy-lt); }
+.export-bar button.export-btn.export-total{ background:var(--navy); color:#fff; border-color:var(--navy); }
+.export-bar button.export-btn.export-total:hover{ opacity:.88; color:#fff; }
+.export-bar .export-status{ font-size:12px; color:var(--ink-soft); margin-left:2px; }
+.export-bar .export-status.err{ color:var(--red); font-weight:600; }
 .rank-arrows{display:flex; flex-direction:column; gap:2px;}
 .rank-arrows button{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink-soft); border-radius:5px; width:20px; height:16px; font-size:10px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
 .rank-arrows button:disabled{opacity:.3; cursor:default;}
@@ -249,6 +275,7 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 .add-item-btn{ border:none; border-radius:999px; padding:8px 16px; font-weight:700; font-size:12.5px; cursor:pointer; color:#fff; background:var(--green); }
 .remove-item-btn{ border:1px solid #e0a0a0; background:#fbe9e9; color:#9c2222; border-radius:999px; padding:8px 16px; font-weight:600; font-size:12.5px; cursor:pointer; }
 .added-badge{color:var(--green); font-weight:700;}
+.migrated-badge{color:#5b3fa0; font-weight:700;}
 .removed-panel{ background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; margin-top:18px; }
 .removed-panel h4{font-size:13px; margin:0 0 10px; color:var(--ink-soft);}
 .removed-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
@@ -262,17 +289,20 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
   display:flex; align-items:center; gap:16px; text-decoration:none;
   background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--mc-accent);
   border-radius:var(--radius); padding:18px 20px; box-shadow:var(--shadow); transition:.15s;
+  position:relative;
 }
 .menu-card:hover{ transform:translateX(3px); box-shadow:0 4px 16px -4px rgba(13,45,91,.22), var(--shadow); }
+.menu-card.is-voted{ opacity:.68; }
 .menu-card-icon{
   width:46px; height:46px; border-radius:12px; background:var(--mc-soft); color:var(--mc-accent);
   display:flex; align-items:center; justify-content:center; font-size:21px; flex:none;
 }
 .menu-card-body{flex:1; min-width:0;}
-.menu-card-title{font-size:18.5px; font-weight:700; color:var(--ink); margin-bottom:3px;}
+.menu-card-title{font-size:18.5px; font-weight:700; color:var(--ink); margin-bottom:3px; display:flex; align-items:center; gap:8px;}
 .menu-card-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.4;}
 .menu-card-arrow{font-size:18px; color:var(--ink-soft); flex:none; transition:.15s;}
 .menu-card:hover .menu-card-arrow{color:var(--mc-accent); transform:translateX(2px);}
+.voted-badge{ font-size:10.5px; font-weight:700; color:#0d6b3a; background:#e2f8ea; border:1px solid #b6e8ca; border-radius:999px; padding:2px 8px; white-space:nowrap; }
 .admin-link-pill{
   display:inline-flex; align-items:center; gap:7px; text-decoration:none;
   color:var(--ink-soft); font-size:13px; font-weight:600; padding:10px 18px;
@@ -280,6 +310,25 @@ details.orig .reason{margin-top:6px; font-size:12.5px; color:var(--ink-soft); fo
 }
 .admin-link-pill:hover{ color:var(--navy); border-color:var(--navy-lt); background:var(--surface-2); }
 .index-footnote{ text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:14px; line-height:1.5; }
+
+.stage-grid{ display:grid; gap:18px; margin-top:6px; grid-template-columns:1fr; }
+@media (min-width:640px){ .stage-grid{ grid-template-columns:1fr 1fr; } }
+.stage-card{
+  display:block; text-decoration:none; text-align:left; cursor:pointer;
+  background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--mc-accent);
+  border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow); transition:.15s;
+}
+.stage-card:hover{ transform:translateY(-2px); box-shadow:0 8px 22px -8px rgba(13,45,91,.25), var(--shadow); }
+.stage-card-icon{
+  width:52px; height:52px; border-radius:14px; background:var(--mc-soft); color:var(--mc-accent);
+  display:flex; align-items:center; justify-content:center; margin-bottom:14px;
+}
+.stage-card-title{font-size:20px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+.stage-card-desc{font-size:14px; color:var(--ink-soft); line-height:1.45;}
+.stage-card-note{margin-top:12px; font-size:12.5px; color:var(--navy-lt); background:var(--accent-soft); border-radius:8px; padding:8px 10px; line-height:1.4;}
+.step-back{ display:inline-flex; align-items:center; gap:6px; color:var(--ink-soft); font-size:13.5px; font-weight:600; text-decoration:none; margin-bottom:16px; cursor:pointer; border:none; background:none; padding:0; }
+.step-back:hover{color:var(--navy);}
+#step2-telecom, #step2-naotelecom{display:none;}
 
 .gate{ max-width:420px; margin:60px auto; text-align:center; padding:30px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
 .gate .icon{font-size:34px; margin-bottom:10px;}
@@ -309,7 +358,11 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
       <a class="back-to-menu" href="./index.html">&larr; Voltar ao menu</a>
       <div class="hero-eyebrow">RV Digital &middot; Planejamento Estrat&eacute;gico 2027</div>
       <h1 class="hero-title">Painel Administrativo &mdash; Vota&ccedil;&atilde;o SWOT</h1>
-      <div class="hero-sub">Acompanhamento ao vivo, restrito aos administradores. SWOT Telecom e Ambos.</div>
+      <div class="hero-sub">Acompanhamento ao vivo, restrito aos administradores.</div>
+      <div class="top-tabs stage-tabs" id="stage-tabs" style="display:none;">
+        <button class="tab-btn active" data-stage="telecom">Telecom + Ambos</button>
+        <button class="tab-btn" data-stage="naotelecom">N&atilde;o Telecom + Ambos</button>
+      </div>
       <div class="top-tabs" id="tabs" style="display:none;">
         <button class="tab-btn active" data-q="forcas">For&ccedil;as</button>
         <button class="tab-btn" data-q="fraquezas">Fraquezas</button>
@@ -358,10 +411,12 @@ footer.pagefoot{ background:var(--surface); border-top:1px solid var(--line); ma
 <footer class="pagefoot">
   <div class="pagefoot-inner">
     <div class="rv-logo pagefoot-logo"><img src="data:image/png;base64,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" alt="RV Digital"></div>
-    <div class="pagefoot-text">Planejamento Estrat&eacute;gico RV Digital 2027 &mdash; Painel administrativo &middot; SWOT Telecom e Ambos</div>
+    <div class="pagefoot-text">Planejamento Estrat&eacute;gico RV Digital 2027 &mdash; Painel administrativo</div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 function fatalConfigError(e){
   var msg = "Erro de configura&ccedil;&atilde;o do site: " + (e && e.message ? e.message : String(e));
@@ -377,12 +432,13 @@ function fatalConfigError(e){
 
 try{
 
-var BASE_ALL_ITEMS = {"forcas": [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "fraquezas": [{"id": "fraquezas_c1", "type": "convergencia", "title": "Fragilidade de estrutura de capital e baixa disponibilidade de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Estrutura de capital (Risco restoque, Risco caixa, Falta garantias, Limite Crédito Teles)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estrutura de capital", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixa Disponibilidade de Caixa", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, apontam a mesma limitação financeira estrutural: capital insuficiente e baixa disponibilidade de caixa."}, {"id": "fraquezas_c2", "type": "convergencia", "title": "Base cadastral de clientes desatualizada, incompleta ou pouco qualitativa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Base Cadastral desatualizada (Dificultando acesso e cobrança)", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de Cadastros dos Clientes", "division": "Marketing", "origin": "Ambos"}, {"text": "Melhorar nossa base cadastral com mais dados qualitativos dos clientes", "division": "Operações", "origin": "Telecom"}], "reason": "Três propostas, dos dois arquivos, relatam o mesmo problema de dados: cadastro desatualizado, incompleto ou sem informações qualitativas."}, {"id": "fraquezas_c3", "type": "convergencia", "title": "Dependência do canal físico e da força de vendas, limitando a escala de novos produtos", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Dependência relevante da operação tradicional e da força de vendas presencial", "division": "Marketing", "origin": "Ambos"}, {"text": "Dependência do canal físico (equipe Telecom) para escalar produtos", "division": "Operações", "origin": "Ambos"}, {"text": "A força comercial atual não tem a possibilidade de escalar novos produtos (muitas incumbências para os vendedores)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas descrevem o mesmo gargalo comercial: dependência do canal físico e força de vendas sobrecarregada, sem capacidade de escalar novos produtos."}, {"id": "fraquezas_c4", "type": "convergencia", "title": "Gestão de pessoas: turnover elevado e baixa atratividade de benefícios", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Gestão Estratégica de Pessoas", "division": "Marketing", "origin": "Ambos"}, {"text": "Atratividade dos benefícios", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Alto turn-over da equipe de vendas / lentidão na reposição das vagas", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, descrevem facetas do mesmo problema de gestão de pessoas: gestão estratégica insuficiente, baixa atratividade de benefícios e alto turnover na equipe de vendas."}, {"id": "fraquezas_c5", "type": "convergencia", "title": "Integração sistêmica incompleta entre negócios e o ERP", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Ausência de integração sistêmica de alguns negócios - energia, coban e adquirência", "division": "Financeira", "origin": "Ambos"}, {"text": "Integração full do Cellcard/Rv Hub com o ERP (Ex. Contas a receber e Cobrança)", "division": "Financeira", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Financeira): ambas descrevem o mesmo gargalo de integração de sistemas com o ERP."}, {"id": "fraquezas_s1", "type": "isolada", "title": "Concentração do resultado nos produtos telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s2", "type": "isolada", "title": "Pouca interação com o cliente do Cliente", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s3", "type": "isolada", "title": "Ausência de auditoria presencial periódica dos estoques nas regionais", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s4", "type": "isolada", "title": "Fragmentação dos sistemas e pouca diversificação dos canais de atendimento", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s5", "type": "isolada", "title": "Arranjo de pagamento fechado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s6", "type": "isolada", "title": "Retenção no pós-venda e prospecção de clientes de baixa rentabilidade, sem análise de risco adequada", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s7", "type": "isolada", "title": "Baixa renovação de equipamentos", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s8", "type": "isolada", "title": "Ausência de camada digital de relacionamento sobre a força de vendas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s9", "type": "isolada", "title": "Processos operacionais recorrentes ainda manuais", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s10", "type": "isolada", "title": "Baixa oferta de portfólio aos PDVs", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s11", "type": "isolada", "title": "Sinergia entre as áreas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s12", "type": "isolada", "title": "Notoriedade de marca e presença digital insuficientes para sustentar a expansão de portfólio", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s13", "type": "isolada", "title": "Capacidade de investimento devido a margem reduzida", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s14", "type": "isolada", "title": "Limitação do nosso TI para desenvolvimento de ferramentas de inteligência de vendas", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "oportunidades": [{"id": "oportunidades_c1", "type": "convergencia", "title": "Créditos tributários e benefícios fiscais (CBS, PIS/COFINS e incentivos estaduais)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 5, "originals": [{"text": "Créditos Tributário em andamento para realização financeira (Perse R$ 431 MM / Tese do Século R$ 706 MM)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estudos e teses adicionais para recuperação e monetização de créditos diversos de PIS/COFINS, devido sua extinção a partir de jan27", "division": "Financeira", "origin": "Ambos"}, {"text": "Não cumulatividade plena da CBS em quase todas as despesas/custos, aumentando os créditos e reduzindo a carga tributária efetiva", "division": "Financeira", "origin": "Ambos"}, {"text": "Apuração Assistida (\"online\") da CBS entre contribuinte x Fisco, gerando um menor risco de autuações futuras", "division": "Financeira", "origin": "Ambos"}, {"text": "Venda através de E-commerce para capturar benefícios fiscais (Ex: Estado SC para B2C)", "division": "Financeira", "origin": "Ambos"}], "reason": "Cinco propostas da mesma diretoria (Financeira) tratam de facetas do mesmo tema: a captura de ganhos fiscais e tributários na transição para a CBS."}, {"id": "oportunidades_c2", "type": "convergencia", "title": "IA e automação como alavanca de produtividade, eficiência e escala", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Automação e IA para reduzir esforço manual e melhorar eficiência operacional", "division": "Financeira", "origin": "Ambos"}, {"text": "IA e automação como alavanca de produtividade e escala", "division": "Marketing", "origin": "Ambos"}], "reason": "Duas propostas, das diretorias Financeira e Marketing, enxergam a mesma tendência: IA e automação para ganhar produtividade, eficiência e escala."}, {"id": "oportunidades_c3", "type": "convergencia", "title": "Consolidação e expansão do mercado Telecom (M&A, novos negócios, MVNO e novas áreas de distribuição)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 6, "originals": [{"text": "Novos negócios no mercado de Telecom", "division": "Marketing", "origin": "Telecom"}, {"text": "Consolidação do mercado Telecom (fusões e aquisições)", "division": "Operações", "origin": "Telecom"}, {"text": "Novos Negócios no mercado Telecom", "division": "Operações", "origin": "Telecom"}, {"text": "MVNO RV", "division": "Operações", "origin": "Telecom"}, {"text": "Aquisições e fusões", "division": "Marketing", "origin": "Ambos"}, {"text": "Consolidação do mercado Telecom (novas áreas de distribuição)", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de oportunidades: seis propostas, dos dois arquivos, descrevem o mesmo movimento estratégico de crescer no Telecom via M&A, MVNO e novas áreas de distribuição."}, {"id": "oportunidades_c4", "type": "convergencia", "title": "Expansão de serviços financeiros, crédito e fintechs", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Demanda por crédito vinculado ao histórico transacional do PDV", "division": "Marketing", "origin": "Telecom"}, {"text": "Expansão de serviços financeiros e meios de pagamento (BaaS)", "division": "Marketing", "origin": "Ambos"}, {"text": "Integração de grandes Fintechs", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas convergem para a mesma janela de mercado: posicionar a RV como plataforma de crédito, meios de pagamento e fintechs."}, {"id": "oportunidades_c5", "type": "convergencia", "title": "Demanda de operadoras e empresas por distribuição no canal físico", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Estruturar modelo de distribuição pré-paga para a Brisanet", "division": "Operações", "origin": "Telecom"}, {"text": "Busca das empresas por distribuição canal físico", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas capturam a mesma demanda: empresas buscando o canal físico da RV para distribuir seus produtos."}, {"id": "oportunidades_s1", "type": "isolada", "title": "Parcerias com software house", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s2", "type": "isolada", "title": "Atuação no Cliente do Cliente (B2B e B2C)", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s3", "type": "isolada", "title": "Reduzir custo logístico na venda e entrega do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s4", "type": "isolada", "title": "Benefício da compra a vista do Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s5", "type": "isolada", "title": "Crescimento via canais digitais e mudança no comportamento de compra", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s6", "type": "isolada", "title": "Encontrar \"O Produto\" + \"Nicho\" para ser escalado na Máquina de Originação (B2B & B2C)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s7", "type": "isolada", "title": "Crescente demanda por produtos de automação de vendas e marketing (B2B)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s8", "type": "isolada", "title": "Expansão do Kiddle", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "ameacas": [{"id": "ameacas_c1", "type": "convergencia", "title": "Crimes cibernéticos, invasões e ataques hackers", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Crimes Cibernéticos", "division": "Financeira", "origin": "Ambos"}, {"text": "Invasões e ataques hackers", "division": "Marketing", "origin": "Ambos"}, {"text": "Cenário de Cybersecurity no Brasil", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Aumento de ataques cibernéticos", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas, de quatro diretorias, apontam a mesma ameaça externa de crimes e ataques cibernéticos."}, {"id": "ameacas_c2", "type": "convergencia", "title": "Popularização do e-SIM no Brasil", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Popularização do E-sim", "division": "Operações", "origin": "Telecom"}, {"text": "Popularização do e-SIM no Brasil", "division": "Marketing", "origin": "Ambos"}, {"text": "E-sim", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas, dos dois arquivos, citam a mesma ameaça tecnológica: a adoção do e-SIM, reduzindo a necessidade do chip físico."}, {"id": "ameacas_c3", "type": "convergencia", "title": "Reforma Tributária/CBS: riscos regulatórios, fiscais e de fluxo de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 8, "originals": [{"text": "Insegurança jurídica e regulamentação ainda em aberto da CBS, principalmente para o mercado de distribuição de telefonia", "division": "Financeira", "origin": "Ambos"}, {"text": "Fisco exigir o faturamento específico da recarga por venda, extinguindo a NF-e Global, com risco do ERP não suportar as emissões diárias", "division": "Financeira", "origin": "Ambos"}, {"text": "Incertezas quanto ao início do Split Payment/RAD, com possíveis descasamentos no fluxo de caixa nas operações B2B, devido à retenção antecipada da CBS pelo cliente", "division": "Financeira", "origin": "Ambos"}, {"text": "Reflexo econômico/financeiro negativo da Reforma Tributária nos PDVs, podendo causar a descontinuidade operacional de alguns, com redução da capilaridade BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Fornecedores de produtos e serviços mantendo-se como optantes do SIMPLES, diminuindo o crédito da CBS pela BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Ausência de Documento legal para Fechamento fiscal (NF Teles dentro do Prazo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Riscos regulatórios e mudanças na legislação", "division": "Marketing", "origin": "Ambos"}, {"text": "Início da implementação da reforma tributária", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de ameaças: oito propostas, das diretorias Financeira, Marketing e Operações, descrevem facetas do mesmo risco regulatório, fiscal e de fluxo de caixa na transição para a CBS/Reforma Tributária."}, {"id": "ameacas_c4", "type": "convergencia", "title": "Condições comerciais e de serviço das operadoras/Teles", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 4, "originals": [{"text": "Mudança da política comercial Teles (prazos, margens e garantias)", "division": "Operações", "origin": "Telecom"}, {"text": "SLA dilatadado das Teles (Fragilidade Sistemas)", "division": "Financeira", "origin": "Ambos"}, {"text": "Mudanças nas políticas comerciais de parceiros/operadoras", "division": "Marketing", "origin": "Ambos"}, {"text": "Pressão dos parceiros (Telecom e etc) na redução contínua das margens", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Quatro propostas, dos dois arquivos, descrevem a mesma exposição às decisões comerciais e ao desempenho das operadoras/Teles, fora do controle da RV."}, {"id": "ameacas_c5", "type": "convergencia", "title": "Desintermediação: operadoras atendendo diretamente o varejo", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Atendimento direto nas redes de varejo pelas operadoras", "division": "Operações", "origin": "Telecom"}, {"text": "Desintermediação da cadeia de negócio pelas operadoras", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo risco estrutural: operadoras atendendo a rede de varejo diretamente."}, {"id": "ameacas_c6", "type": "convergencia", "title": "Cenário macroeconômico: juros altos, endividamento e aversão a risco", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Maior aversão ao risco por parte dos bancos e fundos em relação ao setor varejista.", "division": "Financeira", "origin": "Ambos"}, {"text": "Manutenção Selic em altos patamares (Incerteza do Mercado, Eleição, etc)", "division": "Financeira", "origin": "Ambos"}, {"text": "Endividamento atual das empresas e pessoas físicas x poder de compra (< consumo, principalmente no varejo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Cenário macroeconômico desafiador, com capacidade financeira limitada do pequeno varejo brasileiro", "division": "Marketing", "origin": "Ambos"}], "reason": "Quatro propostas, das diretorias Financeira e Marketing, descrevem o mesmo pano de fundo macroeconômico: juros altos, endividamento e aversão ao risco reduzindo o consumo do pequeno varejo."}, {"id": "ameacas_c7", "type": "convergencia", "title": "Migração do consumo para o digital e queda da recarga eletrônica no varejo físico", "divisions": ["Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Migração do consumo para os canais digitais", "division": "Operações", "origin": "Telecom"}, {"text": "Redução acelerada da demanda por recarga eletrônica no varejo físico (perda de base eletrônica)", "division": "Operações", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo efeito: a queda da recarga eletrônica como consequência da migração do consumo para o digital."}, {"id": "ameacas_c8", "type": "convergencia", "title": "Aumento da concorrência no canal pré-pago no Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Desregionalização do canal pré-pago (mercado aberto - todo mundo vende onde quiser)", "division": "Operações", "origin": "Telecom"}, {"text": "Entrada de novos players no telecom (Aqui tem+, Martins, I2GO)", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro do arquivo Telecom, mesma diretoria (Operações): duas propostas descrevem o mesmo aumento de concorrência no canal pré-pago."}, {"id": "ameacas_s1", "type": "isolada", "title": "Perda de oportunidade de novos negócios/contratos devido à fragilidade de caixa", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s2", "type": "isolada", "title": "Obrigatoriedade do reconhecimento facial na ativação do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s3", "type": "isolada", "title": "Mudanças no padrão de atendimento ao cliente", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s4", "type": "isolada", "title": "Adquirência: Falta de competitividade (Mar Vermelho, Produto Comoditizado)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s5", "type": "isolada", "title": "Cenário Geopolítico incerto (política e guerras)", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}]};   // { forcas: [...], fraquezas: [...], ... } — nunca é alterado
-var ALL_ITEMS = JSON.parse(JSON.stringify(BASE_ALL_ITEMS)); // recalculado a cada refreshAll()
+var BASE_ALL_ITEMS = {"telecom": {"forcas": [{"id": "forcas_c1", "type": "convergencia", "title": "Capilaridade nacional e presença multicanal (físico e digital)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Capilaridade nacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Capilaridade e Venda no Varejo Físico Brasil", "division": "Operações", "origin": "Ambos"}, {"text": "Presença em canais físico e digital", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de duas diretorias, descrevem a mesma força de alcance nacional, física e digital da RV."}, {"id": "forcas_c2", "type": "convergencia", "title": "Relacionamento consolidado com clientes, parceiros, operadoras e pontos de venda", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Relacionamento consolidado com operadoras e parceiros (Comercial/Financeiro/Contábil)", "division": "Financeira", "origin": "Ambos"}, {"text": "Relacionamento consolidado com clientes e parceiros/B2B", "division": "Marketing", "origin": "Ambos"}, {"text": "Relacionamento com pontos de venda e capacidade de execução na última milha", "division": "Operações", "origin": "Ambos"}, {"text": "Relacionamento e contratos Telecom / Não Telecom", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas apontam o mesmo ativo relacional da RV sob ângulos complementares: financeiro/contratual com operadoras, comercial com clientes e parceiros, execução no PDV e contratos Telecom/Não Telecom."}, {"id": "forcas_c3", "type": "convergencia", "title": "Plataforma tecnológica proprietária, flexível e escalável", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Plataforma tecnológica proprietária", "division": "Marketing", "origin": "Ambos"}, {"text": "Plataforma flexível e escalável (recarga e verticais), tanto para o físico como para o digital", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas descrevem a mesma plataforma própria da RV, com ênfase em titularidade e em flexibilidade/escala."}, {"id": "forcas_c4", "type": "convergencia", "title": "Modelo de gestão, governança e disciplina de resultados", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Modelo de gestão e governança", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de resultados", "division": "Marketing", "origin": "Ambos"}, {"text": "Modelo de gestão do negócio", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, destacam a maturidade do modelo de gestão, governança e disciplina de resultados da companhia."}, {"id": "forcas_c5", "type": "convergencia", "title": "Estabilidade e resiliência das equipes e lideranças", "divisions": ["Marketing", "Operações"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Resiliência e adaptação das equipes", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixo turn over das lideranças", "division": "Operações", "origin": "Ambos"}], "reason": "Duas propostas tratam da solidez do capital humano: adaptação das equipes e baixa rotatividade das lideranças se reforçam."}, {"id": "forcas_c6", "type": "convergencia", "title": "Capacidade operacional e tecnológica de execução (Telecom, delivery e canais de venda)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Operações - Execução TELECOM", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Maturidade de Gestão de Delivery de Produtos suporta qualquer tipo de demanda (Colaboração: Produtos, Desenvolvimento, Infraestrutura, Segurança da Informação, SUPORTE, Operações, Jurídico)", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Disponibilidade dos Canais de Venda", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Temos um novo motor de crescimento exponencial na CIA (Máquina de Vendas)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Tecnologia): quatro propostas descrevem a maturidade operacional de execução, delivery e canais de venda da RV."}, {"id": "forcas_c7", "type": "convergencia", "title": "Cultura organizacional, atendimento humano e incentivo à inovação", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Atendimento humano", "division": "Marketing", "origin": "Ambos"}, {"text": "Cultura organizacional", "division": "Marketing", "origin": "Ambos"}, {"text": "Incentivo dos sócios à inovação", "division": "Marketing", "origin": "Ambos"}], "reason": "Três propostas da mesma diretoria (Marketing) descrevem a cultura, o atendimento humano e o incentivo dos sócios à inovação como diferenciais da RV."}, {"id": "forcas_c8", "type": "convergencia", "title": "Gestão de crédito, cobrança e modelo de venda consignada", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Gestão de crédito e cobrança", "division": "Operações", "origin": "Telecom"}, {"text": "Modelo de venda consignada", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro da mesma diretoria (Operações): ambas descrevem competências da RV na gestão de crédito e nos modelos de venda do Telecom."}, {"id": "forcas_s1", "type": "isolada", "title": "ERP com fluxos integrados entre as áreas, facilitando novas implantações/atualizações e exigências legais (Ex. Reforma Tributária)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s2", "type": "isolada", "title": "Planejamento tributário com resultados comprovados de redução efetiva da carga tributária (ex.: ebook, migração de regime LR x LP)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s3", "type": "isolada", "title": "Portfólio amplo e diversificado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "forcas_s4", "type": "isolada", "title": "Força de vendas com atendimento presencial", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "fraquezas": [{"id": "fraquezas_c1", "type": "convergencia", "title": "Fragilidade de estrutura de capital e baixa disponibilidade de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Estrutura de capital (Risco restoque, Risco caixa, Falta garantias, Limite Crédito Teles)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estrutura de capital", "division": "Marketing", "origin": "Ambos"}, {"text": "Baixa Disponibilidade de Caixa", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, apontam a mesma limitação financeira estrutural: capital insuficiente e baixa disponibilidade de caixa."}, {"id": "fraquezas_c2", "type": "convergencia", "title": "Base cadastral de clientes desatualizada, incompleta ou pouco qualitativa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Base Cadastral desatualizada (Dificultando acesso e cobrança)", "division": "Financeira", "origin": "Ambos"}, {"text": "Gestão de Cadastros dos Clientes", "division": "Marketing", "origin": "Ambos"}, {"text": "Melhorar nossa base cadastral com mais dados qualitativos dos clientes", "division": "Operações", "origin": "Telecom"}], "reason": "Três propostas, dos dois arquivos, relatam o mesmo problema de dados: cadastro desatualizado, incompleto ou sem informações qualitativas."}, {"id": "fraquezas_c3", "type": "convergencia", "title": "Dependência do canal físico e da força de vendas, limitando a escala de novos produtos", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Dependência relevante da operação tradicional e da força de vendas presencial", "division": "Marketing", "origin": "Ambos"}, {"text": "Dependência do canal físico (equipe Telecom) para escalar produtos", "division": "Operações", "origin": "Ambos"}, {"text": "A força comercial atual não tem a possibilidade de escalar novos produtos (muitas incumbências para os vendedores)", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas descrevem o mesmo gargalo comercial: dependência do canal físico e força de vendas sobrecarregada, sem capacidade de escalar novos produtos."}, {"id": "fraquezas_c4", "type": "convergencia", "title": "Gestão de pessoas: turnover elevado e baixa atratividade de benefícios", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 3, "originals": [{"text": "Gestão Estratégica de Pessoas", "division": "Marketing", "origin": "Ambos"}, {"text": "Atratividade dos benefícios", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Alto turn-over da equipe de vendas / lentidão na reposição das vagas", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas, de três diretorias, descrevem facetas do mesmo problema de gestão de pessoas: gestão estratégica insuficiente, baixa atratividade de benefícios e alto turnover na equipe de vendas."}, {"id": "fraquezas_c5", "type": "convergencia", "title": "Integração sistêmica incompleta entre negócios e o ERP", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Ausência de integração sistêmica de alguns negócios - energia, coban e adquirência", "division": "Financeira", "origin": "Ambos"}, {"text": "Integração full do Cellcard/Rv Hub com o ERP (Ex. Contas a receber e Cobrança)", "division": "Financeira", "origin": "Ambos"}], "reason": "Unificação dentro da mesma diretoria (Financeira): ambas descrevem o mesmo gargalo de integração de sistemas com o ERP."}, {"id": "fraquezas_s1", "type": "isolada", "title": "Concentração do resultado nos produtos telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s2", "type": "isolada", "title": "Pouca interação com o cliente do Cliente", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s3", "type": "isolada", "title": "Ausência de auditoria presencial periódica dos estoques nas regionais", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s4", "type": "isolada", "title": "Fragmentação dos sistemas e pouca diversificação dos canais de atendimento", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s5", "type": "isolada", "title": "Arranjo de pagamento fechado", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s6", "type": "isolada", "title": "Retenção no pós-venda e prospecção de clientes de baixa rentabilidade, sem análise de risco adequada", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s7", "type": "isolada", "title": "Baixa renovação de equipamentos", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s8", "type": "isolada", "title": "Ausência de camada digital de relacionamento sobre a força de vendas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s9", "type": "isolada", "title": "Processos operacionais recorrentes ainda manuais", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s10", "type": "isolada", "title": "Baixa oferta de portfólio aos PDVs", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s11", "type": "isolada", "title": "Sinergia entre as áreas", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s12", "type": "isolada", "title": "Notoriedade de marca e presença digital insuficientes para sustentar a expansão de portfólio", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s13", "type": "isolada", "title": "Capacidade de investimento devido a margem reduzida", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s14", "type": "isolada", "title": "Limitação do nosso TI para desenvolvimento de ferramentas de inteligência de vendas", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "oportunidades": [{"id": "oportunidades_c1", "type": "convergencia", "title": "Créditos tributários e benefícios fiscais (CBS, PIS/COFINS e incentivos estaduais)", "divisions": ["Financeira"], "origins": ["Ambos"], "n": 5, "originals": [{"text": "Créditos Tributário em andamento para realização financeira (Perse R$ 431 MM / Tese do Século R$ 706 MM)", "division": "Financeira", "origin": "Ambos"}, {"text": "Estudos e teses adicionais para recuperação e monetização de créditos diversos de PIS/COFINS, devido sua extinção a partir de jan27", "division": "Financeira", "origin": "Ambos"}, {"text": "Não cumulatividade plena da CBS em quase todas as despesas/custos, aumentando os créditos e reduzindo a carga tributária efetiva", "division": "Financeira", "origin": "Ambos"}, {"text": "Apuração Assistida (\"online\") da CBS entre contribuinte x Fisco, gerando um menor risco de autuações futuras", "division": "Financeira", "origin": "Ambos"}, {"text": "Venda através de E-commerce para capturar benefícios fiscais (Ex: Estado SC para B2C)", "division": "Financeira", "origin": "Ambos"}], "reason": "Cinco propostas da mesma diretoria (Financeira) tratam de facetas do mesmo tema: a captura de ganhos fiscais e tributários na transição para a CBS."}, {"id": "oportunidades_c2", "type": "convergencia", "title": "IA e automação como alavanca de produtividade, eficiência e escala", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 2, "originals": [{"text": "Automação e IA para reduzir esforço manual e melhorar eficiência operacional", "division": "Financeira", "origin": "Ambos"}, {"text": "IA e automação como alavanca de produtividade e escala", "division": "Marketing", "origin": "Ambos"}], "reason": "Duas propostas, das diretorias Financeira e Marketing, enxergam a mesma tendência: IA e automação para ganhar produtividade, eficiência e escala."}, {"id": "oportunidades_c3", "type": "convergencia", "title": "Consolidação e expansão do mercado Telecom (M&A, novos negócios, MVNO e novas áreas de distribuição)", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 6, "originals": [{"text": "Novos negócios no mercado de Telecom", "division": "Marketing", "origin": "Telecom"}, {"text": "Consolidação do mercado Telecom (fusões e aquisições)", "division": "Operações", "origin": "Telecom"}, {"text": "Novos Negócios no mercado Telecom", "division": "Operações", "origin": "Telecom"}, {"text": "MVNO RV", "division": "Operações", "origin": "Telecom"}, {"text": "Aquisições e fusões", "division": "Marketing", "origin": "Ambos"}, {"text": "Consolidação do mercado Telecom (novas áreas de distribuição)", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de oportunidades: seis propostas, dos dois arquivos, descrevem o mesmo movimento estratégico de crescer no Telecom via M&A, MVNO e novas áreas de distribuição."}, {"id": "oportunidades_c4", "type": "convergencia", "title": "Expansão de serviços financeiros, crédito e fintechs", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Demanda por crédito vinculado ao histórico transacional do PDV", "division": "Marketing", "origin": "Telecom"}, {"text": "Expansão de serviços financeiros e meios de pagamento (BaaS)", "division": "Marketing", "origin": "Ambos"}, {"text": "Integração de grandes Fintechs", "division": "Operações", "origin": "Ambos"}], "reason": "Três propostas convergem para a mesma janela de mercado: posicionar a RV como plataforma de crédito, meios de pagamento e fintechs."}, {"id": "oportunidades_c5", "type": "convergencia", "title": "Demanda de operadoras e empresas por distribuição no canal físico", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Estruturar modelo de distribuição pré-paga para a Brisanet", "division": "Operações", "origin": "Telecom"}, {"text": "Busca das empresas por distribuição canal físico", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas capturam a mesma demanda: empresas buscando o canal físico da RV para distribuir seus produtos."}, {"id": "oportunidades_s1", "type": "isolada", "title": "Parcerias com software house", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s2", "type": "isolada", "title": "Atuação no Cliente do Cliente (B2B e B2C)", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s3", "type": "isolada", "title": "Reduzir custo logístico na venda e entrega do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s4", "type": "isolada", "title": "Benefício da compra a vista do Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s5", "type": "isolada", "title": "Crescimento via canais digitais e mudança no comportamento de compra", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s6", "type": "isolada", "title": "Encontrar \"O Produto\" + \"Nicho\" para ser escalado na Máquina de Originação (B2B & B2C)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s7", "type": "isolada", "title": "Crescente demanda por produtos de automação de vendas e marketing (B2B)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s8", "type": "isolada", "title": "Expansão do Kiddle", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}], "ameacas": [{"id": "ameacas_c1", "type": "convergencia", "title": "Crimes cibernéticos, invasões e ataques hackers", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Crimes Cibernéticos", "division": "Financeira", "origin": "Ambos"}, {"text": "Invasões e ataques hackers", "division": "Marketing", "origin": "Ambos"}, {"text": "Cenário de Cybersecurity no Brasil", "division": "Tecnologia", "origin": "Ambos"}, {"text": "Aumento de ataques cibernéticos", "division": "Operações", "origin": "Ambos"}], "reason": "Quatro propostas, de quatro diretorias, apontam a mesma ameaça externa de crimes e ataques cibernéticos."}, {"id": "ameacas_c2", "type": "convergencia", "title": "Popularização do e-SIM no Brasil", "divisions": ["Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 3, "originals": [{"text": "Popularização do E-sim", "division": "Operações", "origin": "Telecom"}, {"text": "Popularização do e-SIM no Brasil", "division": "Marketing", "origin": "Ambos"}, {"text": "E-sim", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Três propostas, dos dois arquivos, citam a mesma ameaça tecnológica: a adoção do e-SIM, reduzindo a necessidade do chip físico."}, {"id": "ameacas_c3", "type": "convergencia", "title": "Reforma Tributária/CBS: riscos regulatórios, fiscais e de fluxo de caixa", "divisions": ["Financeira", "Marketing", "Operações"], "origins": ["Ambos"], "n": 8, "originals": [{"text": "Insegurança jurídica e regulamentação ainda em aberto da CBS, principalmente para o mercado de distribuição de telefonia", "division": "Financeira", "origin": "Ambos"}, {"text": "Fisco exigir o faturamento específico da recarga por venda, extinguindo a NF-e Global, com risco do ERP não suportar as emissões diárias", "division": "Financeira", "origin": "Ambos"}, {"text": "Incertezas quanto ao início do Split Payment/RAD, com possíveis descasamentos no fluxo de caixa nas operações B2B, devido à retenção antecipada da CBS pelo cliente", "division": "Financeira", "origin": "Ambos"}, {"text": "Reflexo econômico/financeiro negativo da Reforma Tributária nos PDVs, podendo causar a descontinuidade operacional de alguns, com redução da capilaridade BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Fornecedores de produtos e serviços mantendo-se como optantes do SIMPLES, diminuindo o crédito da CBS pela BMRV", "division": "Financeira", "origin": "Ambos"}, {"text": "Ausência de Documento legal para Fechamento fiscal (NF Teles dentro do Prazo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Riscos regulatórios e mudanças na legislação", "division": "Marketing", "origin": "Ambos"}, {"text": "Início da implementação da reforma tributária", "division": "Operações", "origin": "Ambos"}], "reason": "Maior cluster de ameaças: oito propostas, das diretorias Financeira, Marketing e Operações, descrevem facetas do mesmo risco regulatório, fiscal e de fluxo de caixa na transição para a CBS/Reforma Tributária."}, {"id": "ameacas_c4", "type": "convergencia", "title": "Condições comerciais e de serviço das operadoras/Teles", "divisions": ["Financeira", "Marketing", "Operações", "Tecnologia"], "origins": ["Ambos", "Telecom"], "n": 4, "originals": [{"text": "Mudança da política comercial Teles (prazos, margens e garantias)", "division": "Operações", "origin": "Telecom"}, {"text": "SLA dilatadado das Teles (Fragilidade Sistemas)", "division": "Financeira", "origin": "Ambos"}, {"text": "Mudanças nas políticas comerciais de parceiros/operadoras", "division": "Marketing", "origin": "Ambos"}, {"text": "Pressão dos parceiros (Telecom e etc) na redução contínua das margens", "division": "Tecnologia", "origin": "Ambos"}], "reason": "Quatro propostas, dos dois arquivos, descrevem a mesma exposição às decisões comerciais e ao desempenho das operadoras/Teles, fora do controle da RV."}, {"id": "ameacas_c5", "type": "convergencia", "title": "Desintermediação: operadoras atendendo diretamente o varejo", "divisions": ["Marketing", "Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Atendimento direto nas redes de varejo pelas operadoras", "division": "Operações", "origin": "Telecom"}, {"text": "Desintermediação da cadeia de negócio pelas operadoras", "division": "Marketing", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo risco estrutural: operadoras atendendo a rede de varejo diretamente."}, {"id": "ameacas_c6", "type": "convergencia", "title": "Cenário macroeconômico: juros altos, endividamento e aversão a risco", "divisions": ["Financeira", "Marketing"], "origins": ["Ambos"], "n": 4, "originals": [{"text": "Maior aversão ao risco por parte dos bancos e fundos em relação ao setor varejista.", "division": "Financeira", "origin": "Ambos"}, {"text": "Manutenção Selic em altos patamares (Incerteza do Mercado, Eleição, etc)", "division": "Financeira", "origin": "Ambos"}, {"text": "Endividamento atual das empresas e pessoas físicas x poder de compra (< consumo, principalmente no varejo)", "division": "Financeira", "origin": "Ambos"}, {"text": "Cenário macroeconômico desafiador, com capacidade financeira limitada do pequeno varejo brasileiro", "division": "Marketing", "origin": "Ambos"}], "reason": "Quatro propostas, das diretorias Financeira e Marketing, descrevem o mesmo pano de fundo macroeconômico: juros altos, endividamento e aversão ao risco reduzindo o consumo do pequeno varejo."}, {"id": "ameacas_c7", "type": "convergencia", "title": "Migração do consumo para o digital e queda da recarga eletrônica no varejo físico", "divisions": ["Operações"], "origins": ["Ambos", "Telecom"], "n": 2, "originals": [{"text": "Migração do consumo para os canais digitais", "division": "Operações", "origin": "Telecom"}, {"text": "Redução acelerada da demanda por recarga eletrônica no varejo físico (perda de base eletrônica)", "division": "Operações", "origin": "Ambos"}], "reason": "Ambas descrevem o mesmo efeito: a queda da recarga eletrônica como consequência da migração do consumo para o digital."}, {"id": "ameacas_c8", "type": "convergencia", "title": "Aumento da concorrência no canal pré-pago no Telecom", "divisions": ["Operações"], "origins": ["Telecom"], "n": 2, "originals": [{"text": "Desregionalização do canal pré-pago (mercado aberto - todo mundo vende onde quiser)", "division": "Operações", "origin": "Telecom"}, {"text": "Entrada de novos players no telecom (Aqui tem+, Martins, I2GO)", "division": "Operações", "origin": "Telecom"}], "reason": "Unificação dentro do arquivo Telecom, mesma diretoria (Operações): duas propostas descrevem o mesmo aumento de concorrência no canal pré-pago."}, {"id": "ameacas_s1", "type": "isolada", "title": "Perda de oportunidade de novos negócios/contratos devido à fragilidade de caixa", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s2", "type": "isolada", "title": "Obrigatoriedade do reconhecimento facial na ativação do chip", "divisions": ["Operações"], "origins": ["Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s3", "type": "isolada", "title": "Mudanças no padrão de atendimento ao cliente", "divisions": ["Marketing"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s4", "type": "isolada", "title": "Adquirência: Falta de competitividade (Mar Vermelho, Produto Comoditizado)", "divisions": ["Tecnologia"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}, {"id": "ameacas_s5", "type": "isolada", "title": "Cenário Geopolítico incerto (política e guerras)", "divisions": ["Operações"], "origins": ["Ambos"], "n": 1, "originals": null, "reason": null}]}, "naotelecom": {"forcas": [{"id": "forcas_s1", "type": "isolada", "title": "Portfólio diversificado de produtos", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}], "fraquezas": [{"id": "fraquezas_c1", "type": "convergencia", "title": "Baixo foco e integração dos produtos não-telecom aos sistemas da RV", "divisions": ["Marketing", "Operações"], "origins": ["Não Telecom"], "n": 3, "originals": [{"text": "Produtos não telecom (energia, serviços financeiros etc.) sem integração aos sistemas RV", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Falta de foco nos produtos não-telecom", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Falta de integração sistêmica para os produtos de energia e coban", "division": "Operações", "origin": "Não Telecom"}], "reason": "Três propostas, de duas diretorias, apontam a mesma fragilidade: os produtos não-telecom (energia, serviços financeiros/coban) carecem de foco estratégico e de integração aos sistemas da RV."}, {"id": "fraquezas_c2", "type": "convergencia", "title": "Fragilidades do produto e do modelo de receita de Adquirência", "divisions": ["Marketing"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Diferenciação do produto Adquirência", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Modelo de receita da adquirência em conflito com as condições de adoção do mercado", "division": "Marketing", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Marketing descrevem a mesma fragilidade competitiva do produto de Adquirência: falta de diferenciação e um modelo de receita desalinhado com as condições de adoção do mercado."}, {"id": "fraquezas_c3", "type": "convergencia", "title": "Dependência do parceiro e baixa retenção do cliente de Adquirência", "divisions": ["Marketing", "Operações"], "origins": ["Não Telecom"], "n": 3, "originals": [{"text": "Experiência do cliente dependente do parceiro adquirente", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Reputação e satisfação do cliente de adquirência", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Retenção de clientes de adquirência", "division": "Operações", "origin": "Não Telecom"}], "reason": "Três propostas, de duas diretorias, tratam do mesmo problema: a experiência, a satisfação e a retenção do cliente de Adquirência dependem do parceiro adquirente, fragilizando o relacionamento direto com a RV."}, {"id": "fraquezas_c4", "type": "convergencia", "title": "Parque de POS defasado e cobrança fora do padrão de mercado", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Parque de POS próprio defasado (Stone)", "division": "Operações", "origin": "Não Telecom"}, {"text": "Cobrança do aluguel do POS em boleto (padrão de mercado é nos recebíveis)", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações descrevem fragilidades relacionadas ao mesmo equipamento (POS): parque próprio defasado e modelo de cobrança do aluguel fora do padrão do mercado (boleto em vez de recebíveis)."}, {"id": "fraquezas_c5", "type": "convergencia", "title": "Falta de estrutura logística e de gestão para produtos físicos (não-telecom)", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Falta de um processo logístico para entrega de produtos físicos (acessórios, outros)", "division": "Operações", "origin": "Não Telecom"}, {"text": "Falta de um sistema de gestão (back office e front office) especializado em produtos físicos (não telecom)", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações apontam a ausência da mesma estrutura de suporte — processo logístico e sistema de gestão (back office e front office) — para os produtos físicos não-telecom."}, {"id": "fraquezas_s1", "type": "isolada", "title": "Concentração do resultado em um produto único (chip)", "divisions": ["Marketing"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s2", "type": "isolada", "title": "Ausência de equipe especializada para venda de adquirência, serviços financeiros etc", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s3", "type": "isolada", "title": "Fragilidade cadastral / falta de CRM", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s4", "type": "isolada", "title": "Falta de plataforma segura/estável conversacional para Whatsapp/Atendimento via IA", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "fraquezas_s5", "type": "isolada", "title": "Falta de uma oferta proprietária da RV de produtos financeiros (maquininha, conta, empréstimos, softwares etc)", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}], "oportunidades": [{"id": "oportunidades_c1", "type": "convergencia", "title": "Abertura e expansão do mercado de energia (baixa tensão e modelo white label)", "divisions": ["Marketing", "Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Migração do mercado livre de energia para baixa tensão", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Abertura do mercado livre de energia e desenvolver parcerias com geradoras de energia no modelo white label", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas, de duas diretorias, tratam da mesma oportunidade: a abertura do mercado livre de energia, seja pela migração para baixa tensão, seja por parcerias no modelo white label com geradoras."}, {"id": "oportunidades_c2", "type": "convergencia", "title": "Expansão de crédito e serviços financeiros para o varejo (PME)", "divisions": ["Marketing", "Operações"], "origins": ["Não Telecom"], "n": 3, "originals": [{"text": "Abertura do mercado de pagamentos/financeiro", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Crescimento da demanda por serviço de banking/crédito", "division": "Operações", "origin": "Não Telecom"}, {"text": "Necessidade de crédito por parte dos varejistas (PME)", "division": "Operações", "origin": "Não Telecom"}], "reason": "Três propostas, de duas diretorias, apontam a mesma oportunidade de crescimento em serviços financeiros e crédito, com destaque para a demanda dos varejistas (PME)."}, {"id": "oportunidades_c3", "type": "convergencia", "title": "Novas parcerias comerciais com adquirentes e subadquirentes", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Desenvolver parcerias com novos adquirentes/subadquirente", "division": "Operações", "origin": "Não Telecom"}, {"text": "Liberação de Vouchers para todos os adquirentes", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações tratam da mesma oportunidade de ampliar parcerias comerciais com adquirentes/subadquirentes, inclusive por meio da liberação de vouchers."}, {"id": "oportunidades_c4", "type": "convergencia", "title": "Novos canais físicos por meio de parcerias com grandes marcas e empresas de produtos físicos", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Grandes marcas buscando novos canais físicos de vendas e atendimento (PDVE Claro, Vivo, BB, Seguros, Energia etc)", "division": "Operações", "origin": "Não Telecom"}, {"text": "Expansão de parcerias com empresas de produtos físicos", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações descrevem a mesma oportunidade de expandir a rede de canais físicos por meio de parcerias com grandes marcas e empresas de produtos físicos."}, {"id": "oportunidades_c5", "type": "convergencia", "title": "Ampliação da oferta de serviços de valor agregado e gestão de equipes especializadas", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Ampliação da oferta e procura por serviços como telemedicina, assessoria jurídica entre outros", "division": "Operações", "origin": "Não Telecom"}, {"text": "Demanda crescente por gestão de equipes especializadas em serviços (PAP, varejo, promotores etc)", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações tratam da mesma oportunidade de crescimento em serviços de valor agregado (telemedicina, jurídico etc.), que demandará gestão de equipes especializadas."}, {"id": "oportunidades_s1", "type": "isolada", "title": "Fusões e Aquisições", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s2", "type": "isolada", "title": "Aumento da utilização da IA para ganho de produtividade em vendas, atendimento, desenvolvimento de serviços etc", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s3", "type": "isolada", "title": "Novos Negócios no mercado Telecom fora Pré", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}, {"id": "oportunidades_s4", "type": "isolada", "title": "Atuação no cliente do cliente (aproveitamento do tráfego de clientes do clientes físico e digital)", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}], "ameacas": [{"id": "ameacas_c1", "type": "convergencia", "title": "Desintermediação do PDV pelo crescimento do PIX direto", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Descontinuidade de produtos Verticais para os canais físicos e digitais (consumo direto via pix)", "division": "Operações", "origin": "Não Telecom"}, {"text": "Crescimento da utilização do PIX sem intermediação pelos adquirentes", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas da Diretoria de Operações descrevem a mesma ameaça: o crescimento do consumo direto via PIX reduz a intermediação e a relevância do canal físico (PDV) e dos adquirentes."}, {"id": "ameacas_c2", "type": "convergencia", "title": "Concorrência de novos players e dos próprios contratantes no atendimento do PDV", "divisions": ["Marketing", "Operações"], "origins": ["Não Telecom"], "n": 2, "originals": [{"text": "Entrada de novos players no mercado de adquirência e produtos financeiros", "division": "Marketing", "origin": "Não Telecom"}, {"text": "Atendimento direto do PDV através dos contratantes (Pagseguro, Stone, Operadoras, etc)", "division": "Operações", "origin": "Não Telecom"}], "reason": "Duas propostas, de duas diretorias, apontam o mesmo risco competitivo: novos entrantes e os próprios contratantes (adquirentes/operadoras) passando a atender o PDV diretamente, reduzindo o papel de intermediação da RV."}, {"id": "ameacas_s1", "type": "isolada", "title": "Popularização do E-sim reduzindo capilaridade física da RV", "divisions": ["Operações"], "origins": ["Não Telecom"], "n": 1, "originals": null, "reason": null}]}};   // { telecom:{forcas:[...],...}, naotelecom:{...} } — nunca é alterado
+var ALL_ITEMS = { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] }; // recalculado a cada refreshAll(), para a etapa atual
 if(!window.RV_SUPABASE_URL || !window.RV_SUPABASE_ANON_KEY || window.RV_SUPABASE_URL.indexOf("COLOQUE_AQUI") !== -1){
   throw new Error("supabase-config.js não está preenchido (URL ou chave ausente).");
 }
 var sb = window.supabase.createClient(window.RV_SUPABASE_URL, window.RV_SUPABASE_ANON_KEY);
+var currentStage = "telecom";
 var currentQuad = "forcas";
 var votingOpenByQuad = {};
 var rowsByQuad = {};
@@ -390,66 +446,83 @@ var itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
 var itemAddedByQuad = { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] };
 var itemRemovedByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
 var rankOverridesByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+var prioritizedSet = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} }; // nunca é escopado por etapa — é sempre relativo à etapa Telecom + Ambos
 var adminOrder = "original";
 var adminView = "results";
 var topN = 5;
 var resetArmed = false, resetArmTimer = null;
 var QUAD_LABELS = { forcas:"Forças", fraquezas:"Fraquezas", oportunidades:"Oportunidades", ameacas:"Ameaças" };
 var QUAD_COLORS = { forcas:"var(--green)", fraquezas:"var(--gold)", oportunidades:"var(--navy-lt)", ameacas:"var(--red)" };
+var STAGE_LABELS = { telecom: "Telecom + Ambos", naotelecom: "Não Telecom + Ambos" };
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
   });
 }
+function tagLabelFromOrigins(origins){
+  var has = {};
+  (origins || []).forEach(function(o){ has[o] = true; });
+  if(has["Não Telecom"]) return "Não Telecom";
+  if(has["Telecom"] && has["Ambos"]) return "Telecom + Ambos";
+  if(has["Telecom"]) return "Telecom";
+  return "Ambos";
+}
+function tagSlug(tag){
+  if(tag === "Não Telecom") return "naotelecom";
+  if(tag === "Telecom + Ambos") return "telecomambos";
+  if(tag === "Telecom") return "telecom";
+  return "ambos";
+}
+function tagChipHtml(tag){
+  return '<span class="chip tag-' + tagSlug(tag) + '">' + escapeHtml(tag) + '</span>';
+}
 
-document.getElementById("login-btn").addEventListener("click", async function(){
-  var email = document.getElementById("login-email").value.trim();
-  var pass = document.getElementById("login-pass").value;
-  var err = document.getElementById("login-err");
-  err.textContent = "";
+function applyChanges(baseItems, editMap, addedList, removedSet){
+  var next = (baseItems || []).filter(function(it){ return !removedSet[it.id]; }).map(function(it){
+    var clone = JSON.parse(JSON.stringify(it));
+    if(editMap[clone.id] !== undefined) clone.title = editMap[clone.id];
+    return clone;
+  });
+  (addedList || []).forEach(function(r){
+    if(removedSet[r.item_id]) return;
+    next.push({
+      id: r.item_id, type: "isolada",
+      title: (editMap[r.item_id] !== undefined) ? editMap[r.item_id] : r.title,
+      divisions: r.division ? [r.division] : [],
+      origins: r.origin ? [r.origin] : ["Ambos"],
+      n: 1, originals: null, reason: null
+    });
+  });
+  return next;
+}
+
+async function fetchStageState(stage){
+  // Busca item_edits/item_added/item_removed de UMA etapa, agrupados por
+  // quadrante — usada tanto para a etapa atualmente selecionada quanto
+  // (quando a etapa atual é "naotelecom") para reconstruir a etapa Telecom +
+  // Ambos e calcular quais itens migram por já estarem priorizados e com
+  // tag "Ambos".
+  var out = {
+    editsByQuad: { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} },
+    addedByQuad: { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] },
+    removedByQuad: { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} }
+  };
   try{
-    var res = await sb.auth.signInWithPassword({ email: email, password: pass });
-    if(res.error) throw res.error;
-    onLoggedIn();
-  }catch(e){
-    err.textContent = "E-mail ou senha incorretos, ou esta conta não é administradora.";
-  }
-});
-document.getElementById("logout-btn").addEventListener("click", async function(){
-  await sb.auth.signOut();
-  location.reload();
-});
-document.getElementById("reset-votes-btn").addEventListener("click", async function(){
-  var btn = this;
-  if(!resetArmed){
-    resetArmed = true;
-    btn.textContent = "Confirmar: apagar todos os votos de " + QUAD_LABELS[currentQuad] + "?";
-    btn.classList.add("reset-confirm");
-    clearTimeout(resetArmTimer);
-    resetArmTimer = setTimeout(function(){ resetArmed = false; btn.textContent = "Reiniciar votação"; btn.classList.remove("reset-confirm"); }, 5000);
-    return;
-  }
-  clearTimeout(resetArmTimer);
-  resetArmed = false;
-  btn.classList.remove("reset-confirm");
-  btn.disabled = true;
-  btn.textContent = "Reiniciando…";
-  try{
-    var res = await sb.from("votes").delete().eq("quadrant", currentQuad);
-    if(res.error) throw res.error;
-    await refreshAll();
-  }catch(e){
-    console.warn("reset votes failed", e);
-    alert("Não foi possível reiniciar a votação (" + (e && e.message ? e.message : "erro desconhecido") + ").");
-  }
-  btn.textContent = "Reiniciar votação";
-  btn.disabled = false;
-});
+    var editsRes = await sb.from("item_edits").select("quadrant,item_id,title").eq("stage", stage);
+    if(!editsRes.error) (editsRes.data || []).forEach(function(r){ if(out.editsByQuad[r.quadrant]) out.editsByQuad[r.quadrant][r.item_id] = r.title; });
+    var addedRes = await sb.from("item_added").select("quadrant,item_id,title,origin,division").eq("stage", stage);
+    if(!addedRes.error) (addedRes.data || []).forEach(function(r){ if(out.addedByQuad[r.quadrant]) out.addedByQuad[r.quadrant].push(r); });
+    var removedRes = await sb.from("item_removed").select("quadrant,item_id").eq("stage", stage);
+    if(!removedRes.error) (removedRes.data || []).forEach(function(r){ if(out.removedByQuad[r.quadrant]) out.removedByQuad[r.quadrant][r.item_id] = true; });
+  }catch(e){ console.warn("fetchStageState failed for", stage, e); }
+  return out;
+}
 
 async function onLoggedIn(){
   document.getElementById("login-gate").style.display = "none";
   document.getElementById("dash").style.display = "block";
+  document.getElementById("stage-tabs").style.display = "flex";
   document.getElementById("tabs").style.display = "flex";
   await refreshAll();
   sb.channel("votes-changes")
@@ -457,6 +530,14 @@ async function onLoggedIn(){
     .subscribe();
 }
 
+document.getElementById("stage-tabs").addEventListener("click", function(e){
+  var b = e.target.closest(".tab-btn");
+  if(!b) return;
+  document.querySelectorAll("#stage-tabs .tab-btn").forEach(function(x){ x.classList.remove("active"); });
+  b.classList.add("active");
+  currentStage = b.getAttribute("data-stage");
+  refreshAll();
+});
 document.getElementById("tabs").addEventListener("click", function(e){
   var b = e.target.closest(".tab-btn");
   if(!b) return;
@@ -491,18 +572,44 @@ document.getElementById("admin-mount").addEventListener("click", async function(
   var restoreOrderBtn = e.target.closest(".restore-order-btn");
   var rankUpBtn = e.target.closest(".rank-up");
   var rankDownBtn = e.target.closest(".rank-down");
+  var exportBtn = e.target.closest(".export-btn");
+
+  if(exportBtn){
+    var quadExp = exportBtn.getAttribute("data-quad");
+    var fmtSel = document.getElementById("export-format-select");
+    var fmt = fmtSel ? fmtSel.value : "pdf";
+    var statusEl = document.getElementById("export-status");
+    if(statusEl){ statusEl.textContent = "Gerando arquivo…"; statusEl.className = "export-status"; }
+    try{
+      if(quadExp === "total"){
+        if(fmt === "pdf") exportTotalPDF(); else exportTotalXLSB();
+      } else {
+        if(fmt === "pdf") exportQuadPDF(quadExp); else exportQuadXLSB(quadExp);
+      }
+      if(statusEl){ statusEl.textContent = "Arquivo gerado."; setTimeout(function(){ if(statusEl) statusEl.textContent = ""; }, 3000); }
+    }catch(exErr){
+      console.warn("export failed", exErr);
+      if(statusEl){ statusEl.textContent = "Erro ao exportar (" + (exErr && exErr.message ? exErr.message : "desconhecido") + ")."; statusEl.className = "export-status err"; }
+    }
+    return;
+  }
 
   if(addBtn){
     var box = addBtn.closest(".add-item-box");
     var ta = box.querySelector(".new-item-title");
-    var sel = box.querySelector(".new-item-origin");
+    var selOrigin = box.querySelector(".new-item-origin");
     var status0 = box.querySelector(".edit-status");
     var title0 = ta.value.trim();
     if(!title0){ status0.textContent = "Escreva o texto da proposta."; status0.className = "edit-status err"; return; }
     status0.textContent = "Adicionando…"; status0.className = "edit-status";
     try{
       var newId = "add_" + currentQuad + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-      var resA = await sb.from("item_added").insert({ quadrant: currentQuad, item_id: newId, title: title0, origin: sel.value, division: null });
+      // Correção do bug antigo do site Não Telecom (que gravava sempre "Ambos"
+      // mesmo criando a proposta dentro da etapa Não Telecom): quando a etapa
+      // atual é "naotelecom", a origem é sempre "Não Telecom"; na etapa
+      // "telecom" o admin continua podendo escolher Ambos/Telecom.
+      var originValue = (currentStage === "naotelecom") ? "Não Telecom" : (selOrigin ? selOrigin.value : "Ambos");
+      var resA = await sb.from("item_added").insert({ stage: currentStage, quadrant: currentQuad, item_id: newId, title: title0, origin: originValue, division: null });
       if(resA.error) throw resA.error;
       ta.value = "";
       await refreshAll();
@@ -515,7 +622,7 @@ document.getElementById("admin-mount").addEventListener("click", async function(
 
   if(restoreOrderBtn){
     try{
-      await sb.from("rank_overrides").delete().eq("quadrant", currentQuad);
+      await sb.from("rank_overrides").delete().eq("stage", currentStage).eq("quadrant", currentQuad);
       rankOverridesByQuad[currentQuad] = {};
       renderDash();
     }catch(errR){ console.warn("restore order failed", errR); }
@@ -538,12 +645,12 @@ document.getElementById("admin-mount").addEventListener("click", async function(
     if(rstatus){ rstatus.textContent = "Removendo…"; rstatus.className = "edit-status"; }
     try{
       if(isAdded){
-        var resD = await sb.from("item_added").delete().eq("quadrant", currentQuad).eq("item_id", rid);
+        var resD = await sb.from("item_added").delete().eq("stage", currentStage).eq("quadrant", currentQuad).eq("item_id", rid);
         if(resD.error) throw resD.error;
       } else {
         var resD2 = await sb.from("item_removed").upsert(
-          { quadrant: currentQuad, item_id: rid },
-          { onConflict: "quadrant,item_id" }
+          { stage: currentStage, quadrant: currentQuad, item_id: rid },
+          { onConflict: "stage,quadrant,item_id" }
         );
         if(resD2.error) throw resD2.error;
       }
@@ -557,7 +664,7 @@ document.getElementById("admin-mount").addEventListener("click", async function(
   if(restoreItemBtn){
     var rrid = restoreItemBtn.getAttribute("data-id");
     try{
-      await sb.from("item_removed").delete().eq("quadrant", currentQuad).eq("item_id", rrid);
+      await sb.from("item_removed").delete().eq("stage", currentStage).eq("quadrant", currentQuad).eq("item_id", rrid);
       await refreshAll();
     }catch(errRR){ console.warn("restore item failed", errRR); }
     return;
@@ -575,8 +682,8 @@ document.getElementById("admin-mount").addEventListener("click", async function(
     status.textContent = "Salvando…"; status.className = "edit-status";
     try{
       var res = await sb.from("item_edits").upsert(
-        { quadrant: currentQuad, item_id: id, title: newTitle, updated_at: new Date().toISOString() },
-        { onConflict: "quadrant,item_id" }
+        { stage: currentStage, quadrant: currentQuad, item_id: id, title: newTitle, updated_at: new Date().toISOString() },
+        { onConflict: "stage,quadrant,item_id" }
       );
       if(res.error) throw res.error;
       await refreshAll();
@@ -587,7 +694,7 @@ document.getElementById("admin-mount").addEventListener("click", async function(
   } else if(resetBtn){
     status.textContent = "Restaurando…"; status.className = "edit-status";
     try{
-      var res2 = await sb.from("item_edits").delete().eq("quadrant", currentQuad).eq("item_id", id);
+      var res2 = await sb.from("item_edits").delete().eq("stage", currentStage).eq("quadrant", currentQuad).eq("item_id", id);
       if(res2.error) throw res2.error;
       await refreshAll();
     }catch(err2){
@@ -598,20 +705,50 @@ document.getElementById("admin-mount").addEventListener("click", async function(
 });
 
 // Campo de "top N" (afeta a tabela de ranking tanto em Resultados quanto em Resumo)
+// e checkbox de "Priorizar" (só existe na etapa Telecom + Ambos, view Resultados).
 document.getElementById("admin-mount").addEventListener("change", function(e){
   var input = e.target.closest(".topn-input");
-  if(!input) return;
-  var v = parseInt(input.value, 10);
-  if(!v || v < 1) v = 5;
-  if(v > 50) v = 50;
-  topN = v;
-  renderDash();
+  if(input){
+    var v = parseInt(input.value, 10);
+    if(!v || v < 1) v = 5;
+    if(v > 50) v = 50;
+    topN = v;
+    renderDash();
+    return;
+  }
+  var pri = e.target.closest(".prioritize-checkbox");
+  if(pri){
+    var id = pri.getAttribute("data-id");
+    var checked = pri.checked;
+    pri.disabled = true;
+    (async function(){
+      try{
+        if(checked){
+          var r = await sb.from("item_prioritized").insert({ quadrant: currentQuad, item_id: id });
+          if(r.error) throw r.error;
+          if(!prioritizedSet[currentQuad]) prioritizedSet[currentQuad] = {};
+          prioritizedSet[currentQuad][id] = true;
+        } else {
+          var r2 = await sb.from("item_prioritized").delete().eq("quadrant", currentQuad).eq("item_id", id);
+          if(r2.error) throw r2.error;
+          if(prioritizedSet[currentQuad]) delete prioritizedSet[currentQuad][id];
+        }
+        renderDash();
+      }catch(err){
+        console.warn("prioritize toggle failed", err);
+        pri.checked = !checked;
+        pri.disabled = false;
+        alert("Não foi possível salvar a priorização (" + (err && err.message ? err.message : "erro desconhecido") + ").");
+      }
+    })();
+    return;
+  }
 });
 
 async function moveRank(quad, id, dir){
   // Move o item "id" uma posição para cima (dir=-1) ou para baixo (dir=1)
   // dentro da lista atualmente exibida (já com empates resolvidos), e
-  // grava a nova ordem inteira na tabela rank_overrides.
+  // grava a nova ordem inteira na tabela rank_overrides (escopada por etapa).
   var list = getDisplayTop(quad, topN).slice();
   var idx = list.findIndex(function(x){ return x.it.id === id; });
   var swapIdx = idx + dir;
@@ -624,15 +761,15 @@ async function moveRank(quad, id, dir){
   renderDash();
 
   try{
-    var rows = list.map(function(x, i){ return { quadrant: quad, item_id: x.it.id, position: i, updated_at: new Date().toISOString() }; });
-    var res = await sb.from("rank_overrides").upsert(rows, { onConflict: "quadrant,item_id" });
+    var rows = list.map(function(x, i){ return { stage: currentStage, quadrant: quad, item_id: x.it.id, position: i, updated_at: new Date().toISOString() }; });
+    var res = await sb.from("rank_overrides").upsert(rows, { onConflict: "stage,quadrant,item_id" });
     if(res.error) throw res.error;
   }catch(e){ console.warn("save rank order failed", e); }
 }
 document.getElementById("toggle-voting").addEventListener("click", async function(){
   var newState = !votingOpenByQuad[currentQuad];
   try{
-    await sb.from("voting_config").update({ is_open: newState }).eq("quadrant", currentQuad);
+    await sb.from("voting_config").update({ is_open: newState }).eq("stage", currentStage).eq("quadrant", currentQuad);
     votingOpenByQuad[currentQuad] = newState;
     paintToggle();
   }catch(e){ console.warn("toggle failed", e); }
@@ -644,61 +781,96 @@ function paintToggle(){
   tb.classList.toggle("open", open);
   tb.classList.toggle("closed", !open);
 }
+document.getElementById("reset-votes-btn").addEventListener("click", async function(){
+  var btn = this;
+  if(!resetArmed){
+    resetArmed = true;
+    btn.textContent = "Confirmar: apagar todos os votos de " + QUAD_LABELS[currentQuad] + " (" + STAGE_LABELS[currentStage] + ")?";
+    btn.classList.add("reset-confirm");
+    clearTimeout(resetArmTimer);
+    resetArmTimer = setTimeout(function(){ resetArmed = false; btn.textContent = "Reiniciar votação"; btn.classList.remove("reset-confirm"); }, 5000);
+    return;
+  }
+  clearTimeout(resetArmTimer);
+  resetArmed = false;
+  btn.classList.remove("reset-confirm");
+  btn.disabled = true;
+  btn.textContent = "Reiniciando…";
+  try{
+    var res = await sb.from("votes").delete().eq("stage", currentStage).eq("quadrant", currentQuad);
+    if(res.error) throw res.error;
+    await refreshAll();
+  }catch(e){
+    console.warn("reset votes failed", e);
+    alert("Não foi possível reiniciar a votação (" + (e && e.message ? e.message : "erro desconhecido") + ").");
+  }
+  btn.textContent = "Reiniciar votação";
+  btn.disabled = false;
+});
 
 async function refreshAll(){
   try{
-    var votesRes = await sb.from("votes").select("quadrant,scores");
+    var votesRes = await sb.from("votes").select("quadrant,scores").eq("stage", currentStage);
     if(!votesRes.error){
       rowsByQuad = { forcas: [], fraquezas: [], oportunidades: [], ameacas: [] };
       (votesRes.data || []).forEach(function(r){ if(rowsByQuad[r.quadrant]) rowsByQuad[r.quadrant].push(r.scores || {}); });
     }
-    var cfgRes = await sb.from("voting_config").select("quadrant,is_open");
+    var cfgRes = await sb.from("voting_config").select("quadrant,is_open").eq("stage", currentStage);
     if(!cfgRes.error){
+      votingOpenByQuad = {};
       (cfgRes.data || []).forEach(function(r){ votingOpenByQuad[r.quadrant] = r.is_open; });
     }
-    var editsRes = await sb.from("item_edits").select("quadrant,item_id,title");
-    if(!editsRes.error){
-      itemEditsByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
-      (editsRes.data || []).forEach(function(r){ if(itemEditsByQuad[r.quadrant]) itemEditsByQuad[r.quadrant][r.item_id] = r.title; });
-    }
-    var addedRes = await sb.from("item_added").select("quadrant,item_id,title,origin,division");
-    if(!addedRes.error){
-      itemAddedByQuad = { forcas:[], fraquezas:[], oportunidades:[], ameacas:[] };
-      (addedRes.data || []).forEach(function(r){ if(itemAddedByQuad[r.quadrant]) itemAddedByQuad[r.quadrant].push(r); });
-    }
-    var removedRes = await sb.from("item_removed").select("quadrant,item_id");
-    if(!removedRes.error){
-      itemRemovedByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
-      (removedRes.data || []).forEach(function(r){ if(itemRemovedByQuad[r.quadrant]) itemRemovedByQuad[r.quadrant][r.item_id] = true; });
-    }
-    var rankRes = await sb.from("rank_overrides").select("quadrant,item_id,position");
+
+    var curState = await fetchStageState(currentStage);
+    itemEditsByQuad = curState.editsByQuad;
+    itemAddedByQuad = curState.addedByQuad;
+    itemRemovedByQuad = curState.removedByQuad;
+
+    var rankRes = await sb.from("rank_overrides").select("quadrant,item_id,position").eq("stage", currentStage);
+    rankOverridesByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
     if(!rankRes.error){
-      rankOverridesByQuad = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
       (rankRes.data || []).forEach(function(r){ if(rankOverridesByQuad[r.quadrant]) rankOverridesByQuad[r.quadrant][r.item_id] = r.position; });
     }
 
-    // Recalcula ALL_ITEMS do zero a partir de BASE_ALL_ITEMS (nunca alterado),
-    // aplicando remoções, depois textos editados, depois itens adicionados.
+    // item_prioritized nunca é escopado por etapa: é sempre relativo à etapa
+    // Telecom + Ambos (ver schema.sql). É usado aqui tanto para desenhar o
+    // checkbox (etapa Telecom) quanto para calcular a migração (etapa Não
+    // Telecom), então é sempre buscado, independentemente da etapa atual.
+    var prioRes = await sb.from("item_prioritized").select("quadrant,item_id");
+    prioritizedSet = { forcas:{}, fraquezas:{}, oportunidades:{}, ameacas:{} };
+    if(!prioRes.error){
+      (prioRes.data || []).forEach(function(r){ if(prioritizedSet[r.quadrant]) prioritizedSet[r.quadrant][r.item_id] = true; });
+    }
+
+    var telecomState = null;
+    if(currentStage === "naotelecom"){
+      telecomState = await fetchStageState("telecom");
+    }
+
     var next = {};
-    Object.keys(BASE_ALL_ITEMS).forEach(function(q){
-      var removedSet = itemRemovedByQuad[q] || {};
-      var list = BASE_ALL_ITEMS[q].filter(function(it){ return !removedSet[it.id]; }).map(function(it){
-        var clone = JSON.parse(JSON.stringify(it));
-        var ov = itemEditsByQuad[q][clone.id];
-        if(ov !== undefined) clone.title = ov;
-        return clone;
-      });
-      (itemAddedByQuad[q] || []).forEach(function(r){
-        if(removedSet[r.item_id]) return;
-        var ov2 = itemEditsByQuad[q][r.item_id];
-        list.push({
-          id: r.item_id, type: "isolada",
-          title: (ov2 !== undefined) ? ov2 : r.title,
-          divisions: r.division ? [r.division] : [],
-          origins: r.origin ? [r.origin] : ["Ambos"],
-          n: 1, originals: null, reason: null
+    ["forcas","fraquezas","oportunidades","ameacas"].forEach(function(q){
+      var native = applyChanges(BASE_ALL_ITEMS[currentStage][q], itemEditsByQuad[q], itemAddedByQuad[q], itemRemovedByQuad[q]);
+      var list = native;
+      if(currentStage === "naotelecom" && telecomState){
+        var telecomNative = applyChanges(BASE_ALL_ITEMS.telecom[q], telecomState.editsByQuad[q], telecomState.addedByQuad[q], telecomState.removedByQuad[q]);
+        var survivors = telecomNative.filter(function(it){
+          return (prioritizedSet[q] && prioritizedSet[q][it.id]) && tagLabelFromOrigins(it.origins) === "Ambos";
         });
-      });
+        var migBase = survivors.map(function(it){
+          var c = JSON.parse(JSON.stringify(it));
+          c.id = "mig_" + it.id; c.migrated = true; c.migratedFrom = it.id;
+          return c;
+        });
+        // aplica edições/remoções da própria etapa Não Telecom, já escopadas
+        // pelo prefixo "mig_" (itemEditsByQuad/itemRemovedByQuad acima já são
+        // da etapa atual, naotelecom).
+        var migFinal = migBase.filter(function(it){ return !itemRemovedByQuad[q][it.id]; }).map(function(it){
+          var c = JSON.parse(JSON.stringify(it));
+          if(itemEditsByQuad[q][it.id] !== undefined) c.title = itemEditsByQuad[q][it.id];
+          return c;
+        });
+        list = native.concat(migFinal);
+      }
       next[q] = list;
     });
     ALL_ITEMS = next;
@@ -741,8 +913,6 @@ function computeTopWithTies(quad, n){
   return scored.slice(0, cut);
 }
 
-// Aplica a ordem manual (rank_overrides), quando o admin já reordenou esse
-// quadrante; senão devolve a ordem automática (por média, com empates).
 function getDisplayTop(quad, n){
   var auto = computeTopWithTies(quad, n);
   var overrides = rankOverridesByQuad[quad];
@@ -789,7 +959,8 @@ function renderTopNTable(quad, allowReorder, head){
         + '<button class="rank-down" data-quad="'+quad+'" data-id="'+x.it.id+'" '+(i===top.length-1?'disabled':'')+'>&#9660;</button>'
         + '</div></div>';
     }
-    rowsHtml += '<tr><td class="top5-rank">'+rankCell+'</td><td>'+escapeHtml(x.it.title)+tie+'</td>'
+    var migTag = x.it.migrated ? ' <span class="migrated-badge" title="Migrada de Telecom + Ambos">&#9671;</span>' : '';
+    rowsHtml += '<tr><td class="top5-rank">'+rankCell+'</td><td>'+escapeHtml(x.it.title)+migTag+tie+'</td>'
       + '<td class="top5-avg" style="color:'+avgColor+'">'+x.avg.toFixed(2)+'</td>'
       + '<td style="color:var(--ink-soft); white-space:nowrap;">'+x.total+' voto'+(x.total===1?'':'s')+'</td></tr>';
   });
@@ -823,7 +994,14 @@ function renderResultsView(){
     });
   }
 
-  var html = '<div class="top5-wrap">'+renderTopNTable(currentQuad, true)+'</div>';
+  var html = "";
+  if(currentStage === "telecom"){
+    var prioCount = items.filter(function(it){ return prioritizedSet[currentQuad] && prioritizedSet[currentQuad][it.id]; }).length;
+    var ambosPrioCount = items.filter(function(it){ return prioritizedSet[currentQuad] && prioritizedSet[currentQuad][it.id] && tagLabelFromOrigins(it.origins) === "Ambos"; }).length;
+    html += '<div class="prio-summary"><b>'+prioCount+'</b> item'+(prioCount===1?"":"s")+' priorizado'+(prioCount===1?"":"s")+' neste quadrante'
+      + ' (<b>'+ambosPrioCount+'</b> com tag Ambos &mdash; ser'+(ambosPrioCount===1?"á":"ão")+' migrado'+(ambosPrioCount===1?"":"s")+' para N&atilde;o Telecom + Ambos).</div>';
+  }
+  html += '<div class="top5-wrap">'+renderTopNTable(currentQuad, true)+'</div>';
   items.forEach(function(it){
     var a = agg[it.id];
     var avg = a.total ? (a.sum/a.total) : null;
@@ -831,8 +1009,16 @@ function renderResultsView(){
     var pct5 = a.total ? (a.c5/a.total*100) : 0;
     var pct3 = a.total ? (a.c3/a.total*100) : 0;
     var pct1 = a.total ? (a.c1/a.total*100) : 0;
-    html += '<div class="admin-item">'
-      + '<div class="admin-item-top"><div class="item-title" style="flex:1">'+escapeHtml(it.title)+'</div>'
+    var tag = tagLabelFromOrigins(it.origins);
+    var prioCtrl = "";
+    if(currentStage === "telecom"){
+      var isChecked = !!(prioritizedSet[currentQuad] && prioritizedSet[currentQuad][it.id]);
+      prioCtrl = '<label class="prioritize-ctrl"><input type="checkbox" class="prioritize-checkbox" data-id="'+it.id+'" '+(isChecked?'checked':'')+'> Priorizar</label>';
+    }
+    var migBadge = (currentStage === "naotelecom" && it.migrated) ? '<span class="chip migrated-chip">Migrada de Telecom + Ambos</span>' : "";
+    html += '<div class="admin-item'+(it.migrated?' is-migrated':'')+'">'
+      + '<div class="admin-item-top"><div class="item-title" style="flex:1">'+escapeHtml(it.title)+' '+tagChipHtml(tag)+' '+migBadge+'</div>'
+      + prioCtrl
       + '<span class="avg-badge" style="background:'+avgColor+'">'+(avg===null?"sem votos":avg.toFixed(1))+'</span></div>'
       + '<div class="bars"><div class="bar-5" style="width:'+pct5+'%"></div><div class="bar-3" style="width:'+pct3+'%"></div><div class="bar-1" style="width:'+pct1+'%"></div></div>'
       + '<div class="bar-legend"><span><b>'+a.c5+'</b> concordam totalmente</span><span><b>'+a.c3+'</b> concordam parcialmente</span><span><b>'+a.c1+'</b> discordam</span><span><b>'+a.total+'</b> votos</span></div>'
@@ -848,9 +1034,22 @@ function renderSummaryView(){
   document.getElementById("admin-avg").textContent = "—";
   var order = ["forcas","fraquezas","oportunidades","ameacas"];
   var html = '<div class="top5-wrap" style="margin-bottom:8px;"><div class="top5-head">'
-    + '<h3>&#127942; Resumo Top '+topN+' &mdash; todos os quadrantes</h3>'
+    + '<h3>&#127942; Resumo Top '+topN+' &mdash; '+STAGE_LABELS[currentStage]+' &mdash; todos os quadrantes</h3>'
     + '<div class="topn-ctrl">Mostrar top <input type="number" min="1" max="50" class="topn-input" value="'+topN+'"> itens</div>'
     + '</div></div>';
+  html += '<div class="export-bar">'
+    + '<span class="export-label">Exportar Top '+topN+' ('+STAGE_LABELS[currentStage]+'):</span>'
+    + '<select class="export-format" id="export-format-select">'
+    +   '<option value="pdf">PDF</option>'
+    +   '<option value="xlsb">Excel (.xlsb)</option>'
+    + '</select>'
+    + '<button class="export-btn" data-quad="forcas">For&ccedil;as</button>'
+    + '<button class="export-btn" data-quad="fraquezas">Fraquezas</button>'
+    + '<button class="export-btn" data-quad="oportunidades">Oportunidades</button>'
+    + '<button class="export-btn" data-quad="ameacas">Amea&ccedil;as</button>'
+    + '<button class="export-btn export-total" data-quad="total">Total (todos os quadrantes)</button>'
+    + '<span class="export-status" id="export-status"></span>'
+    + '</div>';
   order.forEach(function(q){
     html += '<div class="summary-quad"><h3><span class="dot" style="background:'+QUAD_COLORS[q]+'"></span>'+QUAD_LABELS[q]+'</h3>'
       + renderTopNTable(q, false, "") + '</div>';
@@ -865,23 +1064,28 @@ function renderEditView(){
   document.getElementById("admin-avg").textContent = "—";
   var items = (ALL_ITEMS[currentQuad] || []).slice();
 
+  var originSelectHtml = (currentStage === "telecom")
+    ? '<select class="new-item-origin"><option value="Ambos">Ambos</option><option value="Telecom">Telecom</option></select>'
+    : '<span style="font-size:12.5px; color:var(--ink-soft);">Origem: <b>N&atilde;o Telecom</b></span>';
+
   var html = '<div class="add-item-box">'
-    + '<h4>&#10133; Adicionar nova proposta &mdash; '+QUAD_LABELS[currentQuad]+'</h4>'
+    + '<h4>&#10133; Adicionar nova proposta &mdash; '+QUAD_LABELS[currentQuad]+' ('+STAGE_LABELS[currentStage]+')</h4>'
     + '<textarea class="new-item-title" rows="2" placeholder="Texto da nova proposta a ser votada..."></textarea>'
     + '<div class="add-row">'
-    +   '<select class="new-item-origin"><option value="Ambos">Ambos</option><option value="Telecom">Telecom</option></select>'
+    +   originSelectHtml
     +   '<button class="add-item-btn">Adicionar</button>'
     +   '<span class="edit-status"></span>'
     + '</div></div>';
 
   html += '<div class="top5-wrap"><h3>&#9999;&#65039; Editar textos &mdash; '+QUAD_LABELS[currentQuad]+'</h3>'
-    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar, ou remova uma proposta. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo.</p></div>';
+    + '<p style="font-size:12.5px; color:var(--ink-soft); margin:-4px 0 4px;">Altere o texto de um item e clique em Salvar, ou remova uma proposta. A mudan&ccedil;a aparece na tela de vota&ccedil;&atilde;o de quem est&aacute; votando em at&eacute; 20 segundos, sem precisar reenviar nenhum arquivo. Itens migrados (identificados pelo prefixo <code>mig_</code>) podem ser editados/ocultados aqui sem afetar o item original na etapa Telecom + Ambos.</p></div>';
   items.forEach(function(it, i){
     var isEdited = !!(itemEditsByQuad[currentQuad] && itemEditsByQuad[currentQuad][it.id] !== undefined);
     var isAdded = it.id.indexOf("add_") === 0;
-    html += '<div class="admin-item edit-item" data-id="'+it.id+'">'
+    html += '<div class="admin-item edit-item'+(it.migrated?' is-migrated':'')+'" data-id="'+it.id+'">'
       + '<div style="font-size:11.5px; color:var(--ink-soft); margin-bottom:6px;">#'+(i+1)
       +   (isAdded ? ' &middot; <span class="added-badge">proposta adicionada</span>' : '')
+      +   (it.migrated ? ' &middot; <span class="migrated-badge">migrada de Telecom + Ambos</span>' : '')
       +   (isEdited ? ' &middot; <span style="color:var(--gold); font-weight:700;">texto editado</span>' : '')
       + '</div>'
       + '<textarea class="edit-title-input" rows="2">'+escapeHtml(it.title)+'</textarea>'
@@ -897,8 +1101,8 @@ function renderEditView(){
   if(removedIds.length){
     var rowsHtml = "";
     removedIds.forEach(function(rid){
-      var orig = (BASE_ALL_ITEMS[currentQuad] || []).filter(function(o){ return o.id === rid; })[0];
-      if(!orig) return; // era um item adicionado que já foi excluído de vez — não aparece aqui
+      var orig = (BASE_ALL_ITEMS[currentStage][currentQuad] || []).filter(function(o){ return o.id === rid; })[0];
+      if(!orig) return; // era um item adicionado (ou migrado) que já foi excluído de vez — não aparece aqui
       rowsHtml += '<div class="removed-row"><span class="rt">'+escapeHtml(orig.title)+'</span>'
         + '<button class="restore-item-btn" data-id="'+rid+'">Restaurar</button></div>';
     });
@@ -910,10 +1114,231 @@ function renderEditView(){
   mount.innerHTML = html;
 }
 
+var EXPORT_TAG_COLORS = {
+  "Não Telecom":     { fill:[91,62,150],  text:[255,255,255] },
+  "Telecom":         { fill:[201,162,75], text:[27,42,74] },
+  "Telecom + Ambos": { fill:[138,109,31], text:[255,255,255] },
+  "Ambos":           { fill:[27,42,74],   text:[255,255,255] }
+};
+var EXPORT_QUAD_META = {
+  forcas:        { label:"Forças",        bar:[220,243,227], text:[30,122,61] },
+  fraquezas:     { label:"Fraquezas",     bar:[251,225,225], text:[178,59,59] },
+  oportunidades: { label:"Oportunidades", bar:[220,233,247], text:[21,90,150] },
+  ameacas:       { label:"Ameaças",       bar:[253,235,208], text:[179,105,10] }
+};
+var LOGO_A_DATAURL = "data:image/png;base64,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";
+
+function buildExportRows(quad){
+  var top = getDisplayTop(quad, topN);
+  return top.map(function(x, i){
+    return { rank: i+1, title: x.it.title, tag: tagLabelFromOrigins(x.it.origins), avg: x.avg, votes: x.total };
+  });
+}
+
+function safeFileLabel(s){
+  return String(s).replace(/[^A-Za-z0-9]+/g, "_");
+}
+
+function drawExportHeader(doc, pageWidth, subtitle){
+  try{ doc.addImage(LOGO_A_DATAURL, "PNG", 40, 26, 72, 23); }catch(e){}
+  doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.setTextColor(27,42,74);
+  doc.text("Painel SWOT Consolidado", pageWidth/2, 42, { align:"center" });
+  doc.setFont("helvetica", "normal"); doc.setFontSize(11); doc.setTextColor(85,85,85);
+  doc.text("Plano Estratégico: Planejamento Estratégico RV Digital 2027 · " + subtitle, pageWidth/2, 58, { align:"center" });
+  doc.setDrawColor(220,220,220); doc.setLineWidth(1);
+  doc.line(40, 74, pageWidth-40, 74);
+}
+
+function drawExportFooter(doc, pageWidth, pageHeight, rightText){
+  doc.setDrawColor(221,221,221); doc.setLineWidth(1);
+  doc.line(40, pageHeight-34, pageWidth-40, pageHeight-34);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(120,120,120);
+  doc.text("Planejamento Estratégico RV Digital 2027", 40, pageHeight-20);
+  doc.text(rightText || "", pageWidth-40, pageHeight-20, { align:"right" });
+}
+
+function drawQuadTable(doc, quad, x, y, w){
+  var meta = EXPORT_QUAD_META[quad];
+  var rows = buildExportRows(quad);
+  var barH = 22;
+  doc.setFillColor.apply(doc, meta.bar);
+  doc.rect(x, y, w, barH, "F");
+  doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+  doc.setTextColor.apply(doc, meta.text);
+  doc.text(meta.label, x+10, y+15);
+  y += barH + 16;
+
+  var colRank = 26, colTag = 108, colAvg = 50, colVotes = 50;
+  var colTitle = w - colRank - colTag - colAvg - colVotes;
+
+  doc.setDrawColor(51,51,51); doc.setLineWidth(1);
+  doc.line(x, y, x+w, y);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(30,30,30);
+  var hx = x;
+  doc.text("#", hx+3, y-5); hx += colRank;
+  doc.text("Proposta", hx+3, y-5); hx += colTitle;
+  doc.text("Tipo", hx+3, y-5); hx += colTag;
+  doc.text("Média", hx+3, y-5); hx += colAvg;
+  doc.text("Votos", hx+3, y-5);
+  y += 4;
+
+  if(!rows.length){
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(120,120,120);
+    doc.text("Ainda sem votos suficientes neste quadrante.", x+4, y+14);
+    y += 22;
+  }
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9);
+  rows.forEach(function(r, i){
+    var lines = doc.splitTextToSize(r.title, colTitle - 8);
+    var rh = Math.max(16, lines.length * 10.5 + 6);
+    if(i % 2 === 1){ doc.setFillColor(250,250,250); doc.rect(x, y, w, rh, "F"); }
+    var cy = y + 11;
+    var cx = x;
+    doc.setTextColor(40,40,40);
+    doc.text(String(r.rank), cx+3, cy); cx += colRank;
+    doc.text(lines, cx+3, cy); cx += colTitle;
+    var tagStyle = EXPORT_TAG_COLORS[r.tag] || { fill:[150,150,150], text:[255,255,255] };
+    var pillW = Math.min(colTag - 6, 8 + r.tag.length * 4.4);
+    doc.setFillColor.apply(doc, tagStyle.fill);
+    doc.roundedRect(cx, y + (rh-14)/2, pillW, 14, 4, 4, "F");
+    doc.setFontSize(7.6);
+    doc.setTextColor.apply(doc, tagStyle.text);
+    doc.text(r.tag, cx + pillW/2, y + rh/2 + 2.6, { align:"center" });
+    doc.setFontSize(9); doc.setTextColor(40,40,40);
+    cx += colTag;
+    doc.text(r.avg.toFixed(2), cx+3, cy); cx += colAvg;
+    doc.text(String(r.votes), cx+3, cy);
+    doc.setDrawColor(228,228,228); doc.setLineWidth(0.5);
+    doc.line(x, y+rh, x+w, y+rh);
+    y += rh;
+  });
+
+  var totalVotes = rows.reduce(function(s,r){ return s + r.votes; }, 0);
+  doc.setDrawColor(51,51,51); doc.setLineWidth(1);
+  doc.line(x, y, x+w, y);
+  y += 13;
+  doc.setFont("helvetica", "bold"); doc.setFontSize(9.5); doc.setTextColor(20,20,20);
+  doc.text("Total de votos no Top " + rows.length, x+3, y);
+  doc.text(String(totalVotes), x+w-3, y, { align:"right" });
+  return y + 12;
+}
+
+function getJsPDFCtor(){
+  if(window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+  if(window.jsPDF) return window.jsPDF;
+  throw new Error("Biblioteca de PDF não carregou (verifique sua conexão).");
+}
+
+function exportQuadPDF(quad){
+  var JsPDF = getJsPDFCtor();
+  var pageW = 620, pageH = 760;
+  var doc = new JsPDF({ unit:"pt", format:[pageW, pageH] });
+  drawExportHeader(doc, pageW, STAGE_LABELS[currentStage] + " — Top " + topN + " — " + EXPORT_QUAD_META[quad].label);
+  drawQuadTable(doc, quad, 40, 96, pageW-80);
+  drawExportFooter(doc, pageW, pageH, "Tipos: Não Telecom · Telecom · Telecom + Ambos · Ambos");
+  doc.save("Top" + topN + "_" + safeFileLabel(EXPORT_QUAD_META[quad].label) + "_" + safeFileLabel(STAGE_LABELS[currentStage]) + "_RV_Digital_2027.pdf");
+}
+
+function exportTotalPDF(){
+  var JsPDF = getJsPDFCtor();
+  var pageW = 1000, pageH = 700;
+  var doc = new JsPDF({ unit:"pt", format:[pageW, pageH] });
+  var pairs = [["forcas","fraquezas"], ["oportunidades","ameacas"]];
+  pairs.forEach(function(pair, idx){
+    if(idx > 0) doc.addPage([pageW, pageH]);
+    var subtitle = STAGE_LABELS[currentStage] + " — Top " + topN + " — " + EXPORT_QUAD_META[pair[0]].label + " e " + EXPORT_QUAD_META[pair[1]].label;
+    drawExportHeader(doc, pageW, subtitle);
+    var colW = (pageW - 80 - 30) / 2;
+    drawQuadTable(doc, pair[0], 40, 96, colW);
+    drawQuadTable(doc, pair[1], 40 + colW + 30, 96, colW);
+    drawExportFooter(doc, pageW, pageH, "Tipos: Não Telecom · Telecom · Telecom + Ambos · Ambos");
+  });
+  doc.save("Top" + topN + "_Total_" + safeFileLabel(STAGE_LABELS[currentStage]) + "_RV_Digital_2027.pdf");
+}
+
+function buildQuadAoa(quad){
+  var meta = EXPORT_QUAD_META[quad];
+  var rows = buildExportRows(quad);
+  var aoa = [
+    ["Painel SWOT Consolidado"],
+    ["Planejamento Estratégico RV Digital 2027 — " + STAGE_LABELS[currentStage] + " — Top " + topN + " — " + meta.label],
+    [],
+    [meta.label.toUpperCase()],
+    ["#", "Proposta", "Tipo", "Média", "Votos"]
+  ];
+  rows.forEach(function(r){ aoa.push([r.rank, r.title, r.tag, Number(r.avg.toFixed(2)), r.votes]); });
+  var totalVotes = rows.reduce(function(s,r){ return s + r.votes; }, 0);
+  aoa.push(["", "", "Total", "", totalVotes]);
+  return aoa;
+}
+
+function quadSheet(quad){
+  var ws = XLSX.utils.aoa_to_sheet(buildQuadAoa(quad));
+  ws["!cols"] = [{wch:5},{wch:62},{wch:18},{wch:9},{wch:9}];
+  ws["!merges"] = [
+    { s:{r:0,c:0}, e:{r:0,c:4} },
+    { s:{r:1,c:0}, e:{r:1,c:4} },
+    { s:{r:3,c:0}, e:{r:3,c:4} }
+  ];
+  return ws;
+}
+
+function exportQuadXLSB(quad){
+  if(typeof XLSX === "undefined"){ alert("Biblioteca de planilha não carregou (verifique sua conexão)."); return; }
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, quadSheet(quad), EXPORT_QUAD_META[quad].label.slice(0,31));
+  XLSX.writeFile(wb, "Top" + topN + "_" + safeFileLabel(EXPORT_QUAD_META[quad].label) + "_" + safeFileLabel(STAGE_LABELS[currentStage]) + "_RV_Digital_2027.xlsb", { bookType:"xlsb" });
+}
+
+function exportTotalXLSB(){
+  if(typeof XLSX === "undefined"){ alert("Biblioteca de planilha não carregou (verifique sua conexão)."); return; }
+  var wb = XLSX.utils.book_new();
+  var order = ["forcas","fraquezas","oportunidades","ameacas"];
+  var summaryAoa = [
+    ["Painel SWOT Consolidado"],
+    ["Planejamento Estratégico RV Digital 2027 — " + STAGE_LABELS[currentStage] + " — Resumo Top " + topN],
+    [],
+    ["Quadrante", "Itens no Top", "Total de votos"]
+  ];
+  order.forEach(function(quad){
+    var rows = buildExportRows(quad);
+    var totalVotes = rows.reduce(function(s,r){ return s + r.votes; }, 0);
+    summaryAoa.push([EXPORT_QUAD_META[quad].label, rows.length, totalVotes]);
+  });
+  var wsSummary = XLSX.utils.aoa_to_sheet(summaryAoa);
+  wsSummary["!cols"] = [{wch:18},{wch:14},{wch:16}];
+  wsSummary["!merges"] = [{ s:{r:0,c:0}, e:{r:0,c:2} }, { s:{r:1,c:0}, e:{r:1,c:2} }];
+  XLSX.utils.book_append_sheet(wb, wsSummary, "Resumo");
+  order.forEach(function(quad){
+    XLSX.utils.book_append_sheet(wb, quadSheet(quad), EXPORT_QUAD_META[quad].label.slice(0,31));
+  });
+  XLSX.writeFile(wb, "Top" + topN + "_Total_" + safeFileLabel(STAGE_LABELS[currentStage]) + "_RV_Digital_2027.xlsb", { bookType:"xlsb" });
+}
+
+
 (async function init(){
   var sess = await sb.auth.getSession();
   if(sess.data && sess.data.session){ onLoggedIn(); }
 })();
+
+document.getElementById("login-btn").addEventListener("click", async function(){
+  var email = document.getElementById("login-email").value.trim();
+  var pass = document.getElementById("login-pass").value;
+  var err = document.getElementById("login-err");
+  err.textContent = "";
+  try{
+    var res = await sb.auth.signInWithPassword({ email: email, password: pass });
+    if(res.error) throw res.error;
+    onLoggedIn();
+  }catch(e){
+    err.textContent = "E-mail ou senha incorretos, ou esta conta não é administradora.";
+  }
+});
+document.getElementById("logout-btn").addEventListener("click", async function(){
+  await sb.auth.signOut();
+  location.reload();
+});
 
 }catch(e){ fatalConfigError(e); }
 </script>
